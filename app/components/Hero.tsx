@@ -1,4 +1,6 @@
 import StackIcon from "tech-stack-icons";
+import HeroFocusCard from "./HeroFocusCard";
+import HeroFocusDeck from "./HeroFocusDeck";
 
 type TechItem =
   | { divider: true }
@@ -17,29 +19,45 @@ const techStack: TechItem[] = [
   { name: "aws", label: "AWS" },
 ];
 
+const focusCards = [
+  {
+    id: "ai-focus",
+    category: "AI Focus",
+    dotColor: "bg-blue-400",
+    description: (
+      <>
+        Building neural networks from scratch with{" "}
+        <span className="text-white font-medium">Karpathy's Zero to Hero</span>{" "}
+        & studying{" "}
+        <span className="text-white font-medium">
+          Chip Huyen's AI Engineering
+        </span>{" "}
+        blueprint.
+      </>
+    ),
+  },
+  {
+    id: "engineering-foundation",
+    category: "Engineering",
+    dotColor: "bg-emerald-400",
+    description: (
+      <>
+        Self-taught engineer forged through rigorous books, hands-on
+        architecture, and open knowledge share.{" "}
+        <span className="text-white font-medium">
+          NVIDIA 6G Developer Member
+        </span>
+        .
+      </>
+    ),
+  },
+];
+
 export default function Hero() {
   return (
     <div className="relative w-full h-screen overflow-hidden flex flex-col justify-between">
       <div className="absolute top-16 md:top-24 right-8 md:right-20 z-20 hidden lg:flex flex-col items-end text-right max-w-sm">
-        <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md shadow-2xl space-y-3">
-          <div className="flex items-center justify-end gap-2">
-            <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-              Current Focus
-            </span>
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-          </div>
-          <p className="text-sm text-slate-300 leading-relaxed font-normal">
-            Obsessed with{" "}
-            <span className="text-white font-medium">systems architecture</span>
-            , distributed storage, and high-concurrency patterns in{" "}
-            <span className="text-white font-medium">Rust</span>.
-          </p>
-          <div className="pt-1 flex items-center justify-end gap-1.5 text-xs text-slate-500 font-mono">
-            <span>AI-native awareness</span>
-            <span>•</span>
-            <span>Production scale</span>
-          </div>
-        </div>
+        <HeroFocusDeck cards={focusCards} />
       </div>
       <div className="absolute bottom-20 left-8 md:left-20 right-8 md:right-20 z-10 flex flex-col items-start text-left select-none max-w-6xl">
         {/* Name - Scaled Larger */}
@@ -103,6 +121,15 @@ export default function Hero() {
               className="text-slate-300 hover:text-white transition-colors font-medium"
             >
               LinkedIn
+            </a>
+            <span className="text-slate-700">•</span>
+            <a
+              href="https://www.linkedin.com/in/frank-angelo-malubag/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-300 hover:text-white transition-colors font-medium"
+            >
+              GitHub
             </a>
           </div>
 
