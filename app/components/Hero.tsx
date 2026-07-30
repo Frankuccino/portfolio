@@ -26,7 +26,7 @@ export default function Hero() {
             <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
               Current Focus
             </span>
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
           </div>
           <p className="text-sm text-slate-300 leading-relaxed font-normal">
             Obsessed with{" "}
