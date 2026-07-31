@@ -43,7 +43,7 @@ export default function HeroFocusDeck({ cards }: HeroFocusDeckProps) {
       </div>
 
       {/* Animated Description Swap */}
-      <div className="min-h-[48px] flex items-center">
+      <div className="min-h-48px flex items-center">
         <AnimatePresence mode="wait">
           <motion.p
             key={currentCard.id}

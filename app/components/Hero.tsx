@@ -1,6 +1,7 @@
 import StackIcon from "tech-stack-icons";
 import HeroFocusCard from "./HeroFocusCard";
 import HeroFocusDeck from "./HeroFocusDeck";
+import ResumeModal from "./ResumeModal";
 
 type TechItem =
   | { divider: true }
@@ -136,19 +137,11 @@ export default function Hero() {
 
           {/* Lower Right: Resume Link */}
           <div className="relative group/tooltip inline-flex">
-            {/* Disabled Resume Button */}
-            <button
-              disabled
-              className="text-base md:text-lg font-semibold text-slate-400 opacity-60 cursor-not-allowed flex items-center gap-2 select-none"
-            >
-              <span>Resume</span>
-              <span className="text-slate-600">↗</span>
-            </button>
-
+            <ResumeModal />
             {/* Tooltip Popup */}
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:flex flex-col items-center z-30 pointer-events-none">
               <div className="bg-slate-900 border border-slate-700 text-slate-200 text-xs font-medium px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap">
-                In Development • Available Soon
+                Click to View • Available!
               </div>
               <div className="w-2 h-2 bg-slate-900 border-r border-b border-slate-700 rotate-45 -mt-1" />
             </div>
