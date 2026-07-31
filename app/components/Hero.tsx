@@ -17,6 +17,7 @@ const techStack: TechItem[] = [
   { name: "kubernetes", label: "Kubernetes" },
   { name: "terraform", label: "Terraform" },
   { name: "aws", label: "AWS" },
+  { name: "cloudflare", label: "Cloudflare" },
 ];
 
 const focusCards = [
@@ -59,7 +60,7 @@ export default function Hero() {
       <div className="absolute top-16 md:top-24 right-8 md:right-20 z-20 hidden lg:flex flex-col items-end text-right max-w-sm">
         <HeroFocusDeck cards={focusCards} />
       </div>
-      <div className="absolute bottom-20 left-8 md:left-20 right-8 md:right-20 z-10 flex flex-col items-start text-left select-none max-w-6xl">
+      <div className="absolute bottom-20 left-8 md:left-20 right-8 md:right-20 z-10 flex flex-col items-start text-left select-none max-w-8xl">
         {/* Name - Scaled Larger */}
         <h1
           className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none pb-4 drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)]"
@@ -124,7 +125,7 @@ export default function Hero() {
             </a>
             <span className="text-slate-700">•</span>
             <a
-              href="https://www.linkedin.com/in/frank-angelo-malubag/"
+              href="https://github.com/Frankuccino"
               target="_blank"
               rel="noopener noreferrer"
               className="text-slate-300 hover:text-white transition-colors font-medium"
