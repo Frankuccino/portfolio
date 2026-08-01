@@ -1,5 +1,4 @@
 import StackIcon from "tech-stack-icons";
-import HeroFocusCard from "./HeroFocusCard";
 import HeroFocusDeck from "./HeroFocusDeck";
 import ResumeModal from "./ResumeModal";
 
@@ -106,21 +105,21 @@ export default function Hero() {
         </div>
 
         {/* Bottom Bar: Email & LinkedIn on Left, Resume on Right */}
-        <div className="w-full flex items-center justify-between border-t border-slate-800/80 pt-6">
-          {/* Lower Left: Email & LinkedIn */}
-          <div className="flex items-center gap-4 text-base md:text-lg tracking-wide">
+        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-slate-800/80 pt-6">
+          {/* Lower Left: Email & LinkedIn & GitHub */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base md:text-lg tracking-wide text-slate-300">
             <a
               href="mailto:frankamalubag@gmail.com"
-              className="text-slate-300 hover:text-white transition-colors font-medium"
+              className="hover:text-white transition-colors font-medium break-all"
             >
               frankamalubag@gmail.com
             </a>
-            <span className="text-slate-700">•</span>
+            <span className="text-slate-700 hidden sm:inline">•</span>
             <a
               href="https://www.linkedin.com/in/frank-angelo-malubag/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-300 hover:text-white transition-colors font-medium"
+              className="hover:text-white transition-colors font-medium"
             >
               LinkedIn
             </a>
@@ -129,7 +128,7 @@ export default function Hero() {
               href="https://github.com/Frankuccino"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-300 hover:text-white transition-colors font-medium"
+              className="hover:text-white transition-colors font-medium"
             >
               GitHub
             </a>
