@@ -7,6 +7,12 @@ import type { Certificate } from "../data/portfolio";
 
 type CertificateWithImage = Certificate & { image: string };
 
+export type LightboxImage = {
+  src: string;
+  title: string;
+  subtitle: string;
+};
+
 const CERT_WIDTH = 1400;
 const CERT_HEIGHT = 806;
 
@@ -16,7 +22,7 @@ const MARGIN = 16;
 
 type CertificateCardProps = {
   cert: CertificateWithImage;
-  onOpen: (cert: CertificateWithImage) => void;
+  onOpen: (image: LightboxImage) => void;
 };
 
 export default function CertificateCard({ cert, onOpen }: CertificateCardProps) {
@@ -41,7 +47,13 @@ export default function CertificateCard({ cert, onOpen }: CertificateCardProps) 
       onMouseEnter={trackCursor}
       onMouseMove={trackCursor}
       onMouseLeave={() => setPreview(null)}
-      onClick={() => onOpen(cert)}
+      onClick={() =>
+        onOpen({
+          src: cert.image,
+          title: cert.title,
+          subtitle: `${cert.issuer} · ${cert.completed}`,
+        })
+      }
       className="group relative rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md overflow-hidden cursor-pointer transition-all hover:border-[#3e6274]/50 hover:shadow-[0_0_24px_rgba(62,98,116,0.18)]"
     >
       <div className="relative overflow-hidden">

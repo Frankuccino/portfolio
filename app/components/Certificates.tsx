@@ -3,13 +3,13 @@
 import Image from "next/image";
 import { useState } from "react";
 import SectionHeading from "./SectionHeading";
-import CertificateCard from "./CertificateCard";
+import CertificateCard, { type LightboxImage } from "./CertificateCard";
 import CertificateLightbox from "./CertificateLightbox";
 import {
   achievements,
   certificates,
   featuredCertification,
-  totalCertificateHours,
+  totalCourseworkHours,
   type Certificate,
 } from "../data/portfolio";
 
@@ -20,7 +20,13 @@ function hasImage(cert: Certificate): cert is CertificateWithImage {
 }
 
 export default function Certificates() {
-  const [active, setActive] = useState<CertificateWithImage | null>(null);
+  const [activeImage, setActiveImage] = useState<LightboxImage | null>(null);
+  const [docIndex, setDocIndex] = useState(0);
+
+  const featuredDocs = featuredCertification.images ?? [
+    { src: featuredCertification.image, label: "Credential" },
+  ];
+  const activeDoc = featuredDocs[docIndex] ?? featuredDocs[0];
 
   return (
     <section
@@ -37,24 +43,52 @@ export default function Certificates() {
         {/* Featured associate certification */}
         <div className="mb-3 rounded-xl border border-[#3e6274]/50 bg-gradient-to-br from-[#3e6274]/15 via-slate-900/40 to-slate-900/40 backdrop-blur-md p-4 sm:p-5">
           <div className="flex flex-col lg:flex-row gap-5">
-            <button
-              type="button"
-              onClick={() => setActive(featuredCertification)}
-              className="lg:w-2/5 shrink-0 group relative rounded-lg overflow-hidden border border-slate-700 cursor-pointer text-left"
-              aria-label={`View ${featuredCertification.title} certificate`}
-            >
-              <Image
-                src={featuredCertification.image}
-                alt={featuredCertification.title}
-                width={1400}
-                height={806}
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                className="block w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
-              />
-              <span className="absolute bottom-2 right-2 text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded-md bg-slate-950/85 border border-slate-700 text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Click to view
-              </span>
-            </button>
+            <div className="lg:w-2/5 shrink-0 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveImage({
+                    src: activeDoc.src,
+                    title: featuredCertification.title,
+                    subtitle: `${featuredCertification.issuer} · ${featuredCertification.completed}`,
+                  })
+                }
+                className="group relative rounded-lg overflow-hidden border border-slate-700 cursor-pointer text-left"
+                aria-label={`View the ${activeDoc.label.toLowerCase()} for ${featuredCertification.title}`}
+              >
+                <Image
+                  key={activeDoc.src}
+                  src={activeDoc.src}
+                  alt={`${featuredCertification.title} — ${activeDoc.label}`}
+                  width={1400}
+                  height={806}
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="block w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
+                />
+                <span className="absolute bottom-2 right-2 text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded-md bg-slate-950/85 border border-slate-700 text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  Click to view
+                </span>
+              </button>
+
+              {/* Document switcher — the credential and the track certificate */}
+              <div className="flex flex-wrap gap-1.5">
+                {featuredDocs.map((doc, index) => (
+                  <button
+                    key={doc.src}
+                    type="button"
+                    onClick={() => setDocIndex(index)}
+                    aria-pressed={index === docIndex}
+                    className={`text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded-md border transition-colors cursor-pointer ${
+                      index === docIndex
+                        ? "bg-[#3e6274]/25 border-[#3e6274]/50 text-slate-100"
+                        : "bg-slate-950/50 border-slate-800 text-slate-500 hover:text-slate-300"
+                    }`}
+                  >
+                    {doc.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <div className="flex flex-col gap-4">
               <div className="space-y-2">
@@ -81,7 +115,7 @@ export default function Certificates() {
                     Total Coursework
                   </p>
                   <p className="text-sm font-semibold text-slate-100">
-                    {totalCertificateHours} hrs
+                    ~{totalCourseworkHours} hrs
                   </p>
                 </div>
                 <div className="px-3 py-2 rounded-lg bg-slate-950/60 border border-slate-800/70">
@@ -100,7 +134,7 @@ export default function Certificates() {
         {/* Course certificates */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
           {certificates.filter(hasImage).map((cert) => (
-            <CertificateCard key={cert.id} cert={cert} onOpen={setActive} />
+            <CertificateCard key={cert.id} cert={cert} onOpen={setActiveImage} />
           ))}
         </div>
 
@@ -122,8 +156,11 @@ export default function Certificates() {
           ))}
         </div>
 
-        {active ? (
-          <CertificateLightbox cert={active} onClose={() => setActive(null)} />
+        {activeImage ? (
+          <CertificateLightbox
+            image={activeImage}
+            onClose={() => setActiveImage(null)}
+          />
         ) : null}
       </div>
     </section>

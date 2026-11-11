@@ -28,6 +28,7 @@ export type Certificate = {
   credentialId?: string;
   featured?: boolean;
   image?: string;
+  images?: { src: string; label: string }[];
 };
 
 export const skillGroups: SkillGroup[] = [
@@ -237,6 +238,10 @@ export const featuredCertification: Certificate & { image: string } = {
   credentialId: "AIEDA0015784021049",
   featured: true,
   image: "/certificates/aied-associate.jpg",
+  images: [
+    { src: "/certificates/aied-associate.jpg", label: "Credential" },
+    { src: "/certificates/aied-track.jpg", label: "Track Certificate" },
+  ],
 };
 
 export const certificates: Certificate[] = [
@@ -339,9 +344,6 @@ export const achievements: Certificate[] = [
   },
 ];
 
-// The associate certification is the sum of the ten course certificates
-// below, so its own 29 hours are not added again here.
-export const totalCertificateHours = certificates.reduce(
-  (sum, cert) => sum + cert.hours,
-  0,
-);
+// Total coursework for the AI Engineer for Developers Associate certification:
+// the preparation track, its exercises, and both certification exams.
+export const totalCourseworkHours = 63;

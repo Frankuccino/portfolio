@@ -3,20 +3,18 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import type { Certificate } from "../data/portfolio";
-
-type CertificateWithImage = Certificate & { image: string };
+import type { LightboxImage } from "./CertificateCard";
 
 const CERT_WIDTH = 1400;
 const CERT_HEIGHT = 806;
 
 type CertificateLightboxProps = {
-  cert: CertificateWithImage;
+  image: LightboxImage;
   onClose: () => void;
 };
 
 export default function CertificateLightbox({
-  cert,
+  image,
   onClose,
 }: CertificateLightboxProps) {
   useEffect(() => {
@@ -24,7 +22,15 @@ export default function CertificateLightbox({
       if (event.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    // Lock background scroll while the certificate is on screen
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [onClose]);
 
   return createPortal(
@@ -37,8 +43,9 @@ export default function CertificateLightbox({
 
       <div className="relative w-full max-w-5xl">
         <Image
-          src={cert.image}
-          alt={cert.title}
+          key={image.src}
+          src={image.src}
+          alt={image.title}
           width={CERT_WIDTH}
           height={CERT_HEIGHT}
           sizes="(max-width: 1024px) 100vw, 1100px"
@@ -47,10 +54,8 @@ export default function CertificateLightbox({
 
         <div className="mt-3 flex items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-medium text-slate-100">{cert.title}</p>
-            <p className="text-xs text-slate-500">
-              {cert.issuer} · {cert.completed}
-            </p>
+            <p className="text-sm font-medium text-slate-100">{image.title}</p>
+            <p className="text-xs text-slate-500">{image.subtitle}</p>
           </div>
           <button
             type="button"
