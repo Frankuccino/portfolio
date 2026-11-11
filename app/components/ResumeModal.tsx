@@ -5,11 +5,6 @@ import { createPortal } from "react-dom";
 
 export default function ResumeModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Handle ESC key to close modal
   useEffect(() => {
@@ -19,8 +14,6 @@ export default function ResumeModal() {
     if (isOpen) window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
-
-  if (!mounted) return null;
 
   return (
     <>
@@ -92,7 +85,7 @@ export default function ResumeModal() {
               <div className="w-full bg-[#0e0d16] p-3 sm:p-6 flex items-center justify-center overflow-hidden">
                 <div className="w-full max-w-[500px] sm:max-w-xl aspect-[8.5/11] max-h-[58vh] sm:max-h-[72vh]">
                   <iframe
-                    src="/Frank-Angelo-Malubag-Software-Engineer-Resume.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
+                    src="/Resume_Frank_Angelo_Malubag.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
                     className="w-full h-full rounded-xl border border-[#3e6274]/20 bg-slate-950"
                     title="Resume PDF Viewer"
                   />
@@ -105,8 +98,8 @@ export default function ResumeModal() {
                   PDF Document Viewer
                 </span>
                 <a
-                  href="/Frank-Angelo-Malubag-Software-Engineer-Resume.pdf"
-                  download="Frank-Angelo-Malubag-Software-Engineer-Resume.pdf"
+                  href="/Resume_Frank_Angelo_Malubag.pdf"
+                  download="Resume_Frank_Angelo_Malubag.pdf"
                   className="w-full sm:w-auto text-xs sm:text-sm font-medium px-4 py-2 rounded-lg text-white transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md active:scale-95"
                   style={{
                     backgroundColor: "#3e6274",
