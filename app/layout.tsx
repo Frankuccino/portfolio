@@ -14,8 +14,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Frank Angelo Malubag",
-  description: "Software Engineer, Backend Focused.",
+  title: "Frank Angelo Malubag — Software & AI Engineer",
+  description:
+    "Backend-focused software engineer and DataCamp-certified AI Engineer Associate building full-stack systems, distributed backends, and applied LLM applications.",
+  keywords: [
+    "Frank Angelo Malubag",
+    "Software Engineer",
+    "AI Engineer",
+    "Full-Stack",
+    "Node.js",
+    "TypeScript",
+    "RAG",
+    "LLM",
+  ],
+  openGraph: {
+    title: "Frank Angelo Malubag — Software & AI Engineer",
+    description:
+      "Backend-focused software engineer and DataCamp-certified AI Engineer Associate.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

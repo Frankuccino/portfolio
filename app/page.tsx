@@ -1,6 +1,13 @@
 import { GrainGradient } from "@paper-design/shaders-react";
+import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
+import Skills from "./components/Skills";
+import Projects from "./components/Projects";
+import Certificates from "./components/Certificates";
+import BlogSection from "./components/BlogSection";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -17,8 +24,17 @@ export default function Home() {
         scale={0.88}
         rotation={88}
       />
-      <Hero />
-      <About />
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Certificates />
+        <BlogSection />
+        <Contact />
+      </main>
+      <Footer />
     </>
   );
 }
