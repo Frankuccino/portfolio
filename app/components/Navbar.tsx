@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const links = [
   { label: "About", href: "/#about" },
   { label: "Skills", href: "/#skills" },
   { label: "Projects", href: "/#projects" },
   { label: "Certificates", href: "/#certificates" },
+  { label: "Next", href: "/next" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/#contact" },
 ];
@@ -15,6 +17,7 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,7 +49,11 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-xs font-medium text-slate-400 hover:text-white transition-colors"
+              className={`text-xs font-medium transition-colors ${
+                pathname === link.href
+                  ? "text-white"
+                  : "text-slate-400 hover:text-white"
+              }`}
             >
               {link.label}
             </Link>
@@ -100,7 +107,11 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="text-xs font-medium text-slate-300 hover:text-white transition-colors"
+              className={`text-xs font-medium transition-colors ${
+                pathname === link.href
+                  ? "text-white"
+                  : "text-slate-300 hover:text-white"
+              }`}
             >
               {link.label}
             </Link>
