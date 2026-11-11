@@ -1,36 +1,27 @@
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
 import SectionHeading from "./SectionHeading";
+import CertificateCard from "./CertificateCard";
+import CertificateLightbox from "./CertificateLightbox";
 import {
   achievements,
   certificates,
   featuredCertification,
   totalCertificateHours,
+  type Certificate,
 } from "../data/portfolio";
 
-function CertificateCard({
-  title,
-  issuer,
-  completed,
-  hours,
-}: {
-  title: string;
-  issuer: string;
-  completed: string;
-  hours: number;
-}) {
-  return (
-    <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors">
-      <p className="text-sm font-medium text-slate-100 leading-snug">{title}</p>
-      <p className="text-[11px] text-slate-500 mt-1.5">
-        {issuer} · {completed}
-      </p>
-      {hours > 0 ? (
-        <p className="text-[11px] text-slate-400 mt-1">{hours} hrs</p>
-      ) : null}
-    </div>
-  );
+type CertificateWithImage = Certificate & { image: string };
+
+function hasImage(cert: Certificate): cert is CertificateWithImage {
+  return Boolean(cert.image);
 }
 
 export default function Certificates() {
+  const [active, setActive] = useState<CertificateWithImage | null>(null);
+
   return (
     <section
       id="certificates"
@@ -43,58 +34,77 @@ export default function Certificates() {
           description="Formal verification of the AI engineering craft — a DataCamp associate certification backed by ten course certificates."
         />
 
-        <div className="p-5 rounded-xl border border-[#3e6274]/50 bg-gradient-to-br from-[#3e6274]/15 via-slate-900/40 to-slate-900/40 backdrop-blur-md mb-3">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-            <div className="space-y-2">
-              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
-                Associate Certification
+        {/* Featured associate certification */}
+        <div className="mb-3 rounded-xl border border-[#3e6274]/50 bg-gradient-to-br from-[#3e6274]/15 via-slate-900/40 to-slate-900/40 backdrop-blur-md p-4 sm:p-5">
+          <div className="flex flex-col lg:flex-row gap-5">
+            <button
+              type="button"
+              onClick={() => setActive(featuredCertification)}
+              className="lg:w-2/5 shrink-0 group relative rounded-lg overflow-hidden border border-slate-700 cursor-pointer text-left"
+              aria-label={`View ${featuredCertification.title} certificate`}
+            >
+              <Image
+                src={featuredCertification.image}
+                alt={featuredCertification.title}
+                width={1400}
+                height={806}
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="block w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+              <span className="absolute bottom-2 right-2 text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded-md bg-slate-950/85 border border-slate-700 text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Click to view
               </span>
-              <h3 className="text-lg md:text-xl font-bold text-white">
-                {featuredCertification.title}
-              </h3>
-              <p className="text-sm text-slate-400">
-                {featuredCertification.issuer} ·{" "}
-                {featuredCertification.completed}
-              </p>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-2xl">
-                Covers LLM application development, prompt engineering, RAG, and
-                vector databases — the applied end of the AI engineering
-                workflow.
-              </p>
-            </div>
-            <div className="flex sm:flex-col gap-2 sm:text-right">
-              <div className="px-3 py-2 rounded-lg bg-slate-950/60 border border-slate-800/70">
-                <p className="text-[10px] uppercase tracking-wider text-slate-500">
-                  Total Coursework
+            </button>
+
+            <div className="flex flex-col gap-4">
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
+                  Associate Certification
+                </span>
+                <h3 className="text-lg md:text-xl font-bold text-white">
+                  {featuredCertification.title}
+                </h3>
+                <p className="text-sm text-slate-400">
+                  {featuredCertification.issuer} ·{" "}
+                  {featuredCertification.completed}
                 </p>
-                <p className="text-sm font-semibold text-slate-100">
-                  {totalCertificateHours} hrs
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Covers LLM application development, prompt engineering, RAG,
+                  and vector databases — the applied end of the AI engineering
+                  workflow.
                 </p>
               </div>
-              <div className="px-3 py-2 rounded-lg bg-slate-950/60 border border-slate-800/70">
-                <p className="text-[10px] uppercase tracking-wider text-slate-500">
-                  Credential ID
-                </p>
-                <p className="text-[11px] font-mono text-slate-300">
-                  {featuredCertification.credentialId}
-                </p>
+
+              <div className="flex flex-wrap gap-2">
+                <div className="px-3 py-2 rounded-lg bg-slate-950/60 border border-slate-800/70">
+                  <p className="text-[10px] uppercase tracking-wider text-slate-500">
+                    Total Coursework
+                  </p>
+                  <p className="text-sm font-semibold text-slate-100">
+                    {totalCertificateHours} hrs
+                  </p>
+                </div>
+                <div className="px-3 py-2 rounded-lg bg-slate-950/60 border border-slate-800/70">
+                  <p className="text-[10px] uppercase tracking-wider text-slate-500">
+                    Credential ID
+                  </p>
+                  <p className="text-[11px] font-mono text-slate-300">
+                    {featuredCertification.credentialId}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Course certificates */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
-          {certificates.map((cert) => (
-            <CertificateCard
-              key={cert.id}
-              title={cert.title}
-              issuer={cert.issuer}
-              completed={cert.completed}
-              hours={cert.hours}
-            />
+          {certificates.filter(hasImage).map((cert) => (
+            <CertificateCard key={cert.id} cert={cert} onOpen={setActive} />
           ))}
         </div>
 
+        {/* Memberships and education */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {achievements.map((item) => (
             <div
@@ -111,6 +121,10 @@ export default function Certificates() {
             </div>
           ))}
         </div>
+
+        {active ? (
+          <CertificateLightbox cert={active} onClose={() => setActive(null)} />
+        ) : null}
       </div>
     </section>
   );

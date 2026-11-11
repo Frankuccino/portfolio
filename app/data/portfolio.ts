@@ -27,6 +27,7 @@ export type Certificate = {
   hours: number;
   credentialId?: string;
   featured?: boolean;
+  image?: string;
 };
 
 export const skillGroups: SkillGroup[] = [
@@ -227,7 +228,7 @@ export const projects: Project[] = [
   },
 ];
 
-export const featuredCertification: Certificate = {
+export const featuredCertification: Certificate & { image: string } = {
   id: "aied-associate",
   title: "AI Engineer for Developers Associate",
   issuer: "DataCamp",
@@ -235,6 +236,7 @@ export const featuredCertification: Certificate = {
   hours: 29,
   credentialId: "AIEDA0015784021049",
   featured: true,
+  image: "/certificates/aied-associate.jpg",
 };
 
 export const certificates: Certificate[] = [
@@ -244,6 +246,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 03, 2026",
     hours: 3,
+    image: "/certificates/openai-api.jpg",
   },
   {
     id: "prompt-engineering",
@@ -251,6 +254,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 04, 2026",
     hours: 4,
+    image: "/certificates/prompt-engineering.jpg",
   },
   {
     id: "hugging-face",
@@ -258,6 +262,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 04, 2026",
     hours: 2,
+    image: "/certificates/hugging-face.jpg",
   },
   {
     id: "llmops",
@@ -265,6 +270,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 05, 2026",
     hours: 1,
+    image: "/certificates/llmops.jpg",
   },
   {
     id: "embeddings",
@@ -272,6 +278,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 06, 2026",
     hours: 3,
+    image: "/certificates/embeddings.jpg",
   },
   {
     id: "pinecone",
@@ -279,6 +286,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 07, 2026",
     hours: 3,
+    image: "/certificates/pinecone.jpg",
   },
   {
     id: "langchain",
@@ -286,6 +294,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 07, 2026",
     hours: 3,
+    image: "/certificates/langchain.jpg",
   },
   {
     id: "responses-api",
@@ -293,6 +302,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 07, 2026",
     hours: 3,
+    image: "/certificates/responses-api.jpg",
   },
   {
     id: "mcp",
@@ -300,6 +310,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 08, 2026",
     hours: 3,
+    image: "/certificates/mcp.jpg",
   },
   {
     id: "se-python",
@@ -307,6 +318,7 @@ export const certificates: Certificate[] = [
     issuer: "DataCamp",
     completed: "Nov 08, 2026",
     hours: 4,
+    image: "/certificates/se-python.jpg",
   },
 ];
 
@@ -327,7 +339,9 @@ export const achievements: Certificate[] = [
   },
 ];
 
+// The associate certification is the sum of the ten course certificates
+// below, so its own 29 hours are not added again here.
 export const totalCertificateHours = certificates.reduce(
   (sum, cert) => sum + cert.hours,
-  featuredCertification.hours,
+  0,
 );

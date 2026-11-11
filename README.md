@@ -46,6 +46,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 ├── content/
 │   └── posts/
 ├── public/
+│   ├── certificates/            # certificate artwork for the showcase
 │   └── Resume_Frank_Angelo_Malubag.pdf
 └── README.md
 ```
