@@ -23,6 +23,8 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   ├── blog/
 │   │   ├── page.tsx
 │   │   └── [slug]/page.tsx
+│   ├── next/
+│   │   └── page.tsx
 │   ├── components/
 │   │   ├── Navbar.tsx
 │   │   ├── Hero.tsx
@@ -39,7 +41,8 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   ├── HeroFocusDeck.tsx
 │   │   └── HeroFocusCard.tsx
 │   ├── data/
-│   │   └── portfolio.ts
+│   │   ├── portfolio.ts
+│   │   └── roadmap.ts
 │   └── lib/
 │       ├── posts.ts
 │       └── markdown.tsx
@@ -60,6 +63,12 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 - `Certificates` — DataCamp Associate certification, course certificates, and program memberships.
 - `Blog` — latest posts preview; full archive at `/blog`.
 - `Contact` — email, LinkedIn, and GitHub channels.
+
+Site chrome (navbar, footer, grain background) lives in `app/layout.tsx`, so every route shares it.
+
+## What's Next
+
+`/next` is a forward-looking page: the Microsoft AI & ML Engineering Professional Certificate, then Stanford CS221. Content lives in `app/data/roadmap.ts`.
 
 ## Blog
 
