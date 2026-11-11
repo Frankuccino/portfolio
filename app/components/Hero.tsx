@@ -1,3 +1,4 @@
+import Link from "next/link";
 import StackIcon from "tech-stack-icons";
 import HeroFocusDeck from "./HeroFocusDeck";
 import ResumeModal from "./ResumeModal";
@@ -18,6 +19,9 @@ const techStack: TechItem[] = [
   { name: "terraform", label: "Terraform" },
   { name: "aws", label: "AWS" },
   { name: "cloudflare", label: "Cloudflare" },
+  { name: "openai", label: "OpenAI" },
+  { name: "langchain", label: "LangChain" },
+  { name: "pytorch", label: "PyTorch" },
 ];
 
 const focusCards = [
@@ -28,12 +32,13 @@ const focusCards = [
     description: (
       <>
         Building neural networks from scratch with{" "}
-        <span className="text-white font-medium">Karpathy's Zero to Hero</span>{" "}
+        <span className="text-white font-medium">Karpathy&apos;s Zero to Hero</span>{" "}
         & studying{" "}
         <span className="text-white font-medium">
-          Chip Huyen's AI Engineering
+          Chip Huyen&apos;s AI Engineering
         </span>{" "}
-        blueprint.
+        blueprint. DataCamp-certified{" "}
+        <span className="text-white font-medium">AI Engineer Associate</span>.
       </>
     ),
   },
@@ -56,14 +61,14 @@ const focusCards = [
 
 export default function Hero() {
   return (
-    <div className="relative w-full h-screen overflow-hidden flex flex-col justify-between">
+    <div className="relative w-full min-h-screen overflow-hidden flex flex-col">
       <div className="absolute top-16 md:top-24 right-8 md:right-20 z-20 hidden lg:flex flex-col items-end text-right max-w-sm">
         <HeroFocusDeck cards={focusCards} />
       </div>
-      <div className="absolute bottom-20 left-8 md:left-20 right-8 md:right-20 z-10 flex flex-col items-start text-left select-none max-w-8xl">
+      <div className="relative z-10 flex-1 w-full max-w-8xl mx-auto flex flex-col justify-end items-start text-left select-none px-8 md:px-20 pt-28 pb-16 md:pb-20">
         {/* Name - Scaled Larger */}
         <h1
-          className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none pb-4 drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)]"
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none pb-3 drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)]"
           style={{
             background:
               "linear-gradient(135deg, #f8fafc 0%, #94a3b8 35%, #ffffff 50%, #475569 65%, #cbd5e1 100%)",
@@ -75,20 +80,31 @@ export default function Hero() {
         </h1>
 
         {/* Title - Scaled Larger */}
-        <p className="text-2xl md:text-3xl font-medium tracking-wide text-slate-300 pb-5">
+        <p className="text-xl sm:text-2xl md:text-3xl font-medium tracking-wide text-slate-300 pb-4">
           /Frankuccino <span className="text-slate-600 mx-2">•</span> Software
           Engineer | AI Engineer
         </p>
 
         {/* Short Description - Scaled Larger */}
-        <p className="text-base md:text-lg text-slate-400 max-w-2xl pb-8 leading-relaxed">
-          Building end-to-end fullstack systems and scalable applications with a
-          focus on modern backend architecture, cloud tooling, and
-          high-performance engineering.
+        <p className="text-sm sm:text-base md:text-lg text-slate-400 max-w-2xl pb-4 leading-relaxed">
+          Building end-to-end fullstack systems and scalable applications across
+          modern backend architecture, cloud tooling, and applied AI
+          engineering.
         </p>
 
+        {/* Certification Badge */}
+        <div className="pb-6">
+          <Link
+            href="/#certificates"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#3e6274]/15 border border-[#3e6274]/40 text-xs md:text-sm text-slate-200 hover:bg-[#3e6274]/25 transition-colors"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+            DataCamp AI Engineer for Developers Associate · Nov 2026
+          </Link>
+        </div>
+
         {/* Optional: Static Tech Badges instead of Marquee for a cleaner editorial look */}
-        <div className="flex flex-wrap items-center gap-2.5 pb-8">
+        <div className="flex flex-wrap items-center gap-2.5 pb-6">
           {techStack.map((tech, idx) => {
             if ("divider" in tech && tech.divider) return null;
             if (!("name" in tech)) return null;
@@ -105,7 +121,7 @@ export default function Hero() {
         </div>
 
         {/* Bottom Bar: Email & LinkedIn on Left, Resume on Right */}
-        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-slate-800/80 pt-6">
+        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-800/80 pt-4">
           {/* Lower Left: Email & LinkedIn & GitHub */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base md:text-lg tracking-wide text-slate-300">
             <a
