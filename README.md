@@ -10,6 +10,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 - **Styling:** Tailwind CSS
 - **Visual Shaders:** `@paper-design/shaders-react` (`GrainGradient`)
 - **Typography:** Custom CSS metallic text gradients utilizing hardware-accelerated text clipping.
+- **Blog:** Markdown posts in `content/posts/`, rendered by a dependency-free React markdown engine (`app/lib/markdown.tsx`).
 
 ---
 
@@ -19,21 +20,49 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 ├── app/
 │   ├── layout.tsx
 │   ├── page.tsx
-│   └── globals.css
-├── components/
-│   └── PortfolioHero.tsx
+│   ├── blog/
+│   │   ├── page.tsx
+│   │   └── [slug]/page.tsx
+│   ├── components/
+│   │   ├── Navbar.tsx
+│   │   ├── Hero.tsx
+│   │   ├── About.tsx
+│   │   ├── Skills.tsx
+│   │   ├── Projects.tsx
+│   │   ├── Certificates.tsx
+│   │   ├── BlogSection.tsx
+│   │   ├── BlogCard.tsx
+│   │   ├── Contact.tsx
+│   │   ├── Footer.tsx
+│   │   ├── SectionHeading.tsx
+│   │   ├── ResumeModal.tsx
+│   │   ├── HeroFocusDeck.tsx
+│   │   └── HeroFocusCard.tsx
+│   ├── data/
+│   │   └── portfolio.ts
+│   └── lib/
+│       ├── posts.ts
+│       └── markdown.tsx
+├── content/
+│   └── posts/
+├── public/
+│   └── Resume_Frank_Angelo_Malubag.pdf
 └── README.md
 ```
 
-## Core Components
-`Hero.tsx`
-- Initialized current portfolio hero section with name in metallic typography with textured background.
+## Core Sections
 
-## Portfolio Sections Roadmap
-- About/Summary
-- Technical Stack/Skills Matrix
-- Project Showcase
-- Certificates, Badges & Achievements
-- Contact & Social Links
-- Blogs/Personal Attributes & Interests
-- Footer 
+- `Hero` — name, role, certification badge, tech stack badges, resume modal.
+- `About` — engineering focus and applied AI engineering context.
+- `Skills` — grouped skill matrix (languages, frontend, backend, AI engineering, cloud, practices).
+- `Projects` — shipped systems with stack, links, and architectural highlights.
+- `Certificates` — DataCamp Associate certification, course certificates, and program memberships.
+- `Blog` — latest posts preview; full archive at `/blog`.
+- `Contact` — email, LinkedIn, and GitHub channels.
+
+## Blog
+
+Posts are plain markdown files with frontmatter (`title`, `date`, `excerpt`, `tags`) in `content/posts/`. Add a file, and both `/blog` and `/blog/[slug]` pick it up at build time.
+
+### Added Ideas to roadmap:
+- Implement the resume access with an OTP Verification via their email and send the resume via email.
