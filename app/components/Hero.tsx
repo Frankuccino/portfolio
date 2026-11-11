@@ -29,6 +29,8 @@ const focusCards = [
     id: "ai-focus",
     category: "AI Focus",
     dotColor: "bg-blue-400",
+    href: "/#certificates",
+    cta: "View certificates",
     description: (
       <>
         Building neural networks from scratch with{" "}
@@ -46,6 +48,8 @@ const focusCards = [
     id: "engineering-foundation",
     category: "Engineering",
     dotColor: "bg-emerald-400",
+    href: "/#projects",
+    cta: "View projects",
     description: (
       <>
         Self-taught engineer forged through rigorous books, hands-on
