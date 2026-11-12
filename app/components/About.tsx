@@ -3,8 +3,7 @@ import Link from "next/link";
 import VirtualLibrary from "./VirtualLibrary";
 
 const NVIDIA_PASS_WIDTH = 1000;
-const NVIDIA_PASS_HEIGHT = 1505;
-const PASS_CARD_HEIGHT = 180;
+const NVIDIA_PASS_HEIGHT = 661;
 
 export default function About() {
   return (
@@ -59,29 +58,22 @@ export default function About() {
           {/* NVIDIA Developer Pass — the pass is the card, the redirect is a
               separate button rather than the whole card being a link */}
           <div className="space-y-3">
-            <div className="flex items-center gap-4 rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-4 text-left">
-              <div className="shrink-0 rounded-lg overflow-hidden border border-slate-800 bg-slate-950/60">
+            <div className="rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-3 text-left">
+              <div className="rounded-lg overflow-hidden border border-slate-800 bg-slate-950/60">
                 <Image
-                  src="/badges/nvidia-developer-pass.png"
+                  src="/badges/nvidia-developer-pass-3.png"
                   alt="NVIDIA Developer Program pass made out to Frank Angelo Malubag, member since 03/26"
                   width={NVIDIA_PASS_WIDTH}
                   height={NVIDIA_PASS_HEIGHT}
-                  sizes="240px"
-                  className="block object-contain"
-                  style={{
-                    height: PASS_CARD_HEIGHT,
-                    width: Math.round(
-                      (PASS_CARD_HEIGHT * NVIDIA_PASS_WIDTH) /
-                        NVIDIA_PASS_HEIGHT,
-                    ),
-                  }}
+                  sizes="(min-width: 1024px) 408px, 92vw"
+                  className="block w-full h-auto"
                 />
               </div>
-              <div className="min-w-0">
+              <div className="mt-3 px-1">
                 <p className="text-sm font-medium text-slate-100 leading-snug">
                   NVIDIA Developer Program
                 </p>
-                <p className="text-[11px] text-slate-500 mt-0.5">
+                <p className="text-[11px] text-slate-400 mt-0.5">
                   Developer Pass · Member since 03/26
                 </p>
               </div>

@@ -413,8 +413,8 @@ export const badges: Badge[] = [
     title: "NVIDIA Developer Program Pass",
     issuer: "NVIDIA",
     completed: "Member since 03/26",
-    image: "/badges/nvidia-developer-pass.png",
+    image: "/badges/nvidia-developer-pass-3.png",
     width: 1000,
-    height: 1505,
+    height: 661,
   },
 ];
