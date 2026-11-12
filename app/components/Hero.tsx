@@ -96,14 +96,26 @@ export default function Hero() {
           engineering.
         </p>
 
-        {/* Certification Badge */}
-        <div className="pb-6">
+        {/* Certification badge + what's next */}
+        <div className="flex flex-wrap items-center gap-2 pb-6">
           <Link
             href="/#certificates"
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#3e6274]/15 border border-[#3e6274]/40 text-xs md:text-sm text-slate-200 hover:bg-[#3e6274]/25 transition-colors"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
             DataCamp AI Engineer for Developers Associate · Nov 2026
+          </Link>
+
+          <Link
+            href="/next"
+            className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-900/80 border border-slate-800 text-xs md:text-sm text-slate-300 hover:text-white hover:border-[#3e6274]/50 transition-colors"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+            What&apos;s Next
+            <span className="text-slate-600">·</span>
+            <span className="text-slate-400 group-hover:text-slate-200 transition-colors">
+              Microsoft AI &amp; ML Eng Cert → Stanford CS221
+            </span>
           </Link>
         </div>
 
