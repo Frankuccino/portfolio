@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { books, type Book, type BookCategory } from "../data/books";
+import { books, coverUrl, type Book, type BookCategory } from "../data/books";
 
 type Filter = "all" | BookCategory;
 
@@ -52,6 +52,55 @@ function balanceShelves(visible: Book[], perShelf: number): Book[][] {
     cursor += size;
   }
   return shelves;
+}
+
+/**
+ * Front cover. Real Open Library art when we have a CoverID; the typographic
+ * treatment stays as the fallback for titles the repository has no cover for.
+ */
+function BookCover({ book, src }: { book: Book; src?: string }) {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <div
+      className="book-cover bg-gradient-to-br from-white/10 to-black/30"
+      style={{
+        width: COVER_WIDTH,
+        height: BOOK_HEIGHT,
+        backgroundColor: spineColor(book.title),
+      }}
+    >
+      {src && !failed ? (
+        // Deliberately a plain <img>: these are third-party hotlinks, so the
+        // request must come from the visitor's browser rather than being
+        // proxied through next/image's optimizer.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={`Cover of ${book.title}`}
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="book-cover-img"
+        />
+      ) : (
+        <div className="relative z-10 flex h-full flex-col justify-between p-3">
+          <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-white/70">
+            {book.category}
+          </p>
+          <div>
+            <p className="text-[13px] font-bold leading-tight text-white">
+              {book.title}
+            </p>
+            {book.author ? (
+              <p className="mt-1.5 text-[10px] leading-snug text-white/75">
+                {book.author}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function VirtualLibrary() {
@@ -127,6 +176,7 @@ export default function VirtualLibrary() {
               {shelf.map((book, index) => {
                 // Last two books on a shelf swing their cover the other way
                 const flip = index >= shelf.length - 2;
+                const src = coverUrl(book);
 
                 return (
                   <div
@@ -139,39 +189,26 @@ export default function VirtualLibrary() {
                       book.author ? ` by ${book.author}` : ""
                     } — ${book.category}`}
                   >
-                  {/* Spine — what the shelf shows */}
-                  <div
-                    className="book-spine bg-gradient-to-b from-white/10 to-black/25"
-                    style={{ backgroundColor: spineColor(book.title) }}
-                  >
-                    <span className="book-spine-title">{book.title}</span>
-                  </div>
-
-                  {/* Front cover — swings open on hover or focus */}
-                  <div
-                    className="book-cover bg-gradient-to-br from-white/10 to-black/30"
-                    style={{
-                      width: COVER_WIDTH,
-                      height: BOOK_HEIGHT,
-                      backgroundColor: spineColor(book.title),
-                    }}
-                  >
-                    <div className="relative z-10 flex h-full flex-col justify-between p-3">
-                      <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-white/70">
-                        {book.category}
-                      </p>
-                      <div>
-                        <p className="text-[13px] font-bold leading-tight text-white">
-                          {book.title}
-                        </p>
-                        {book.author ? (
-                          <p className="mt-1.5 text-[10px] leading-snug text-white/75">
-                            {book.author}
-                          </p>
-                        ) : null}
-                      </div>
+                    {/* Spine — what the shelf shows. The cover art sits behind
+                        a blur so the spine reads as a spine, not a crop. */}
+                    <div
+                      className="book-spine"
+                      style={{ backgroundColor: spineColor(book.title) }}
+                    >
+                      {src ? (
+                        <div
+                          className="book-spine-art"
+                          style={{ backgroundImage: `url("${src}")` }}
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      <span className="book-spine-title">
+                        {book.spineTitle ?? book.title}
+                      </span>
                     </div>
-                  </div>
+
+                    {/* Front cover — swings open on hover or focus */}
+                    <BookCover book={book} src={src} />
                   </div>
                 );
               })}
@@ -180,6 +217,19 @@ export default function VirtualLibrary() {
           </div>
         ))}
       </div>
+
+      <p className="mt-5 text-[10px] text-slate-600">
+        Cover art via the{" "}
+        <a
+          href="https://openlibrary.org/"
+          target="_blank"
+          rel="noreferrer"
+          className="underline decoration-slate-700 underline-offset-2 hover:text-slate-400"
+        >
+          Open Library Covers API
+        </a>
+        .
+      </p>
     </div>
   );
 }

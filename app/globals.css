@@ -70,6 +70,7 @@ section[id] {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   border-radius: 2px 4px 4px 2px;
   box-shadow:
     inset -2px 0 3px rgba(0, 0, 0, 0.35),
@@ -79,6 +80,18 @@ section[id] {
   transform-origin: right center;
 }
 
+/* Blurred cover art behind the spine title — gives each spine its book's
+   palette without letting the cover's own text bleed through */
+.book-spine-art {
+  position: absolute;
+  inset: -14px;
+  background-size: cover;
+  background-position: left center;
+  background-repeat: no-repeat;
+  filter: blur(8px) brightness(0.5) saturate(1.2);
+  opacity: 0.65;
+}
+
 .book-slot:hover .book-spine,
 .book-slot:focus-within .book-spine {
   transform: rotateY(-22deg);
@@ -86,17 +99,24 @@ section[id] {
 }
 
 .book-spine-title {
+  position: relative;
+  z-index: 1;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  white-space: nowrap;
+  /* Wrap into a second column rather than truncating — long titles stay
+     whole, the way a thick spine would set them */
+  white-space: normal;
   overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 86%;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.09em;
+  width: 40px;
+  max-height: 92%;
+  line-height: 1.5;
+  text-align: center;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .book-cover {
@@ -110,13 +130,27 @@ section[id] {
     0 24px 48px rgba(0, 0, 0, 0.6),
     inset 3px 0 0 rgba(0, 0, 0, 0.22);
   overflow: hidden;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Hidden until the book is hovered/focused, so a closed cover never
+     artefact along the shelf edge */
+  opacity: 0;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease;
   backface-visibility: hidden;
+}
+
+.book-cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .book-slot:hover .book-cover,
 .book-slot:focus-within .book-cover {
   transform: rotateY(0deg);
+  opacity: 1;
 }
 
 /* Books near the shelf's right edge open leftwards instead of overlapping
