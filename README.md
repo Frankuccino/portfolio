@@ -29,9 +29,11 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   ├── Navbar.tsx
 │   │   ├── Hero.tsx
 │   │   ├── About.tsx
+│   │   ├── VirtualLibrary.tsx
 │   │   ├── Skills.tsx
 │   │   ├── Projects.tsx
 │   │   ├── Certificates.tsx
+│   │   ├── FeaturedCertificateCard.tsx
 │   │   ├── CertificateCard.tsx
 │   │   ├── CertificateLightbox.tsx
 │   │   ├── BadgeCard.tsx
@@ -45,6 +47,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   └── HeroFocusCard.tsx
 │   ├── data/
 │   │   ├── portfolio.ts
+│   │   ├── books.ts
 │   │   └── roadmap.ts
 │   └── lib/
 │       ├── posts.ts
@@ -61,10 +64,10 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 ## Core Sections
 
 - `Hero` — name, role, certification badge, tech stack badges, resume modal.
-- `About` — engineering focus and applied AI engineering context.
+- `About` — engineering focus and applied AI engineering context, the NVIDIA Developer Pass, and a filterable virtual library of the books I own (`app/data/books.ts`).
 - `Skills` — grouped skill matrix (languages, frontend, backend, AI engineering, cloud, practices).
 - `Projects` — shipped systems with stack, links, and architectural highlights.
-- `Certificates` — DataCamp Associate certification, course certificates, digital badges and passes, and program memberships.
+- `Certificates` — two featured credentials (DataCamp AI associate, KodeGo full-stack bootcamp), course certificates, digital badges and passes, and program memberships.
 - `Blog` — latest posts preview; full archive at `/blog`.
 - `Contact` — email, LinkedIn, and GitHub channels.
 
