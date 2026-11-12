@@ -32,6 +32,9 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   ├── Skills.tsx
 │   │   ├── Projects.tsx
 │   │   ├── Certificates.tsx
+│   │   ├── CertificateCard.tsx
+│   │   ├── CertificateLightbox.tsx
+│   │   ├── BadgeCard.tsx
 │   │   ├── BlogSection.tsx
 │   │   ├── BlogCard.tsx
 │   │   ├── Contact.tsx
@@ -50,6 +53,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   └── posts/
 ├── public/
 │   ├── certificates/            # certificate artwork for the showcase
+│   ├── badges/                  # digital badges and passes
 │   └── Resume_Frank_Angelo_Malubag.pdf
 └── README.md
 ```
@@ -60,7 +64,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 - `About` — engineering focus and applied AI engineering context.
 - `Skills` — grouped skill matrix (languages, frontend, backend, AI engineering, cloud, practices).
 - `Projects` — shipped systems with stack, links, and architectural highlights.
-- `Certificates` — DataCamp Associate certification, course certificates, and program memberships.
+- `Certificates` — DataCamp Associate certification, course certificates, digital badges and passes, and program memberships.
 - `Blog` — latest posts preview; full archive at `/blog`.
 - `Contact` — email, LinkedIn, and GitHub channels.
 
