@@ -1,4 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
+import VirtualLibrary from "./VirtualLibrary";
+
+const NVIDIA_PASS_WIDTH = 1000;
+const NVIDIA_PASS_HEIGHT = 1505;
+const PASS_THUMB_HEIGHT = 80;
 
 export default function About() {
   return (
@@ -6,22 +12,28 @@ export default function About() {
       id="about"
       className="min-h-screen w-full flex items-center px-8 md:px-20 py-24 bg-slate-950 text-white relative overflow-hidden"
     >
-      <div className="mx-auto w-full max-w-6xl flex justify-end">
-        <div className="w-full max-w-2xl space-y-6 text-right">
+      <div className="mx-auto w-full max-w-6xl grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+        {/* Left — the library */}
+        <div className="lg:col-span-3 order-2 lg:order-1">
+          <VirtualLibrary />
+        </div>
+
+        {/* Right — about text and the developer pass */}
+        <div className="lg:col-span-2 order-1 lg:order-2 lg:text-right space-y-5">
           <h2 className="text-xs font-mono uppercase tracking-widest text-slate-500">
             {"// 01. About Me"}
           </h2>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-slate-100">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-100 leading-tight">
             Self-taught, high-stake software engineering.
           </h1>
-          <p className="text-base md:text-lg text-slate-400 leading-relaxed font-normal">
+          <p className="text-sm md:text-base text-slate-400 leading-relaxed">
             I specialize in systems architecture, distributed backends, and
             building resilient tooling with technologies like Rust, Go, and
             modern cloud stacks. I approach engineering with a focus on deep
             conceptual clarity, production readiness, and high-performance
             patterns.
           </p>
-          <p className="text-base md:text-lg text-slate-400 leading-relaxed font-normal">
+          <p className="text-sm md:text-base text-slate-400 leading-relaxed">
             My current focus is applied AI engineering: LLM application
             development, prompt engineering, embeddings, semantic search, RAG,
             and tool-calling agents. I hold the DataCamp{" "}
@@ -32,7 +44,43 @@ export default function About() {
             model&apos;s output is treated as untrusted input.
           </p>
 
-          <div className="pt-4">
+          {/* NVIDIA Developer Pass */}
+          <a
+            href="https://developer.nvidia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-3 text-left transition-all hover:border-[#3e6274]/50"
+          >
+            <div className="h-20 shrink-0 rounded-lg overflow-hidden border border-slate-800 bg-slate-950/60">
+              <Image
+                src="/badges/nvidia-developer-pass.png"
+                alt="NVIDIA Developer Program pass"
+                width={NVIDIA_PASS_WIDTH}
+                height={NVIDIA_PASS_HEIGHT}
+                sizes="80px"
+                className="block object-contain"
+                style={{
+                  height: PASS_THUMB_HEIGHT,
+                  width: Math.round(
+                    (PASS_THUMB_HEIGHT * NVIDIA_PASS_WIDTH) / NVIDIA_PASS_HEIGHT,
+                  ),
+                }}
+              />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-slate-100 leading-snug">
+                NVIDIA Developer Program
+              </p>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Developer Pass · Member since 03/26
+              </p>
+              <p className="text-[10px] text-[#3e6274] mt-0.5">
+                developer.nvidia.com ↗
+              </p>
+            </div>
+          </a>
+
+          <div className="pt-1 lg:pt-3">
             <Link
               href="/#skills"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 text-sm font-medium select-none transition-all hover:border-[#3e6274]/50 hover:text-white"
