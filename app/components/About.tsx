@@ -16,6 +16,18 @@ export default function About() {
         {/* Left — the library */}
         <div className="lg:col-span-3 order-2 lg:order-1">
           <VirtualLibrary />
+
+          <div className="mt-6 max-w-md border-l-2 border-[#3e6274]/40 pl-4">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+              {"// Continuous Learning"}
+            </p>
+            <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+              I invest heavily in myself. This is my current library —{" "}
+              <span className="text-slate-400">
+                the books I have read, reread, and keep within arm&apos;s reach.
+              </span>
+            </p>
+          </div>
         </div>
 
         {/* Right — about text and the developer pass */}
