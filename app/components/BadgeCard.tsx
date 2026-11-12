@@ -4,7 +4,7 @@ import Image from "next/image";
 import type { Badge } from "../data/portfolio";
 import type { LightboxImage } from "./CertificateCard";
 
-const THUMB_HEIGHT = 144;
+const THUMB_HEIGHT = 80;
 
 type BadgeCardProps = {
   badge: Badge;
@@ -23,15 +23,15 @@ export default function BadgeCard({ badge, onOpen }: BadgeCardProps) {
           height: badge.height,
         })
       }
-      className="group relative rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md overflow-hidden cursor-pointer transition-all hover:border-[#3e6274]/50 hover:shadow-[0_0_24px_rgba(62,98,116,0.18)] p-3"
+      className="group flex items-center gap-3 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md p-3 cursor-pointer transition-all hover:border-[#3e6274]/50 hover:shadow-[0_0_24px_rgba(62,98,116,0.18)]"
     >
-      <div className="h-36 rounded-lg border border-slate-800 bg-slate-950/60 grid place-items-center overflow-hidden">
+      <div className="h-20 shrink-0 rounded-lg overflow-hidden border border-slate-800 bg-slate-950/60">
         <Image
           src={badge.image}
           alt={badge.title}
           width={badge.width}
           height={badge.height}
-          sizes="(max-width: 640px) 50vw, 25vw"
+          sizes="80px"
           className="block object-contain transition-transform duration-300 group-hover:scale-[1.03]"
           style={{
             height: THUMB_HEIGHT,
@@ -40,7 +40,7 @@ export default function BadgeCard({ badge, onOpen }: BadgeCardProps) {
         />
       </div>
 
-      <div className="mt-3">
+      <div className="min-w-0">
         <p className="text-sm font-medium text-slate-100 leading-snug">
           {badge.title}
         </p>
@@ -48,7 +48,7 @@ export default function BadgeCard({ badge, onOpen }: BadgeCardProps) {
           {badge.issuer} · {badge.completed}
         </p>
         {badge.url ? (
-          <p className="text-[10px] font-medium text-[#3e6274] mt-1 group-hover:text-slate-300 transition-colors">
+          <p className="text-[10px] font-medium text-[#3e6274] mt-0.5 group-hover:text-slate-300 transition-colors">
             Verify credential →
           </p>
         ) : null}

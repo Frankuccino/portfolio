@@ -26,9 +26,7 @@ export type Certificate = {
   completed: string;
   hours: number;
   credentialId?: string;
-  featured?: boolean;
   image?: string;
-  images?: { src: string; label: string }[];
 };
 
 export const skillGroups: SkillGroup[] = [
@@ -229,31 +227,73 @@ export const projects: Project[] = [
   },
 ];
 
-export const featuredCertification: Certificate & { image: string } = {
-  id: "aied-associate",
-  title: "AI Engineer for Developers Associate",
-  issuer: "DataCamp",
-  completed: "Nov 2026",
-  hours: 29,
-  credentialId: "AIEDA0015784021049",
-  featured: true,
-  image: "/certificates/aied-associate.jpg",
-  images: [
-    { src: "/certificates/aied-associate.jpg", label: "Credential" },
-    { src: "/certificates/aied-track.jpg", label: "Track Certificate" },
-  ],
+// Total coursework for the AI Engineer for Developers Associate certification:
+// the preparation track, its exercises, and both certification exams.
+export const totalCourseworkHours = 63;
+
+export type FeaturedCertificate = {
+  id: string;
+  badge: string;
+  title: string;
+  issuer: string;
+  completed: string;
+  description: string;
+  images: { src: string; label: string; width: number; height: number }[];
+  stats: { label: string; value: string; mono?: boolean }[];
 };
 
-export const certificates: Certificate[] = [
+export const featuredCertificates: FeaturedCertificate[] = [
+  {
+    id: "aied-associate",
+    badge: "Associate Certification",
+    title: "AI Engineer for Developers Associate",
+    issuer: "DataCamp",
+    completed: "Nov 2026",
+    description:
+      "Covers LLM application development, prompt engineering, RAG, and vector databases — the applied end of the AI engineering workflow.",
+    images: [
+      {
+        src: "/certificates/aied-associate.jpg",
+        label: "Credential",
+        width: 1400,
+        height: 806,
+      },
+      {
+        src: "/certificates/aied-track.jpg",
+        label: "Track Certificate",
+        width: 1400,
+        height: 806,
+      },
+    ],
+    stats: [
+      { label: "Total Coursework", value: `~${totalCourseworkHours} hrs` },
+      { label: "Credential ID", value: "AIEDA0015784021049", mono: true },
+    ],
+  },
   {
     id: "kodego-fullstack",
+    badge: "Foundational Bootcamp",
     title: "Full Stack Web Development Bootcamp",
     issuer: "KodeGo",
     completed: "Aug 14, 2023",
-    hours: 0,
-    credentialId: "KG-01302023-002#",
-    image: "/certificates/kodego.jpg",
+    description:
+      "A 4-month intensive on full-stack development with Node.js and MongoDB — where I designed, built, and delivered an HR management system to a municipality.",
+    images: [
+      {
+        src: "/certificates/kodego.jpg",
+        label: "Certificate",
+        width: 1280,
+        height: 720,
+      },
+    ],
+    stats: [
+      { label: "Bootcamp Length", value: "4 months" },
+      { label: "Credential ID", value: "KG-01302023-002#", mono: true },
+    ],
   },
+];
+
+export const certificates: Certificate[] = [
   {
     id: "openai-api",
     title: "Working with the OpenAI API",
@@ -378,7 +418,3 @@ export const badges: Badge[] = [
     height: 1505,
   },
 ];
-
-// Total coursework for the AI Engineer for Developers Associate certification:
-// the preparation track, its exercises, and both certification exams.
-export const totalCourseworkHours = 63;
