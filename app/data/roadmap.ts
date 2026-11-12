@@ -7,9 +7,27 @@ export type RoadmapStep = {
   commitment: string;
   summary: string;
   outcomes: string[];
+  url?: string;
 };
 
 export const roadmapSteps: RoadmapStep[] = [
+  {
+    id: "langchain-academy",
+    order: "Now",
+    title: "LangChain Academy",
+    issuer: "LangChain",
+    credentialType: "Self-paced courses",
+    commitment: "Self-paced · free · enrolled",
+    summary:
+      "The applied layer, finished alongside real work: agents across the full development lifecycle — build, test, deploy, monitor. LangChain and LangGraph for orchestration, LangSmith for observability and evaluation, and the LangChain Certified Agent Engineer exam as the capstone.",
+    outcomes: [
+      "Build agents with LangChain and LangGraph",
+      "Observe, evaluate, and debug with LangSmith",
+      "Deploy and monitor agents against production traces",
+      "Sit the LangChain Certified Agent Engineer (LCAE) exam",
+    ],
+    url: "https://academy.langchain.com/enrollments",
+  },
   {
     id: "microsoft-ai-ml-engineering",
     order: "Next",

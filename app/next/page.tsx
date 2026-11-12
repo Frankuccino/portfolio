@@ -2,10 +2,18 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { lookingFor, roadmapSteps } from "../data/roadmap";
 
+const hostOf = (url: string) => {
+  try {
+    return new URL(url).host.replace("www.", "");
+  } catch {
+    return url;
+  }
+};
+
 export const metadata: Metadata = {
   title: "What's Next — Frank Angelo Malubag",
   description:
-    "Where I'm headed: the Microsoft AI & ML Engineering Professional Certificate, then Stanford CS221 — building the foundation to lead in AI engineering.",
+    "Where I'm headed: LangChain Academy now, then the Microsoft AI & ML Engineering Professional Certificate, then Stanford CS221 — building the depth to lead in AI engineering.",
 };
 
 export default function NextPage() {
@@ -29,8 +37,8 @@ export default function NextPage() {
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering — the kind that lets me design production systems and set
-            technical direction, not just implement against an API. Two steps are
-            planned, in this order.
+            technical direction, not just implement against an API. Three steps, in
+            this order.
           </p>
         </header>
 
@@ -46,7 +54,22 @@ export default function NextPage() {
                     <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
                       {step.order}
                     </span>
-                    <span className="text-[11px] text-slate-500">{step.issuer}</span>
+                    <span className="text-[11px] text-slate-500">
+                      {step.issuer}
+                      {step.url ? (
+                        <>
+                          {" · "}
+                          <a
+                            href={step.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#3e6274] hover:text-slate-300 transition-colors"
+                          >
+                            {hostOf(step.url)} ↗
+                          </a>
+                        </>
+                      ) : null}
+                    </span>
                   </div>
                   <h2 className="text-lg md:text-xl font-semibold text-white leading-snug">
                     {step.title}
@@ -77,11 +100,12 @@ export default function NextPage() {
             {"//"} Why this order
           </h2>
           <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-            The Microsoft certificate builds applied breadth on top of what I already
-            ship — infrastructure, algorithms, the Azure ML lifecycle. CS221 then
-            supplies the mathematical foundations that make that applied work durable.
-            Breadth first, so the foundations have something to attach to; depth
-            second, so the breadth doesn&apos;t stay shallow.
+            LangChain Academy is the applied layer I can finish alongside real work —
+            agents across the full lifecycle, from build through deploy and monitor.
+            The Microsoft certificate then builds applied breadth on top of what I
+            already ship: infrastructure, algorithms, the Azure ML lifecycle. CS221
+            supplies the mathematical foundations that make all of it durable.
+            Applied first, breadth second, depth last.
           </p>
         </section>
 
