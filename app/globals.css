@@ -126,6 +126,10 @@ section[id] {
   transform-origin: left center;
   transform: rotateY(-95deg);
   border-radius: 3px 8px 8px 3px;
+  /* The open cover overlays the next spines; letting the pointer pass
+     through means sweeping left-to-right cascades cover-to-cover the same
+     way sweeping right-to-left does */
+  pointer-events: none;
   box-shadow:
     0 24px 48px rgba(0, 0, 0, 0.6),
     inset 3px 0 0 rgba(0, 0, 0, 0.22);
