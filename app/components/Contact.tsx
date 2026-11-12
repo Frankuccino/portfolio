@@ -23,8 +23,17 @@ const channels = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="px-4 sm:px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section
+      id="contact"
+      className="relative px-4 sm:px-6 py-24 min-h-screen flex items-center overflow-hidden"
+    >
+      {/* Soft glow anchoring the section */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[42rem] rounded-full bg-[#3e6274]/10 blur-[120px]"
+      />
+
+      <div className="relative z-10 mx-auto max-w-6xl w-full">
         <SectionHeading
           index="06."
           title="Contact"
@@ -38,12 +47,17 @@ export default function Contact() {
               href={channel.href}
               target={channel.href.startsWith("http") ? "_blank" : undefined}
               rel="noopener noreferrer"
-              className="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors group"
+              className="group relative p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 hover:-translate-y-0.5 transition-all"
             >
-              <p className="text-[11px] uppercase tracking-wider text-slate-500">
-                {channel.label}
-              </p>
-              <p className="text-sm font-medium text-slate-100 mt-1.5 group-hover:text-white transition-colors">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[11px] uppercase tracking-wider text-slate-500">
+                  {channel.label}
+                </p>
+                <span className="text-slate-600 group-hover:text-slate-300 group-hover:translate-x-0.5 transition-all">
+                  →
+                </span>
+              </div>
+              <p className="text-sm font-medium text-slate-100 mt-1.5 group-hover:text-white transition-colors break-all">
                 {channel.value}
               </p>
               <p className="text-[11px] text-slate-500 mt-1">{channel.note}</p>
