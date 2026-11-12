@@ -11,6 +11,8 @@ export type LightboxImage = {
   src: string;
   title: string;
   subtitle: string;
+  width?: number;
+  height?: number;
 };
 
 const CERT_WIDTH = 1400;
@@ -78,6 +80,11 @@ export default function CertificateCard({ cert, onOpen }: CertificateCardProps) 
         </p>
         {cert.hours > 0 ? (
           <p className="text-[11px] text-slate-400">{cert.hours} hrs</p>
+        ) : null}
+        {cert.credentialId ? (
+          <p className="text-[10px] font-mono text-slate-500">
+            {cert.credentialId}
+          </p>
         ) : null}
       </div>
 

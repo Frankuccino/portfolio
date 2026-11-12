@@ -5,8 +5,10 @@ import { useState } from "react";
 import SectionHeading from "./SectionHeading";
 import CertificateCard, { type LightboxImage } from "./CertificateCard";
 import CertificateLightbox from "./CertificateLightbox";
+import BadgeCard from "./BadgeCard";
 import {
   achievements,
+  badges,
   certificates,
   featuredCertification,
   totalCourseworkHours,
@@ -135,6 +137,13 @@ export default function Certificates() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
           {certificates.filter(hasImage).map((cert) => (
             <CertificateCard key={cert.id} cert={cert} onOpen={setActiveImage} />
+          ))}
+        </div>
+
+        {/* Digital badges & passes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+          {badges.map((badge) => (
+            <BadgeCard key={badge.id} badge={badge} onOpen={setActiveImage} />
           ))}
         </div>
 

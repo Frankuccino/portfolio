@@ -246,6 +246,15 @@ export const featuredCertification: Certificate & { image: string } = {
 
 export const certificates: Certificate[] = [
   {
+    id: "kodego-fullstack",
+    title: "Full Stack Web Development Bootcamp",
+    issuer: "KodeGo",
+    completed: "Aug 14, 2023",
+    hours: 0,
+    credentialId: "KG-01302023-002#",
+    image: "/certificates/kodego.jpg",
+  },
+  {
     id: "openai-api",
     title: "Working with the OpenAI API",
     issuer: "DataCamp",
@@ -335,12 +344,38 @@ export const achievements: Certificate[] = [
     completed: "Mar 2026 — Present",
     hours: 0,
   },
+];
+
+export type Badge = {
+  id: string;
+  title: string;
+  issuer: string;
+  completed: string;
+  image: string;
+  width: number;
+  height: number;
+  url?: string;
+};
+
+export const badges: Badge[] = [
   {
-    id: "kodego",
-    title: "Full Stack Web Development Bootcamp",
-    issuer: "KodeGo",
-    completed: "Aug 2023",
-    hours: 0,
+    id: "chainguard-ai-ml-guardian",
+    title: "AI/ML Guardian",
+    issuer: "Chainguard",
+    completed: "Mar 24, 2026",
+    image: "/badges/chainguard-ai-ml-guardian.png",
+    width: 800,
+    height: 800,
+    url: "https://www.credly.com/badges/11c412d1-3a90-49ba-9641-bf310c1ce1dc",
+  },
+  {
+    id: "nvidia-developer-pass",
+    title: "NVIDIA Developer Program Pass",
+    issuer: "NVIDIA",
+    completed: "Member since 03/26",
+    image: "/badges/nvidia-developer-pass.png",
+    width: 1000,
+    height: 1505,
   },
 ];
 

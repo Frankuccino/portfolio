@@ -42,15 +42,22 @@ export default function CertificateLightbox({
       />
 
       <div className="relative w-full max-w-5xl">
-        <Image
-          key={image.src}
-          src={image.src}
-          alt={image.title}
-          width={CERT_WIDTH}
-          height={CERT_HEIGHT}
-          sizes="(max-width: 1024px) 100vw, 1100px"
-          className="block w-full h-auto rounded-xl border border-slate-700 shadow-2xl"
-        />
+        <div className="flex justify-center">
+          <Image
+            key={image.src}
+            src={image.src}
+            alt={image.title}
+            width={image.width ?? CERT_WIDTH}
+            height={image.height ?? CERT_HEIGHT}
+            sizes="(max-width: 1024px) 100vw, 1100px"
+            className="block rounded-xl border border-slate-700 shadow-2xl"
+            style={
+              (image.height ?? CERT_HEIGHT) >= (image.width ?? CERT_WIDTH)
+                ? { height: "80vh", width: "auto" }
+                : { width: "100%", height: "auto" }
+            }
+          />
+        </div>
 
         <div className="mt-3 flex items-center justify-between gap-3">
           <div>
