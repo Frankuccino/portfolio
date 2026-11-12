@@ -209,3 +209,26 @@ section[id] {
     transition-duration: 0.01ms;
   }
 }
+
+/* ——— Footer ghost name backdrop ——— */
+
+.ghost-name {
+  font-size: clamp(2.5rem, 8.5vw, 9rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  /* The line box is taller than the glyphs, so nothing clips */
+  padding: 0.06em 0;
+  color: transparent;
+  background: linear-gradient(
+    to top,
+    transparent 0%,
+    rgba(148, 163, 184, 0.22) 22%,
+    rgba(148, 163, 184, 0.3) 50%,
+    rgba(148, 163, 184, 0.16) 74%,
+    transparent 96%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}

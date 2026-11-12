@@ -8,8 +8,8 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-800/60 bg-slate-950/60">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <footer className="relative overflow-hidden border-t border-slate-800/60 bg-slate-950/60">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 pt-10 pb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <p className="text-sm font-semibold text-slate-200">
             Frank Angelo A. Malubag
@@ -32,7 +32,14 @@ export default function Footer() {
           ))}
         </div>
       </div>
-      <div className="border-t border-slate-800/40 py-4 text-center text-[11px] text-slate-600">
+
+      {/* Ghost name — a full-width watermark band between the links and the
+          copyright line, so nothing overlaps or clips it */}
+      <div aria-hidden="true" className="pointer-events-none select-none overflow-hidden">
+        <div className="ghost-name text-center">Frank Angelo A. Malubag</div>
+      </div>
+
+      <div className="relative z-10 border-t border-slate-800/40 bg-slate-950/85 backdrop-blur-sm py-4 text-center text-[11px] text-slate-500">
         <Link href="/" className="hover:text-slate-400 transition-colors">
           © {new Date().getFullYear()} Frank Angelo A. Malubag
         </Link>{" "}
