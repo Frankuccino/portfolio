@@ -12,14 +12,30 @@ export type RoadmapStep = {
 
 export const roadmapSteps: RoadmapStep[] = [
   {
-    id: "langchain-academy",
+    id: "microsoft-ai-ml-engineering",
     order: "Now",
+    title: "Microsoft AI & ML Engineering Professional Certificate",
+    issuer: "Microsoft · Coursera",
+    credentialType: "Professional Certificate",
+    commitment: "5 courses · ~6 months at 7 hrs/week",
+    summary:
+      "The breadth first: AI & ML infrastructure and data pipelines, core algorithms and techniques, intelligent troubleshooting agents, and the Azure ML lifecycle from data prep through deployment and monitoring. The foundation the applied layer sits on.",
+    outcomes: [
+      "Design AI & ML infrastructure, data pipelines, and deployment platforms",
+      "Apply supervised, unsupervised, reinforcement, and deep learning methods",
+      "Build troubleshooting agents that diagnose and resolve issues autonomously",
+      "Run the end-to-end ML lifecycle on Azure",
+    ],
+  },
+  {
+    id: "langchain-academy",
+    order: "Next",
     title: "LangChain Academy",
     issuer: "LangChain",
     credentialType: "Self-paced courses",
     commitment: "Self-paced · free · enrolled",
     summary:
-      "The applied layer, finished alongside real work: agents across the full development lifecycle — build, test, deploy, monitor. LangChain and LangGraph for orchestration, LangSmith for observability and evaluation, and the LangChain Certified Agent Engineer exam as the capstone.",
+      "The applied layer, built on that foundation: agents across the full development lifecycle — build, test, deploy, monitor. LangChain and LangGraph for orchestration, LangSmith for observability and evaluation, and the LangChain Certified Agent Engineer exam as the capstone.",
     outcomes: [
       "Build agents with LangChain and LangGraph",
       "Observe, evaluate, and debug with LangSmith",
@@ -27,22 +43,6 @@ export const roadmapSteps: RoadmapStep[] = [
       "Sit the LangChain Certified Agent Engineer (LCAE) exam",
     ],
     url: "https://academy.langchain.com/enrollments",
-  },
-  {
-    id: "microsoft-ai-ml-engineering",
-    order: "Next",
-    title: "Microsoft AI & ML Engineering Professional Certificate",
-    issuer: "Microsoft · Coursera",
-    credentialType: "Professional Certificate",
-    commitment: "5 courses · ~6 months at 7 hrs/week",
-    summary:
-      "Applied breadth on top of what I already ship: AI & ML infrastructure and data pipelines, core algorithms and techniques, intelligent troubleshooting agents, and the Azure ML lifecycle from data prep through deployment and monitoring.",
-    outcomes: [
-      "Design AI & ML infrastructure, data pipelines, and deployment platforms",
-      "Apply supervised, unsupervised, reinforcement, and deep learning methods",
-      "Build troubleshooting agents that diagnose and resolve issues autonomously",
-      "Run the end-to-end ML lifecycle on Azure",
-    ],
   },
   {
     id: "stanford-cs221",

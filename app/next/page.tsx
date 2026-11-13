@@ -13,7 +13,7 @@ const hostOf = (url: string) => {
 export const metadata: Metadata = {
   title: "What's Next — Frank Angelo Malubag",
   description:
-    "Where I'm headed: LangChain Academy now, then the Microsoft AI & ML Engineering Professional Certificate, then Stanford CS221 — building the depth to lead in AI engineering.",
+    "Where I'm headed: the Microsoft AI & ML Engineering Professional Certificate first, then LangChain Academy, then Stanford CS221 — building the depth to lead in AI engineering.",
 };
 
 export default function NextPage() {
@@ -100,12 +100,14 @@ export default function NextPage() {
             {"//"} Why this order
           </h2>
           <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-            LangChain Academy is the applied layer I can finish alongside real work —
+            The Microsoft certificate comes first because it is the breadth: AI &amp;
+            ML infrastructure, data pipelines, algorithms, and the ML lifecycle. The
+            LangChain Academy then builds the applied layer on that foundation —
             agents across the full lifecycle, from build through deploy and monitor.
-            The Microsoft certificate then builds applied breadth on top of what I
-            already ship: infrastructure, algorithms, the Azure ML lifecycle. CS221
-            supplies the mathematical foundations that make all of it durable.
-            Applied first, breadth second, depth last.
+            CS221 supplies the mathematical foundations that make all of it durable.
+            Breadth first, then the tool layer, then the mathematics — because the
+            applied layer is tool-specific and will age, while the breadth and the
+            mathematics compound.
           </p>
         </section>
 

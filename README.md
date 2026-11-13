@@ -96,7 +96,7 @@ Below the library, `ReadingPlan.tsx` renders the priority order for the AI engin
 
 ## What's Next
 
-`/next` is a forward-looking page: the Microsoft AI & ML Engineering Professional Certificate, then Stanford CS221. Content lives in `app/data/roadmap.ts`.
+`/next` is a forward-looking page: the Microsoft AI & ML Engineering Professional Certificate first, then LangChain Academy, then Stanford CS221. Content lives in `app/data/roadmap.ts`.
 
 ## Reading Plan
 
