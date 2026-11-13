@@ -4,6 +4,10 @@ export type SkillGroup = {
   title: string;
   note: string;
   icon: IconName;
+  /** What this group means in practice — shown instead of the one-line note */
+  summary: string;
+  /** Featured groups render as large panels above the supporting grid */
+  featured?: boolean;
   items: string[];
 };
 
@@ -31,35 +35,12 @@ export type Certificate = {
 
 export const skillGroups: SkillGroup[] = [
   {
-    title: "Languages",
-    note: "First tools I reach for.",
-    icon: "typescript",
-    items: ["JavaScript", "TypeScript", "Go", "Rust", "Python", "SQL"],
-  },
-  {
-    title: "Frontend",
-    note: "Interfaces that hold up.",
-    icon: "react",
-    items: ["React", "Next.js", "HTML", "CSS", "TailwindCSS"],
-  },
-  {
-    title: "Backend",
-    note: "APIs and data layers.",
-    icon: "expressjs",
-    items: [
-      "RESTful APIs",
-      "Node.js",
-      "Express.js",
-      "PostgreSQL",
-      "MongoDB",
-      "SQLx",
-      "Actix Web",
-    ],
-  },
-  {
     title: "AI Engineering",
     note: "LLM systems, end to end.",
     icon: "openai",
+    featured: true,
+    summary:
+      "The applied layer. I design the architecture around a foundation model — context, guardrails, routing, caching — and build the retrieval, evaluation, and monitoring that let an LLM feature survive production. Model output is treated as untrusted input throughout.",
     items: [
       "LLM Application Development",
       "Prompt Engineering",
@@ -74,6 +55,9 @@ export const skillGroups: SkillGroup[] = [
     title: "LLM Tools & Agents",
     note: "Making models useful.",
     icon: "langchain",
+    featured: true,
+    summary:
+      "The interface layer. I wire models into working software: tool calling with strict schemas, agent loops, orchestration, and the vector stores and protocols that connect them to the rest of the system.",
     items: [
       "OpenAI API",
       "Anthropic API",
@@ -90,9 +74,43 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
+    title: "Languages",
+    note: "First tools I reach for.",
+    icon: "typescript",
+    summary:
+      "TypeScript and Go for systems work, Rust where performance and safety are the budget, Python for data and ML. I pick the language that fits the problem rather than the one I know best.",
+    items: ["JavaScript", "TypeScript", "Go", "Rust", "Python", "SQL"],
+  },
+  {
+    title: "Frontend",
+    note: "Interfaces that hold up.",
+    icon: "react",
+    summary:
+      "React with TypeScript, styled with Tailwind. I build interfaces that stay maintainable as the product grows — clear component boundaries, state colocated with its consumer, and accessibility treated as a default.",
+    items: ["React", "Next.js", "HTML", "CSS", "TailwindCSS"],
+  },
+  {
+    title: "Backend",
+    note: "APIs and data layers.",
+    icon: "expressjs",
+    summary:
+      "RESTful APIs and data layers in Node, Express, and Go, with PostgreSQL as the default store. I design for the query patterns first, then the schema around them.",
+    items: [
+      "RESTful APIs",
+      "Node.js",
+      "Express.js",
+      "PostgreSQL",
+      "MongoDB",
+      "SQLx",
+      "Actix Web",
+    ],
+  },
+  {
     title: "Architecture & Cloud",
     note: "Systems that ship and scale.",
     icon: "cloudflare",
+    summary:
+      "Microservices and event-driven systems, containerized and deployed on AWS, Cloudflare, and K3s. Terraform and GitHub Actions keep the path from commit to production short.",
     items: [
       "Microservices",
       "Event-Driven Architecture",
@@ -112,12 +130,16 @@ export const skillGroups: SkillGroup[] = [
     title: "ML & Data",
     note: "Modeling and analysis.",
     icon: "pytorch",
+    summary:
+      "NumPy, Pandas, and PyTorch for analysis and modeling. Enough to read a paper, reproduce a result, and know when a model is the right tool — and when it is not.",
     items: ["NumPy", "Pandas", "PyTorch"],
   },
   {
     title: "Engineering Practices",
     note: "How I work.",
     icon: "git",
+    summary:
+      "Design principles, testing, CI/CD, security hardening, and observability. The habits that keep a codebase changeable after the first release, not just on the day it ships.",
     items: [
       "Software Design Principles",
       "Testing",
