@@ -111,11 +111,17 @@ export default function VirtualLibrary() {
   useEffect(() => {
     const node = containerRef.current;
     if (!node) return;
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) setShelfWidth(entry.contentRect.width);
-    });
+    // Measure directly rather than relying on the observer's initial callback,
+    // which is not guaranteed to fire promptly (or at all in some embedders).
+    const measure = () => setShelfWidth(node.clientWidth);
+    measure();
+    const observer = new ResizeObserver(measure);
     observer.observe(node);
-    return () => observer.disconnect();
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   const visible = useMemo(
