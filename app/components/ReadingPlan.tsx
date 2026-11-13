@@ -3,7 +3,7 @@ import {
   readingBookCount,
   readingCoreHours,
   readingTotalHours,
-  readingTiers,
+  readingStages,
 } from "../data/readingPlan";
 
 export default function ReadingPlan() {
@@ -19,8 +19,8 @@ export default function ReadingPlan() {
       </div>
 
       <p className="mt-2 max-w-2xl text-sm text-slate-400 leading-relaxed">
-        Priority order for the AI engineering stack. Tier 1 and Tier 2 are read cover to
-        cover; Tier 3 is a reference shelf, opened when a problem demands it.
+        Priority order for the AI engineering stack. Stage 1 and Stage 2 are read cover
+        cover; Stage 3 is a reference shelf, opened when a problem demands it.
       </p>
 
       <Link
@@ -32,20 +32,23 @@ export default function ReadingPlan() {
       </Link>
 
       <div className="mt-5 grid gap-3 md:grid-cols-3">
-        {readingTiers.map((tier) => (
+        {readingStages.map((stage) => (
           <div
-            key={tier.id}
+            key={stage.id}
             className="rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-4"
           >
             <h4 className="text-[11px] font-mono uppercase tracking-widest text-slate-400">
-              {tier.label}
+              {stage.label}
             </h4>
-            <p className="mt-1 text-[11px] leading-snug text-slate-500">
-              {tier.pages.toLocaleString()} pp · ~{tier.hours} h · {tier.note}
+            <p className="mt-1 text-[11px] leading-snug text-slate-400">
+              {stage.objective}
+            </p>
+            <p className="mt-1.5 text-[11px] leading-snug text-slate-500">
+              {stage.pages.toLocaleString()} pp · ~{stage.hours} h · {stage.note}
             </p>
 
             <ul className="mt-3 space-y-2.5">
-              {tier.books.map((book) => (
+              {stage.books.map((book) => (
                 <li key={book.order} className="flex items-baseline gap-2.5">
                   <span className="w-4 shrink-0 text-[10px] font-mono tabular-nums text-slate-600">
                     {String(book.order).padStart(2, "0")}

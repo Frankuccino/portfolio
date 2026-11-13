@@ -24,16 +24,18 @@ export type ReadingBook = {
   consolidationHours: number;
   /** Prompt to hand an LLM (with the notes you just took) to reinforce the book */
   reinforcementPrompt: string;
-  /** Why this book, in this tier */
+  /** Why this book, in this stage */
   why: string;
   focus: BookFocus[];
   handsOn: string[];
   stressTest: string[];
 };
 
-export type ReadingTier = {
+export type ReadingStage = {
   id: string;
   label: string;
+  /** What the reader walks out of the stage able to do */
+  objective: string;
   note: string;
   pages: number;
   hours: number;
@@ -42,16 +44,17 @@ export type ReadingTier = {
 
 /**
  * Priority order for the AI engineering stack, as written up in the vault note
- * `Readings/AI Engineering Reading Plan.md`. Tiers 1 and 2 are read cover to
- * cover; tier 3 is a reference shelf.
+ * `Readings/AI Engineering Reading Plan.md`. Stages 1 and 2 are read cover to
+ * cover; stage 3 is a reference shelf.
  *
  * Chapter lists verified against the publisher pages (O'Reilly, Packt, Google
  * Books) — not from memory.
  */
-export const readingTiers: ReadingTier[] = [
+export const readingStages: ReadingStage[] = [
   {
     id: "core",
-    label: "Tier 1 — Core",
+    label: "Stage 1 — AI Engineering Core",
+    objective: "Foundation models as components, and how to design around what they get wrong.",
     note: "Read fully, in order. The mental model.",
     pages: 1442,
     hours: 60,
@@ -171,8 +174,9 @@ export const readingTiers: ReadingTier[] = [
   },
   {
     id: "production",
-    label: "Tier 2 — Production & Architecture",
-    note: "Read fully, after Tier 1.",
+    label: "Stage 2 — Production & Architecture",
+    objective: "Move from a working prototype to a system that runs in production.",
+    note: "Read fully, after Stage 1.",
     pages: 797,
     hours: 34,
     books: [
@@ -188,11 +192,11 @@ export const readingTiers: ReadingTier[] = [
         reinforcementPrompt: "You are an LLMOps reviewer for my read of Abi Aryan's LLMOps. Context I just learned: <paste your notes on the four goals, LLM-based application monitoring, data engineering, API-first deployment, evaluation, and governance>. Question me one at a time — start with the four goals and which is hardest for LLMs, then why traditional MLOps metrics fail, then offline versus online evaluation, then what governance covers beyond monitoring. If I stall, explain and give a production example, then re-ask differently. End by having me write a rollback plan for a failing LLM feature from memory.",
         why: "The operations layer: what actually breaks when an LLM goes into production, and how to keep it running. Short, dense, and directly applicable.",
         focus: [
-          { chapter: "1. Introduction to Large Language Models", why: "Background. Skim if you have already read Tier 1.", priority: "skim" },
+          { chapter: "1. Introduction to Large Language Models", why: "Background. Skim if you have already read Stage 1.", priority: "skim" },
           { chapter: "2. Introduction to LLMOps", why: "The four goals — reliability, scalability, robustness, security — and the maturity model.", priority: "focus" },
           { chapter: "3. LLM-Based Applications", why: "Monitoring application performance and what you can actually control.", priority: "focus" },
           { chapter: "4. Data Engineering for LLMs", why: "The data path for production LLMs: collection, cleaning, and storage.", priority: "focus" },
-          { chapter: "5. Model Domain Adaptation for LLM-Based Applications", why: "Prompting, RAG, and fine-tuning as adaptation strategies. Skim after Tier 1.", priority: "skim" },
+          { chapter: "5. Model Domain Adaptation for LLM-Based Applications", why: "Prompting, RAG, and fine-tuning as adaptation strategies. Skim after Stage 1.", priority: "skim" },
           { chapter: "6. API-First LLM Deployment", why: "The deployment pattern that most teams start with, and its limits.", priority: "focus" },
           { chapter: "7. Evaluation for LLMs", why: "Offline evaluation, guardrails, and the evaluation pipeline.", priority: "focus" },
           { chapter: "8. Governance: Monitoring, Privacy, and Security", why: "The part most LLM apps skip: audits, privacy, and threat models.", priority: "focus" },
@@ -289,7 +293,8 @@ export const readingTiers: ReadingTier[] = [
   },
   {
     id: "reference",
-    label: "Tier 3 — Craft & Reference",
+    label: "Stage 3 — Craft & Reference",
+    objective: "Sharpen the craft on demand, when a problem asks for it.",
     note: "Reference shelf. Read on demand.",
     pages: 1707,
     hours: 72,
@@ -431,23 +436,23 @@ export const readingTiers: ReadingTier[] = [
   },
 ];
 
-export const readingBookCount = readingTiers.reduce(
-  (total, tier) => total + tier.books.length,
+export const readingBookCount = readingStages.reduce(
+  (total, stage) => total + stage.books.length,
   0,
 );
 
-export const readingTotalHours = readingTiers.reduce(
-  (total, tier) => total + tier.hours,
+export const readingTotalHours = readingStages.reduce(
+  (total, stage) => total + stage.hours,
   0,
 );
 
-/** Tier 1 + 2, read cover to cover — the realistic reading load. */
-export const readingCoreHours = readingTiers
-  .filter((tier) => tier.id !== "reference")
-  .reduce((total, tier) => total + tier.hours, 0);
+/** Stage 1 + 2, read cover to cover — the realistic reading load. */
+export const readingCoreHours = readingStages
+  .filter((stage) => stage.id !== "reference")
+  .reduce((total, stage) => total + stage.hours, 0);
 
-export const readingTotalPages = readingTiers.reduce(
-  (total, tier) => total + tier.pages,
+export const readingTotalPages = readingStages.reduce(
+  (total, stage) => total + stage.pages,
   0,
 );
 
@@ -480,39 +485,39 @@ export const stressTestProtocol: StressTestStep[] = [
   },
 ];
 
-export type TierStressTest = {
-  tier: string;
+export type StageStressTest = {
+  stage: string;
   body: string;
 };
 
-/** The capstone that closes each tier: a synthetic build that exercises the whole tier. */
-export const tierStressTests: TierStressTest[] = [
+/** The capstone that closes each stage: a synthetic build that exercises the whole stage. */
+export const stageStressTests: StageStressTest[] = [
   {
-    tier: "Tier 1",
+    stage: "Stage 1",
     body: "Design an ML system end to end on paper — data, features, model, deployment, monitoring — then build the evaluation harness for it.",
   },
   {
-    tier: "Tier 2",
-    body: "Ship a model behind an API with monitoring, offline evaluation, and a rollback path. The tier is done when it survives a week of traffic.",
+    stage: "Stage 2",
+    body: "Ship a model behind an API with monitoring, offline evaluation, and a rollback path. The stage is done when it survives a week of traffic.",
   },
   {
-    tier: "Tier 3",
+    stage: "Stage 3",
     body: "Refactor one Python service to the patterns in the book, and profile one hot path until the bottleneck moves.",
   },
 ];
 
 /**
  * The consolidation model behind `consolidationHours`:
- *   30 min of recall per focus chapter + 1 h of LLM reinforcement + 2 h tier capstone.
+ *   30 min of recall per focus chapter + 1 h of LLM reinforcement + 2 h stage capstone.
  */
 export const RECALL_MINUTES_PER_FOCUS_CHAPTER = 30;
 export const LLM_REINFORCEMENT_HOURS = 1;
-export const TIER_CAPSTONE_HOURS = 2;
+export const STAGE_CAPSTONE_HOURS = 2;
 
 /** Total consolidation time across the whole plan. */
-export const readingConsolidationHours = readingTiers.reduce(
-  (total, tier) =>
-    total + tier.books.reduce((sum, book) => sum + book.consolidationHours, 0),
+export const readingConsolidationHours = readingStages.reduce(
+  (total, stage) =>
+    total + stage.books.reduce((sum, book) => sum + book.consolidationHours, 0),
   0,
 );
 
@@ -522,3 +527,108 @@ export const readingTotalCommitmentHours = readingTotalHours + readingConsolidat
 /** Days to finish a book at its minimum daily commitment. */
 export const daysToFinish = (book: ReadingBook) =>
   Math.ceil((book.hours * 60) / book.dailyCommitment);
+
+/* ------------------------------------------------------------------ *
+ * Why these books, and how to read them
+ *
+ * The owner plans against this, so it lives on the site. The fuller
+ * argument — including the neuroscience and its references — is in the
+ * vault note `Readings/How to Read These Books.md`.
+ * ------------------------------------------------------------------ */
+
+export type ReadingRationale = {
+  title: string;
+  body: string;
+};
+
+/** The case for the list, against stopping at the certificate layer. */
+export const readingRationale: ReadingRationale[] = [
+  {
+    title: "Completion is a rate. Depth is a stock.",
+    body: "A certificate is built to be finished: short lessons, guided labs, known answers. A book is the author's full argument, including the parts that do not fit in a lesson — why the happy path fails, what it costs, when not to use it.",
+  },
+  {
+    title: "The field moves faster than curricula.",
+    body: "A course from 2024 teaches 2024's tooling. The load-bearing ideas here — evaluation, the data lifecycle, architecture, cost — move far more slowly than the SDKs.",
+  },
+  {
+    title: "Certificates teach the vocabulary. Books teach the judgement.",
+    body: "The hard part of AI engineering is not calling a model; it is deciding what to build, how to know whether it works, and what to do when it drifts. That is judgement, built from depth.",
+  },
+];
+
+/** The misuse risk: a book is a fountain, not a faucet. */
+export const readingMisuse =
+  "A book is a fountain: the water is there whether you drink or not. Passive reading, highlighting, re-reading, and binge-reading all produce the memory of having read rather than the ability to use it. The difference between a reader who keeps the ideas and one who keeps only the memory is not talent — it is whether the reading demanded something of them.";
+
+/** The mechanisms the protocol is built on. */
+export const readingMechanisms: ReadingRationale[] = [
+  {
+    title: "Retrieval practice",
+    body: "Recalling information strengthens it more than restudying it. Retrieval is a memory modifier, not a read-out.",
+  },
+  {
+    title: "Spacing",
+    body: "A review at the edge of forgetting reconsolidates the trace, stronger than before.",
+  },
+  {
+    title: "Interleaving",
+    body: "Mixing topics forces you to choose the right strategy, not just execute a known one.",
+  },
+  {
+    title: "Desirable difficulties",
+    body: "Conditions that feel harder in the moment — retrieval, spacing, interleaving — produce the durable learning. If it feels easy, it is probably not sticking.",
+  },
+];
+
+export type ReadingMethodStep = {
+  step: string;
+  title: string;
+  body: string;
+};
+
+/** The read protocol, one chapter at a time. */
+export const readingMethod: ReadingMethodStep[] = [
+  {
+    step: "01",
+    title: "Preview",
+    body: "Headings, summary, figures. Write one question the chapter should answer. Reading with a question is reading with a destination.",
+  },
+  {
+    step: "02",
+    title: "Read actively",
+    body: "Pen in hand, not highlighter. The claim in your own words, the evidence, what would make it false. Sketch the diagram — a second retrieval route.",
+  },
+  {
+    step: "03",
+    title: "Retrieve",
+    body: "Close the book. Write the chapter's argument from memory: what it was about, the key claims, the evidence, what is missing. This feels like wasted time. It is the step that does the work.",
+  },
+  {
+    step: "04",
+    title: "Space the review",
+    body: "Return to the recall note at 24 hours, 1 week, and 1 month. Each review is a retrieval, not a re-read.",
+  },
+  {
+    step: "05",
+    title: "Apply it",
+    body: "Build the smallest thing that uses the idea, or teach it. Knowledge that is used transfers; knowledge that is not used decays.",
+  },
+  {
+    step: "06",
+    title: "Sleep on it",
+    body: "Consolidation happens overnight. Trading sleep for reading borrows from the retention the reading depends on.",
+  },
+];
+
+/** The standard: tangible learning. */
+export const readingSessionRule =
+  "One session = one chapter = one artifact. If a session produced nothing you can point to — a recall note, a sketch, a piece of code — it did not happen.";
+
+export const readingGuardrails: string[] = [
+  "No highlighting as a substitute for retrieval.",
+  "No re-reading before attempting recall.",
+  "No reading without a purpose.",
+  "No massed binge-reading.",
+  "No reading without application.",
+];

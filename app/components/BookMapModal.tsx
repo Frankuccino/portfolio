@@ -6,7 +6,7 @@ import {
   daysToFinish,
   LLM_REINFORCEMENT_HOURS,
   RECALL_MINUTES_PER_FOCUS_CHAPTER,
-  TIER_CAPSTONE_HOURS,
+  STAGE_CAPSTONE_HOURS,
   type ReadingBook,
 } from "../data/readingPlan";
 import PromptBlock from "./PromptBlock";
@@ -21,7 +21,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 type Props = {
   book: ReadingBook | null;
-  tierLabel: string;
+  stageLabel: string;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
@@ -31,7 +31,7 @@ type Props = {
 
 export default function BookMapModal({
   book,
-  tierLabel,
+  stageLabel,
   onClose,
   onPrev,
   onNext,
@@ -121,7 +121,7 @@ export default function BookMapModal({
         >
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="text-xs font-mono uppercase tracking-widest text-slate-500">
-              {tierLabel}
+              {stageLabel}
             </span>
             <span className="text-[11px] text-slate-400">{book.author}</span>
             <span className="ml-auto text-[11px] text-slate-500 tabular-nums">
@@ -182,7 +182,7 @@ export default function BookMapModal({
               </li>
               <li className="flex gap-2 text-[11px] text-slate-400">
                 <span className="text-[#3e6274] shrink-0">▸</span>
-                <span>Tier capstone: {TIER_CAPSTONE_HOURS} h</span>
+                <span>Stage capstone: {STAGE_CAPSTONE_HOURS} h</span>
               </li>
             </ul>
           </div>

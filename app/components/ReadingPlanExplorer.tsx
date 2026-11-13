@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { readingTiers, daysToFinish } from "../data/readingPlan";
+import { readingStages, daysToFinish } from "../data/readingPlan";
 import BookMapModal from "./BookMapModal";
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -9,19 +9,19 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export default function ReadingPlanExplorer() {
   const [selected, setSelected] = useState<number | null>(null);
 
-  // Flattened so prev/next walk the whole plan, not just the open tier.
-  const all = readingTiers.flatMap((tier) => tier.books);
+  // Flattened so prev/next walk the whole plan, not just the open stage.
+  const all = readingStages.flatMap((stage) => stage.books);
   const index = selected === null ? -1 : all.findIndex((book) => book.order === selected);
   const book = index >= 0 ? all[index] : null;
-  const tier = book
-    ? readingTiers.find((entry) => entry.books.some((b) => b.order === book.order))
+  const stage = book
+    ? readingStages.find((entry) => entry.books.some((b) => b.order === book.order))
     : null;
 
   return (
     <>
-      {readingTiers.map((entry) => (
+      {readingStages.map((entry) => (
         <section key={entry.id} id={entry.id} className="mb-12">
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-slate-800/60 pb-3 mb-5">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-slate-800/60 pb-3 mb-3">
             <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
               {entry.label}
             </h2>
@@ -30,6 +30,9 @@ export default function ReadingPlanExplorer() {
             </span>
             <span className="text-[11px] text-slate-500">{entry.note}</span>
           </div>
+          <p className="mb-5 max-w-3xl text-xs leading-relaxed text-slate-400">
+            {entry.objective}
+          </p>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {entry.books.map((item) => (
@@ -75,7 +78,7 @@ export default function ReadingPlanExplorer() {
 
       <BookMapModal
         book={book}
-        tierLabel={tier?.label ?? ""}
+        stageLabel={stage?.label ?? ""}
         onClose={() => setSelected(null)}
         onPrev={() => setSelected(all[index - 1].order)}
         onNext={() => setSelected(all[index + 1].order)}

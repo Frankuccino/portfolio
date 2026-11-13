@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import ReadingPlanExplorer from "../components/ReadingPlanExplorer";
+import ReadingRationale from "../components/ReadingRationale";
 import {
   readingBookCount,
   readingCoreHours,
@@ -8,13 +9,13 @@ import {
   readingTotalCommitmentHours,
   readingTotalHours,
   stressTestProtocol,
-  tierStressTests,
+  stageStressTests,
 } from "../data/readingPlan";
 
 export const metadata: Metadata = {
   title: "Reading Plan — Frank Angelo Malubag",
   description:
-    "The priority order for my AI engineering reading: three tiers, nine books. Open any book for its chapter focus, hands-on work, and the closed-book stress test.",
+    "The priority order for my AI engineering reading: three stages, nine books. Open any book for its chapter focus, hands-on work, and the closed-book stress test.",
 };
 
 export default function ReadingPage() {
@@ -46,6 +47,8 @@ export default function ReadingPage() {
             {readingTotalCommitmentHours} h total · core path ~{readingCoreHours} h
           </p>
         </header>
+
+        <ReadingRationale />
 
         <ReadingPlanExplorer />
 
@@ -79,13 +82,13 @@ export default function ReadingPage() {
 
           <div className="p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md">
             <h3 className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-3">
-              Tier stress tests
+              Stage stress tests
             </h3>
             <ul className="space-y-2.5">
-              {tierStressTests.map((item) => (
-                <li key={item.tier} className="flex gap-2.5">
+              {stageStressTests.map((item) => (
+                <li key={item.stage} className="flex gap-2.5">
                   <span className="shrink-0 text-[11px] font-mono text-slate-300 w-14">
-                    {item.tier}
+                    {item.stage}
                   </span>
                   <span className="text-xs text-slate-400 leading-relaxed">
                     {item.body}
