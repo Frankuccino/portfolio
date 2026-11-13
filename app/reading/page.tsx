@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: "Reading Plan — Frank Angelo Malubag",
   description:
-    "The priority order for my AI engineering reading: three stages, nine books. Open any book for its chapter focus, hands-on work, and the closed-book stress test.",
+    "The priority order for my reading: four stages, seventeen books — the AI engineering stack and the forward-deployed foundations. Open any book for its chapter focus, hands-on work, and the closed-book stress test.",
 };
 
 export default function ReadingPage() {
@@ -37,9 +37,10 @@ export default function ReadingPage() {
             The order, the focus, and the practice.
           </h1>
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
-            Nine books on the AI engineering stack, ordered by what compounds.
-            Open any book for the chapters that earn their pages, what to build
-            while reading, and the closed-book questions that prove it landed.
+            Seventeen books across the AI engineering stack and the forward-deployed
+            foundations, ordered by what compounds. Open any book for the chapters
+            that earn their pages, what to build while reading, and the closed-book
+            questions that prove it landed.
           </p>
           <p className="text-[11px] text-slate-500 tabular-nums">
             {readingBookCount} books · ~{readingTotalHours} h reading + ~

@@ -46,9 +46,16 @@ export default function ReadingPlanExplorer() {
                   <span className="text-[10px] font-mono tabular-nums text-slate-600">
                     {pad(item.order)}
                   </span>
-                  <span className="text-[11px] text-slate-500 tabular-nums">
-                    ~{item.hours} h
-                  </span>
+                  <div className="flex items-baseline gap-2">
+                    {item.priority && (
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#3e6274]">
+                        {item.priority}
+                      </span>
+                    )}
+                    <span className="text-[11px] text-slate-500 tabular-nums">
+                      ~{item.hours} h
+                    </span>
+                  </div>
                 </div>
 
                 <h3 className="mt-1.5 text-sm font-semibold leading-snug text-slate-100">
@@ -57,6 +64,11 @@ export default function ReadingPlanExplorer() {
                 <p className="mt-0.5 text-[11px] text-slate-500">
                   {item.author} · {item.pages.toLocaleString()} pp
                 </p>
+                {item.track && (
+                  <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-[#3e6274]">
+                    {item.track}
+                  </p>
+                )}
                 <p className="mt-2 text-xs leading-relaxed text-slate-400">
                   {item.tagline}
                 </p>

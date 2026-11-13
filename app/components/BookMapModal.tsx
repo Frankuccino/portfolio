@@ -123,7 +123,10 @@ export default function BookMapModal({
             <span className="text-xs font-mono uppercase tracking-widest text-slate-500">
               {stageLabel}
             </span>
-            <span className="text-[11px] text-slate-400">{book.author}</span>
+            <span className="text-[11px] text-slate-400">
+              {book.kind === "report" ? "Report" : "Book"}
+              {book.track ? ` · ${book.track}` : ""} · {book.author}
+            </span>
             <span className="ml-auto text-[11px] text-slate-500 tabular-nums">
               {book.pages.toLocaleString()} pp · ~{book.hours} h
             </span>

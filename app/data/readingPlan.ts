@@ -29,6 +29,12 @@ export type ReadingBook = {
   focus: BookFocus[];
   handsOn: string[];
   stressTest: string[];
+  /** Document type — the Engelbart framework is a 1962 report, not a book */
+  kind?: "book" | "report";
+  /** FDE sub-track: Intelligence Augmentation, Customer Discovery, or Execution & Adaptability */
+  track?: string;
+  /** Priority rating for the FDE material */
+  priority?: "very-high" | "high" | "medium";
 };
 
 export type ReadingStage = {
@@ -434,6 +440,291 @@ export const readingStages: ReadingStage[] = [
       },
     ],
   },
+  {
+    id: "fde",
+    label: "Stage 4 — Forward Deployed Foundations",
+    objective:
+      "Know what the technology is for, how to find out what people actually need, and how to keep executing when the problem is ambiguous — the forward-deployed foundation.",
+    note: "Read fully. The human side of the stack.",
+    pages: 2717,
+    hours: 112,
+    books: [
+      {
+        order: 10,
+        title: "Augmenting Human Intellect: A Conceptual Framework",
+        kind: "report",
+        author: "Douglas C. Engelbart",
+        pages: 134,
+        hours: 6,
+        tagline: "The original statement of intelligence augmentation — the map before the territory.",
+        dailyCommitment: 45,
+        consolidationHours: 5.5,
+        reinforcementPrompt: "You are a skeptical interviewer for my read of Engelbart's 1962 'Augmenting Human Intellect'. Context I just learned: <paste your notes on the H-LAM/T system, the hierarchy of process structures, and the bootstrapping hypothesis>. Question me one at a time — start with what Engelbart means by augmentation versus automation, then the H-LAM/T framework, then the bootstrapping hypothesis. If I stall, explain it and press me on where a modern agent system fits his framework and where it breaks it. End by having me redraw his framework for a workflow I actually built.",
+        why: "The primary source. Everything in the intelligence-augmentation tradition descends from this 1962 framework: intelligence as a system of artifacts, rules, methods, and habits, and technology as the means to raise its effectiveness — augmentation, not replacement.",
+        track: "Intelligence Augmentation",
+        priority: "high",
+        focus: [
+          { chapter: "I. Introduction", why: "The objective: improving the intellectual effectiveness of the individual. The whole argument in miniature.", priority: "focus" },
+          { chapter: "II. Conceptual Framework", why: "The H-LAM/T system and the hierarchy of process structures. The core of the report.", priority: "focus" },
+          { chapter: "III. Examples and Discussion", why: "The bootstrapping hypothesis: better tools make better tool-makers.", priority: "focus" },
+          { chapter: "IV. Research Recommendations", why: "Engelbart's agenda. Skim for the shape of the programme.", priority: "skim" },
+          { chapter: "V. Summary and VI. Conclusions", why: "The argument compressed. Read after the framework has landed.", priority: "focus" },
+        ],
+        handsOn: [
+          "Map a current agent workflow onto Engelbart's H-LAM/T: which parts are artifacts, which are rules, which are methods, which are habits?",
+          "List the human-in-the-loop decision points and write down what the human contributes that the model cannot.",
+        ],
+        stressTest: [
+          "Explain the bootstrapping hypothesis with the report closed.",
+          "What is 'augmentation' as Engelbart means it, and how does it differ from automation?",
+          "What are the 'complex situations' he wants to improve, and are they the ones you work on?",
+          "Where does a modern LLM agent fit his framework, and where does it break?",
+        ],
+      },
+      {
+        order: 11,
+        title: "Supersizing the Mind: Embodiment, Action, and Cognitive Extension",
+        author: "Andy Clark",
+        pages: 320,
+        hours: 13,
+        tagline: "The extended mind thesis: cognition leaks out of the skull and into the tools.",
+        dailyCommitment: 45,
+        consolidationHours: 5.5,
+        reinforcementPrompt: "You are a philosophy examiner for my read of Andy Clark's 'Supersizing the Mind'. Context I just learned: <paste your notes on the extended mind thesis, the parity principle, and Clark's critique of brainbound cognition>. Question me one at a time — start with the extended mind thesis, then the parity principle, then what Clark thinks the brain is actually for. If I stall, explain and give the classic objections, then re-ask. End by pressing me on whether an LLM counts as part of a cognitive system on his account.",
+        why: "The philosophical case for the human-tool coupling that IA assumes. Clark argues the mind is not bounded by the skin — the deepest justification for building tools that think with people rather than for them.",
+        track: "Intelligence Augmentation",
+        priority: "medium",
+        focus: [
+          { chapter: "Introduction: Brainbound versus Extended", why: "The thesis stated plainly. The book's whole argument.", priority: "focus" },
+          { chapter: "1. The Active Body", why: "Embodiment. Useful context.", priority: "skim" },
+          { chapter: "2. The Negotiable Body", why: "The body as part of the cognitive loop. Skim.", priority: "skim" },
+          { chapter: "3. Material Symbols", why: "Language and symbols as cognitive scaffolding. Directly relevant to interface design.", priority: "focus" },
+          { chapter: "4. World, Incorporated", why: "How the environment becomes part of the cognitive system.", priority: "focus" },
+          { chapter: "5. Mind Re-bound?", why: "Clark's reply to critics. Skim.", priority: "skim" },
+          { chapter: "6. The Cure for Cognitive Hiccups", why: "HEMC, HEC, HEMC — his taxonomy of extension. Dense; skim.", priority: "skim" },
+          { chapter: "7. Rediscovering the Brain", why: "Where the brain fits. Skim.", priority: "skim" },
+          { chapter: "8. Painting, Planning, and Perceiving", why: "Case studies in extended cognition. Skim.", priority: "skim" },
+          { chapter: "9. Disentangling Embodiment", why: "What embodiment does and does not explain. Skim.", priority: "skim" },
+          { chapter: "10. Conclusions: Mind as Mashup", why: "The synthesis. Read it.", priority: "focus" },
+          { chapter: "Appendix: The Extended Mind", why: "The original 1998 Clark and Chalmers paper. The shortest path to the core idea.", priority: "focus" },
+        ],
+        handsOn: [
+          "Take one workflow you built this month and map its cognitive loop: where does the human think, where does the tool, and where is the boundary actually drawn?",
+          "Write down what the tool does that you no longer do — and what it costs when the tool fails.",
+        ],
+        stressTest: [
+          "State the extended mind thesis and the parity principle without the book.",
+          "What is Clark's answer to the 'mark of the cognitive'?",
+          "Why does he think the brain is not the natural boundary of the mind?",
+          "Would Clark accept an LLM as part of a cognitive system? Argue both sides.",
+        ],
+      },
+      {
+        order: 12,
+        title: "The Design of Everyday Things",
+        author: "Don Norman",
+        pages: 384,
+        hours: 15,
+        tagline: "The classic on designing for humans: affordances, signifiers, and why bad design blames the user.",
+        dailyCommitment: 45,
+        consolidationHours: 6,
+        reinforcementPrompt: "You are a design reviewer for my read of Don Norman's 'The Design of Everyday Things'. Context I just learned: <paste your notes on affordances, signifiers, mappings, feedback, constraints, and the seven stages of action>. Question me one at a time — start with affordances versus signifiers, then the seven stages, then Norman's account of human error. If I stall, explain and give an example, then re-ask. End by having me diagnose a real interface I use with his vocabulary.",
+        why: "The FDE builds for people who are not engineers. Norman's vocabulary is the working language for the human side of any system you ship, and the fastest route from a working prototype to one people can actually use.",
+        track: "Intelligence Augmentation",
+        priority: "very-high",
+        focus: [
+          { chapter: "1. The Psychopathology of Everyday Things", why: "Where design fails and why people get blamed for it. The book's hook.", priority: "focus" },
+          { chapter: "2. The Psychology of Everyday Actions", why: "The seven stages of action, and the gulf of execution versus evaluation.", priority: "focus" },
+          { chapter: "3. Knowledge in the Head and in the World", why: "Why memorising is overrated and constraints are underrated.", priority: "focus" },
+          { chapter: "4. Knowing What to Do: Constraints, Discoverability, and Feedback", why: "The core design toolkit.", priority: "focus" },
+          { chapter: "5. Human Error? No, Bad Design", why: "Norman's account of error — directly relevant to how you design agent fallbacks.", priority: "focus" },
+          { chapter: "6. Design Thinking", why: "The process, including the human-centred design cycle.", priority: "focus" },
+          { chapter: "7. Design in the World of Business", why: "Where good design meets organisations. Skim.", priority: "skim" },
+        ],
+        handsOn: [
+          "Audit one screen you built or use daily against Norman's principles and find three places where the design blames the user.",
+          "Rewrite the worst of them and document the before and after.",
+        ],
+        stressTest: [
+          "Explain the difference between an affordance and a signifier without the book.",
+          "What are the seven stages of action, and where do the gulfs appear?",
+          "Why does Norman say human error is usually bad design?",
+          "Diagnose a real interface failure using his vocabulary.",
+        ],
+      },
+      {
+        order: 13,
+        title: "Interviewing Users: How to Uncover Compelling Insights",
+        author: "Steve Portigal",
+        pages: 260,
+        hours: 11,
+        tagline: "The craft of finding out what people actually do — not what they say they do.",
+        dailyCommitment: 45,
+        consolidationHours: 6.5,
+        reinforcementPrompt: "You are a user-research coach for my read of Steve Portigal's 'Interviewing Users'. Context I just learned: <paste your notes on planning research, asking questions that do not lead, and turning interviews into decisions>. Question me one at a time — start with why interviewing beats surveys for discovery, then the key stages of an interview, then how to avoid leading questions, then what to do when someone tells you what they think you want to hear. If I stall, explain and give an example, then re-ask. End by having me design an interview guide for a real problem.",
+        why: "The FDE's core skill is translating an ambiguous operational problem into a system. Portigal's book is the practical method for the first half of that: planning the research, asking questions that do not lead, and turning what you hear into decisions.",
+        track: "Customer Discovery",
+        priority: "very-high",
+        focus: [
+          { chapter: "1. Interviewing Addresses a Business Need", why: "Why interviews, why now, and what they are for. The framing chapter.", priority: "focus" },
+          { chapter: "2. Research Logistics", why: "Recruiting, scheduling, incentives, and the interview guide.", priority: "focus" },
+          { chapter: "3. Contextual Methods — More Than Just Asking Questions", why: "Observation and shadowing. The part most people skip.", priority: "focus" },
+          { chapter: "4. The Successful Fieldwork Experience", why: "Team roles and remote research. Skim unless you are planning fieldwork.", priority: "skim" },
+          { chapter: "5. Best Practices for Interviewing", why: "Rapport, listening, and checking your worldview at the door.", priority: "focus" },
+          { chapter: "6. The Intricacies of Asking Questions", why: "Silence, the backchannel trap, and the palette of question types. The book's core.", priority: "focus" },
+          { chapter: "7. Better Interviews", why: "Troubleshooting and special cases. Skim.", priority: "skim" },
+          { chapter: "8. Documenting the Interview", why: "Notes, audio, video, sketching. Skim.", priority: "skim" },
+          { chapter: "9. Making Sense of Your Data", why: "Analysis, tagging, and synthesis. Where insight actually comes from.", priority: "focus" },
+          { chapter: "10. Making an Impact with Your Research", why: "Delivery, engagement, and organisational change. The payoff.", priority: "focus" },
+        ],
+        handsOn: [
+          "Run three practice interviews on a real workflow and write a topline report for each.",
+          "Have a colleague review your interview guide for leading questions.",
+        ],
+        stressTest: [
+          "Why does interviewing beat a survey for discovery work?",
+          "What are the key stages of an interview, and what belongs in each?",
+          "How do you avoid leading a participant, and what do you do when they tell you what they think you want to hear?",
+          "How do you move from transcripts to a decision?",
+        ],
+      },
+      {
+        order: 14,
+        title: "The Looming Tower: Al-Qaeda and the Road to 9/11",
+        author: "Lawrence Wright",
+        pages: 469,
+        hours: 19,
+        tagline: "How information fails inside large organizations — the FDE's problem, drawn at full scale.",
+        dailyCommitment: 60,
+        consolidationHours: 7,
+        reinforcementPrompt: "You are an organisational analyst for my read of Lawrence Wright's 'The Looming Tower'. Context I just learned: <paste your notes on how information fragmented between the CIA and FBI, how incentives hid the truth, and what structural conditions let the failure compound>. Question me one at a time — start with the structural conditions that let intelligence failures compound, then how silos form and persist, then what an individual can do about it. If I stall, explain and give a case from the book, then re-ask. End by having me map the same failure pattern onto an organization I know.",
+        why: "A history of the intelligence failures before 9/11, and a case study in how information fragments across silos, how incentives hide the truth, and how smart organizations miss what is in front of them. Read it as a study of the operational problems you will be sent to fix.",
+        track: "Customer Discovery",
+        priority: "high",
+        focus: [
+          { chapter: "Prologue", why: "The 1998 embassy bombings. Sets up the failure.", priority: "focus" },
+          { chapter: "3. The Founder", why: "The ideology and the structure that followed from it.", priority: "focus" },
+          { chapter: "6. The Base", why: "How the organisation was built.", priority: "focus" },
+          { chapter: "13. Hijira", why: "The move to Afghanistan and the run-up.", priority: "focus" },
+          { chapter: "14. Going Operational", why: "The planning. Note what the various agencies knew and did not share.", priority: "focus" },
+          { chapter: "16. \"Now It Begins\"", why: "The first World Trade Center attack and the response.", priority: "focus" },
+          { chapter: "18. Boom", why: "The embassy bombings and the missed signals.", priority: "focus" },
+          { chapter: "20. Revelations", why: "The aftermath and the accounting. Where the lessons live.", priority: "focus" },
+        ],
+        handsOn: [
+          "Map the information flow in an organization you know and find three places where the right information exists but does not reach the decision-maker.",
+          "Write down what incentive or structure keeps each gap open.",
+        ],
+        stressTest: [
+          "What structural conditions let intelligence failures compound?",
+          "How do silos form and persist inside large organizations?",
+          "What can an individual do about an information gap they did not create?",
+          "Where have you seen the same pattern in a smaller organization?",
+        ],
+      },
+      {
+        order: 15,
+        title: "Getting Things Done: The Art of Stress-Free Productivity",
+        author: "David Allen",
+        pages: 352,
+        hours: 15,
+        tagline: "The stress-free productivity system: capture, clarify, organize, reflect, engage.",
+        dailyCommitment: 45,
+        consolidationHours: 6.5,
+        reinforcementPrompt: "You are a productivity coach for my read of David Allen's 'Getting Things Done'. Context I just learned: <paste your notes on the five stages of the workflow, the next-action decision, and the weekly review>. Question me one at a time — start with the five stages, then why the next-action decision matters, then what the weekly review is for, then how the system handles an ambiguous workload. If I stall, explain and give an example, then re-ask. End by having me walk through my own current commitments using the five stages.",
+        why: "The FDE lives in ambiguous workloads with more commitments than hours. Allen's five-stage workflow is the operating system for that condition, and chapter 14 connects it to the same cognitive science the reading method is built on.",
+        track: "Execution & Adaptability",
+        priority: "very-high",
+        focus: [
+          { chapter: "1. A New Practice for a New Reality", why: "Why the old ways fail under modern workload volume.", priority: "focus" },
+          { chapter: "2. Getting Control of Your Life: The Five Steps of Mastering Workflow", why: "Capture, clarify, organize, reflect, engage. The whole system.", priority: "focus" },
+          { chapter: "3. Getting Projects Creatively Under Way", why: "The five phases of project planning. Skim unless you run projects.", priority: "skim" },
+          { chapter: "4. Getting Started: Setting Up the Time, Space, and Tools", why: "Setup. Skim.", priority: "skim" },
+          { chapter: "5. Capturing: Corralling Your Stuff", why: "The capture habit — the entry point of the system.", priority: "focus" },
+          { chapter: "6. Clarifying: Getting In to Empty", why: "What to do with what you captured.", priority: "focus" },
+          { chapter: "7. Organizing: Setting Up the Right Buckets", why: "Where things go.", priority: "focus" },
+          { chapter: "8. Reflecting: Keeping It All Fresh and Functional", why: "The weekly review.", priority: "focus" },
+          { chapter: "9. Engaging: Making the Best Action Choices", why: "The four criteria for choosing the next action.", priority: "focus" },
+          { chapter: "10. Getting Projects Under Control", why: "Skim.", priority: "skim" },
+          { chapter: "11. The Power of the Capturing Habit", why: "Why capture works. Skim.", priority: "skim" },
+          { chapter: "12. The Power of the Next-Action Decision", why: "The single most useful idea in the book.", priority: "focus" },
+          { chapter: "13. The Power of Outcome Focusing", why: "Skim.", priority: "skim" },
+          { chapter: "14. GTD and Cognitive Science", why: "The research behind the method — and a direct bridge to the reading protocol.", priority: "focus" },
+          { chapter: "15. The Path of GTD Mastery", why: "Skim.", priority: "skim" },
+        ],
+        handsOn: [
+          "Run a full capture-and-clarify pass on your current commitments and set up the weekly review.",
+          "Convert every open loop into a next action and notice what changes.",
+        ],
+        stressTest: [
+          "What are the five stages of the workflow, in order?",
+          "Why does the next-action decision matter more than the project list?",
+          "What is the weekly review for, and what happens without it?",
+          "How does Allen's model handle a commitment that is not yet well defined?",
+        ],
+      },
+      {
+        order: 16,
+        title: "Principles: Life and Work",
+        author: "Ray Dalio",
+        pages: 590,
+        hours: 24,
+        tagline: "Independent thinking, radical transparency, and decision-making by principle.",
+        dailyCommitment: 60,
+        consolidationHours: 8,
+        reinforcementPrompt: "You are a decision-making coach for my read of Ray Dalio's 'Principles'. Context I just learned: <paste your notes on the five-step process, radical open-mindedness, and idea meritocracy>. Question me one at a time — start with Dalio's five-step process for getting what you want, then what radical open-mindedness means, then how an idea meritocracy differs from consensus. If I stall, explain and give a case, then re-ask. End by having me apply the five-step process to a real decision I am avoiding.",
+        why: "Dalio's system for making better decisions under uncertainty — the same conditions the FDE works in. Part 1 and the life principles carry the weight; the work principles are a long catalogue to dip into.",
+        track: "Execution & Adaptability",
+        priority: "medium",
+        focus: [
+          { chapter: "Part 1: The Importance of Principles", why: "What principles are and why to have them. The setup for everything else.", priority: "focus" },
+          { chapter: "Part 2: Life Principles", why: "The five-step process, radical open-mindedness, and pain + reflection = progress. The book's core.", priority: "focus" },
+          { chapter: "Part 3: Work Principles", why: "Idea meritocracy and believability-weighted decision making. Dip into the sections that match your situation.", priority: "reference" },
+        ],
+        handsOn: [
+          "Write your own principles for one recurring decision and test them against the last three times it came up.",
+          "Run a believability-weighted decision on a real problem and record what you decided and why.",
+        ],
+        stressTest: [
+          "What is Dalio's five-step process for getting what you want?",
+          "What does radical open-mindedness mean, and what is its opposite?",
+          "How does an idea meritocracy differ from consensus?",
+          "Where does a principle stop being useful and start being a rule?",
+        ],
+      },
+      {
+        order: 17,
+        title: "Impro: Improvisation and the Theatre",
+        author: "Keith Johnstone",
+        pages: 208,
+        hours: 9,
+        tagline: "Status, spontaneity, and narrative — the improviser's toolkit for responding under uncertainty.",
+        dailyCommitment: 45,
+        consolidationHours: 5,
+        reinforcementPrompt: "You are an improvisation coach for my read of Keith Johnstone's 'Impro'. Context I just learned: <paste your notes on status transactions, spontaneity, and accepting offers>. Question me one at a time — start with what status is and how it is played, then why the first idea is usually the best one, then what accepting an offer means. If I stall, demonstrate with an example, then re-ask. End by having me apply 'yes, and' to a problem I am currently blocked on.",
+        why: "The FDE improvises constantly: a demo that breaks, a requirement that changes mid-meeting, a client who does not know what they want. Johnstone's theatre exercises train exactly the skill of accepting an offer and building on it instead of blocking it.",
+        track: "Execution & Adaptability",
+        priority: "medium",
+        focus: [
+          { chapter: "Introduction", why: "The pedagogy behind the exercises. Short.", priority: "skim" },
+          { chapter: "Status", why: "Status as something people do, not a title they hold. The most transferable section.", priority: "focus" },
+          { chapter: "Spontaneity", why: "Why the first idea is usually the best one, and how to stop censoring it.", priority: "focus" },
+          { chapter: "Narrative Skills", why: "How stories are built by interrupting routines. Useful for demos and explanations.", priority: "focus" },
+          { chapter: "Masks and Trance", why: "The deepest and least transferable section. Skim.", priority: "skim" },
+        ],
+        handsOn: [
+          "Run three status exercises with a colleague and notice what changes in the room.",
+          "Do a 'yes, and' session on a blocked problem: every proposal gets accepted and built on for ten minutes.",
+        ],
+        stressTest: [
+          "What is status, and how is it played moment to moment?",
+          "Why does Johnstone say the first idea is usually the best one?",
+          "What does accepting an offer mean, and what is blocking?",
+          "Where does this show up in a client meeting?",
+        ],
+      },
+    ],
+  },
 ];
 
 export const readingBookCount = readingStages.reduce(
@@ -446,7 +737,7 @@ export const readingTotalHours = readingStages.reduce(
   0,
 );
 
-/** Stage 1 + 2, read cover to cover — the realistic reading load. */
+/** Every stage except the reference shelf — the realistic reading load. */
 export const readingCoreHours = readingStages
   .filter((stage) => stage.id !== "reference")
   .reduce((total, stage) => total + stage.hours, 0);
@@ -503,6 +794,10 @@ export const stageStressTests: StageStressTest[] = [
   {
     stage: "Stage 3",
     body: "Refactor one Python service to the patterns in the book, and profile one hot path until the bottleneck moves.",
+  },
+  {
+    stage: "Stage 4",
+    body: "Spend a week embedded with one user of a system you built: interview them, watch them work, and ship one change that removes a real obstacle. Then write down what you believed before and what the evidence changed.",
   },
 ];
 

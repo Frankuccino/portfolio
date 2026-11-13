@@ -31,7 +31,7 @@ export default function ReadingPlan() {
         <span className="text-slate-500">↗</span>
       </Link>
 
-      <div className="mt-5 grid gap-3 md:grid-cols-3">
+      <div className="mt-5 grid gap-3 md:grid-cols-2">
         {readingStages.map((stage) => (
           <div
             key={stage.id}
