@@ -31,40 +31,55 @@ export default function ReadingPlan() {
         <span className="text-slate-500">↗</span>
       </Link>
 
-      <div className="mt-5 grid gap-3 md:grid-cols-2">
-        {readingStages.map((stage) => (
-          <div
-            key={stage.id}
-            className="rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-4"
-          >
-            <h4 className="text-[11px] font-mono uppercase tracking-widest text-slate-400">
-              {stage.label}
-            </h4>
-            <p className="mt-1 text-[11px] leading-snug text-slate-400">
-              {stage.objective}
-            </p>
-            <p className="mt-1.5 text-[11px] leading-snug text-slate-500">
-              {stage.pages.toLocaleString()} pp · ~{stage.hours} h · {stage.note}
-            </p>
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
+        {readingStages.map((stage) => {
+          // A stage with more books than fit one column takes the full row,
+          // so the shorter cards beside it are not stretched with dead space.
+          const wide = stage.books.length > 4;
+          return (
+            <div
+              key={stage.id}
+              className={
+                wide
+                  ? "md:col-span-3 rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-4"
+                  : "rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-4"
+              }
+            >
+              <h4 className="text-[11px] font-mono uppercase tracking-widest text-slate-400">
+                {stage.label}
+              </h4>
+              <p className="mt-1 text-[11px] leading-snug text-slate-400">
+                {stage.objective}
+              </p>
+              <p className="mt-1.5 text-[11px] leading-snug text-slate-500">
+                {stage.pages.toLocaleString()} pp · ~{stage.hours} h · {stage.note}
+              </p>
 
-            <ul className="mt-3 space-y-2.5">
-              {stage.books.map((book) => (
-                <li key={book.order} className="flex items-baseline gap-2.5">
-                  <span className="w-4 shrink-0 text-[10px] font-mono tabular-nums text-slate-600">
-                    {String(book.order).padStart(2, "0")}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[13px] leading-snug text-slate-200">{book.title}</p>
-                    <p className="text-[10px] text-slate-500">{book.author}</p>
-                  </div>
-                  <span className="shrink-0 text-[10px] tabular-nums text-slate-500">
-                    ~{book.hours} h
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+              <ul
+                className={
+                  wide
+                    ? "mt-3 grid gap-x-6 gap-y-2.5 sm:grid-cols-2"
+                    : "mt-3 space-y-2.5"
+                }
+              >
+                {stage.books.map((book) => (
+                  <li key={book.order} className="flex items-baseline gap-2.5">
+                    <span className="w-4 shrink-0 text-[10px] font-mono tabular-nums text-slate-600">
+                      {String(book.order).padStart(2, "0")}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[13px] leading-snug text-slate-200">{book.title}</p>
+                      <p className="text-[10px] text-slate-500">{book.author}</p>
+                    </div>
+                    <span className="shrink-0 text-[10px] tabular-nums text-slate-500">
+                      ~{book.hours} h
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
