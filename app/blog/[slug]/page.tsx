@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { canonical } from "../../lib/siteUrl";
+import { ogImage } from "../../lib/ogImage";
 import { getPost, getPosts, formatDate } from "../../lib/posts";
 import { Markdown } from "../../lib/markdown";
 
@@ -16,7 +18,27 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return {};
-  return { title: `${post.title} — Frank Angelo Malubag`, description: post.excerpt };
+  const url = canonical(`/blog/${post.slug}`);
+  return {
+    title: `${post.title} — Frank Angelo Malubag`,
+    description: post.excerpt,
+    alternates: { canonical: url },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url,
+      type: "article",
+      publishedTime: post.date,
+      tags: post.tags,
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage.url],
+    },
+  };
 }
 
 export default async function BlogPost({

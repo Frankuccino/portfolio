@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { canonical } from "../lib/siteUrl";
 import { getPosts } from "../lib/posts";
 import BlogCard from "../components/BlogCard";
 
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
   title: "Blog — Frank Angelo Malubag",
   description:
     "Notes on backend engineering, distributed systems, and applied AI engineering.",
+  alternates: { canonical: canonical("/blog") },
 };
 
 export default function BlogIndex() {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { canonical } from "../lib/siteUrl";
 import { lookingFor, roadmapSteps } from "../data/roadmap";
 
 const hostOf = (url: string) => {
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   title: "What's Next — Frank Angelo Malubag",
   description:
     "Where I'm headed: the Microsoft AI & ML Engineering Professional Certificate first, then LangChain Academy, then Stanford CS221 — building the depth to lead in AI engineering.",
+  alternates: { canonical: canonical("/next") },
 };
 
 export default function NextPage() {

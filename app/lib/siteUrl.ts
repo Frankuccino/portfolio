@@ -10,4 +10,14 @@
  */
 export const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://localhost:3000"
-).replace(/^http:\/\//i, "https://");
+)
+  .replace(/^http:\/\//i, "https://")
+  .replace(/\/+$/, "");
+
+/**
+ * Absolute canonical URL for a path. Every routable page declares one so a
+ * crawler reaching the same content through an alias or a stray query still
+ * sees a single preferred URL.
+ */
+export const canonical = (path = "/") =>
+  `${siteUrl}${path === "/" ? "" : path}`;

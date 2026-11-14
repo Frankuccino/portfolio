@@ -87,6 +87,10 @@ Site chrome (navbar, footer, grain background) lives in `app/layout.tsx`, so eve
 
 The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL` (falling back to `https://localhost:3000` in development) and emits a `summary_large_image` Twitter card alongside the Open Graph tags, all pointing at `public/og-image.png` (1200×630). `app/lib/siteUrl.ts` is the single source for that origin; it upgrades any `http://` scheme to `https://` because X refuses insecure card images. `app/sitemap.ts` lists the static routes plus every blog post; `app/robots.ts` points crawlers at it. Copy `.env.example` to `.env.local` and set the real origin for production.
 
+Every routable page declares `alternates.canonical` through the `canonical()` helper, and the blog post template sets its own `openGraph`/`twitter` block (`type: "article"`, `publishedTime`, tags) so a shared post carries its own title and excerpt rather than the site's. The root layout also emits a schema.org `Person` record whose `sameAs` links the site to the GitHub and LinkedIn profiles — that is what lets a search engine treat them as one entity.
+
+Set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (from a Search Console **URL prefix** property, HTML-tag method) to add the verification tag; it is omitted while unset.
+
 ## Virtual Library
 
 The `About` section ends in an interactive bookshelf built from `app/data/books.ts` (42 titles, split technical/personal). Books stand as spines; hovering or keyboard-focusing one swings its front cover open.
