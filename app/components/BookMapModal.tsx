@@ -17,11 +17,27 @@ const priorityStyles: Record<string, string> = {
   reference: "text-slate-600 border-slate-800/60 bg-transparent",
 };
 
+/**
+ * The modal is the third layer of the hierarchy (stage → book → detail), so
+ * its sections are numbered: the reader can see where they are in the map.
+ */
+function SectionHeading({ index, children }: { index: string; children: React.ReactNode }) {
+  return (
+    <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-slate-500">
+      <span className="text-[#3e6274] tabular-nums" aria-hidden="true">
+        {index}
+      </span>{" "}
+      {children}
+    </h4>
+  );
+}
+
 const pad = (n: number) => String(n).padStart(2, "0");
 
 type Props = {
   book: ReadingBook | null;
   stageLabel: string;
+  total: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
@@ -32,6 +48,7 @@ type Props = {
 export default function BookMapModal({
   book,
   stageLabel,
+  total,
   onClose,
   onPrev,
   onNext,
@@ -132,12 +149,11 @@ export default function BookMapModal({
             </span>
           </div>
 
+          <SectionHeading index="01">Why this book</SectionHeading>
           <p className="text-sm text-slate-400 leading-relaxed">{book.why}</p>
 
           <div>
-            <h4 className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
-              Timing
-            </h4>
+            <SectionHeading index="02">Timing</SectionHeading>
             <div className="mt-2 rounded-lg border border-slate-800/60 bg-slate-950/50 p-3 space-y-1.5">
               <div className="flex items-baseline justify-between gap-3 text-xs">
                 <span className="text-slate-500">Reading</span>
@@ -191,9 +207,10 @@ export default function BookMapModal({
           </div>
 
           <div>
-            <h4 className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
-              Focus chapters
-            </h4>
+            <SectionHeading index="03">Focus chapters</SectionHeading>
+            {book.focusNote && (
+              <p className="mt-1 text-[10px] text-slate-600">{book.focusNote}</p>
+            )}
             <ul className="mt-2 space-y-2.5">
               {book.focus.map((item) => (
                 <li key={item.chapter} className="flex items-start gap-2.5">
@@ -217,9 +234,7 @@ export default function BookMapModal({
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <h4 className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
-                Hands-on
-              </h4>
+              <SectionHeading index="04">Hands-on</SectionHeading>
               <ul className="mt-2 space-y-1.5">
                 {book.handsOn.map((item) => (
                   <li key={item} className="flex gap-2 text-xs text-slate-400">
@@ -230,9 +245,7 @@ export default function BookMapModal({
               </ul>
             </div>
             <div>
-              <h4 className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
-                Stress test
-              </h4>
+              <SectionHeading index="05">Stress test</SectionHeading>
               <ul className="mt-2 space-y-1.5">
                 {book.stressTest.map((item) => (
                   <li key={item} className="flex gap-2 text-xs text-slate-400">
@@ -245,9 +258,7 @@ export default function BookMapModal({
           </div>
 
           <div>
-            <h4 className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
-              Reinforcement prompt
-            </h4>
+            <SectionHeading index="06">Reinforcement prompt</SectionHeading>
             <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
               Paste this into an LLM along with the notes you just took. It will
               question you, explain the gaps, and re-ask in different words.
@@ -268,7 +279,7 @@ export default function BookMapModal({
             ← Prev book
           </button>
           <span className="text-[11px] text-slate-500 tabular-nums hidden sm:inline">
-            {pad(book.order)} / 09
+            {pad(book.order)} / {pad(total)}
           </span>
           <button
             onClick={onNext}
