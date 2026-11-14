@@ -59,14 +59,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <a
-            href="/Resume_Frank_Angelo_Malubag.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-medium px-3 py-1.5 rounded-md border border-[#3e6274]/50 text-slate-200 hover:bg-[#3e6274]/20 transition-colors"
-          >
-            Resume
-          </a>
         </div>
 
         <button
@@ -117,14 +109,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <a
-            href="/Resume_Frank_Angelo_Malubag.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-medium px-3 py-1.5 rounded-md border border-[#3e6274]/50 text-slate-200 hover:bg-[#3e6274]/20 transition-colors w-fit"
-          >
-            Resume
-          </a>
         </div>
       ) : null}
     </header>

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import StackIcon from "tech-stack-icons";
 import HeroFocusDeck from "./HeroFocusDeck";
-import ResumeModal from "./ResumeModal";
 
 type TechItem =
   | { divider: true }
@@ -136,8 +135,8 @@ export default function Hero() {
           })}
         </div>
 
-        {/* Bottom Bar: Email & LinkedIn on Left, Resume on Right */}
-        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-800/80 pt-4">
+        {/* Bottom Bar: Email, LinkedIn & GitHub */}
+        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-start gap-3 border-t border-slate-800/80 pt-4">
           {/* Lower Left: Email & LinkedIn & GitHub */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base md:text-lg tracking-wide text-slate-300">
             <a
@@ -164,18 +163,6 @@ export default function Hero() {
             >
               GitHub
             </a>
-          </div>
-
-          {/* Lower Right: Resume Link */}
-          <div className="relative group/tooltip inline-flex">
-            <ResumeModal />
-            {/* Tooltip Popup */}
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:flex flex-col items-center z-30 pointer-events-none">
-              <div className="bg-slate-900 border border-slate-700 text-slate-200 text-xs font-medium px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap">
-                Click to View • Available!
-              </div>
-              <div className="w-2 h-2 bg-slate-900 border-r border-b border-slate-700 rotate-45 -mt-1" />
-            </div>
           </div>
         </div>
       </div>
