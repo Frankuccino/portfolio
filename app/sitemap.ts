@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getPosts } from "./lib/posts";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+import { siteUrl } from "./lib/siteUrl";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts: MetadataRoute.Sitemap = getPosts().map((post) => ({

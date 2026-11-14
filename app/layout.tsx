@@ -4,6 +4,7 @@ import Script from "next/script";
 import { GrainGradient } from "@paper-design/shaders-react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { siteUrl } from "./lib/siteUrl";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,12 +16,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-/**
- * Absolute URLs in the metadata need a base. Set NEXT_PUBLIC_SITE_URL in
- * production; local falls back to the dev server so previews still resolve.
- */
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

@@ -85,9 +85,7 @@ Site chrome (navbar, footer, grain background) lives in `app/layout.tsx`, so eve
 
 ## SEO & Social Preview
 
-The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL` (falling back to `http://localhost:3000` in development) and emits a `summary_large_image` Twitter card alongside the Open Graph tags, all pointing at `public/og-image.png` (1200×630). `app/sitemap.ts` lists the static routes plus every blog post; `app/robots.ts` points crawlers at it.
-
-Set `NEXT_PUBLIC_SITE_URL` to the production origin before deploying — without it the OG and sitemap URLs resolve to `localhost`, and link previews on some platforms fall back to a bare URL.
+The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL` (falling back to `https://localhost:3000` in development) and emits a `summary_large_image` Twitter card alongside the Open Graph tags, all pointing at `public/og-image.png` (1200×630). `app/lib/siteUrl.ts` is the single source for that origin; it upgrades any `http://` scheme to `https://` because X refuses insecure card images. `app/sitemap.ts` lists the static routes plus every blog post; `app/robots.ts` points crawlers at it. Copy `.env.example` to `.env.local` and set the real origin for production.
 
 ## Virtual Library
 
