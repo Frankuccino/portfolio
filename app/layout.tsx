@@ -5,7 +5,7 @@ import { GrainGradient } from "@paper-design/shaders-react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { ogImage } from "./lib/ogImage";
-import { canonical, siteUrl } from "./lib/siteUrl";
+import { siteUrl } from "./lib/siteUrl";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,6 +34,7 @@ const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 const person = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${siteUrl}/#person`,
   name: "Frank Angelo A. Malubag",
   url: siteUrl,
   image: `${siteUrl}/og-image.png`,
@@ -91,9 +92,6 @@ export const metadata: Metadata = {
     description:
       "Backend architecture, distributed systems, and applied LLM engineering.",
     images: [ogImage.url],
-  },
-  alternates: {
-    canonical: canonical(),
   },
   ...(googleVerification
     ? { verification: { google: googleVerification } }
