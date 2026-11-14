@@ -16,7 +16,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/**
+ * Absolute URLs in the metadata need a base. Set NEXT_PUBLIC_SITE_URL in
+ * production; local falls back to the dev server so previews still resolve.
+ */
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Frank Angelo Malubag — Software & AI Engineer",
   description:
     "Backend-focused software engineer and DataCamp-certified AI Engineer Associate building full-stack systems, distributed backends, and applied LLM applications.",
@@ -33,8 +40,25 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Frank Angelo Malubag — Software & AI Engineer",
     description:
-      "Backend-focused software engineer and DataCamp-certified AI Engineer Associate.",
+      "Backend architecture, distributed systems, and applied LLM engineering.",
     type: "website",
+    url: siteUrl,
+    siteName: "Frank Angelo Malubag",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Frank Angelo A. Malubag — Software & AI Engineer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Frank Angelo Malubag — Software & AI Engineer",
+    description:
+      "Backend architecture, distributed systems, and applied LLM engineering.",
+    images: ["/og-image.png"],
   },
 };
 
