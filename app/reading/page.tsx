@@ -15,8 +15,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Reading Plan — Frank Angelo Malubag",
-  description:
-    "The priority order for my reading: four stages, seventeen books — the AI engineering stack and the forward-deployed foundations. Open any book for its chapter focus, hands-on work, and the closed-book stress test.",
+  description: `The priority order for my reading: four stages, ${readingBookCount} books — the AI engineering stack and the forward-deployed foundations. Open any book for its chapter focus, hands-on work, and the closed-book stress test.`,
   alternates: { canonical: canonical("/reading") },
 };
 
@@ -39,7 +38,7 @@ export default function ReadingPage() {
             The order, the focus, and the practice.
           </h1>
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
-            Seventeen books across the AI engineering stack and the forward-deployed
+            {readingBookCount} books across the AI engineering stack and the forward-deployed
             foundations, ordered by what compounds. Open any book for the chapters
             that earn their pages, what to build while reading, and the closed-book
             questions that prove it landed.
@@ -54,6 +53,19 @@ export default function ReadingPage() {
         <ReadingRationale />
 
         <ReadingPlanExplorer />
+
+        <p className="mt-2 text-[10px] text-slate-600">
+          Cover art hotlinked from{" "}
+          <a
+            href="https://openlibrary.org/dev/docs/api/covers"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2 hover:text-slate-400 transition-colors"
+          >
+            Open Library
+          </a>
+          ; titles without catalogue art get a typographic tile.
+        </p>
 
         {/* Stress-test protocol */}
         <section id="stress-test" className="border-t border-slate-800/60 pt-8 space-y-6">

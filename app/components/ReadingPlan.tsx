@@ -31,11 +31,12 @@ export default function ReadingPlan() {
         <span className="text-slate-500">↗</span>
       </Link>
 
-      <div className="mt-5 grid gap-3 md:grid-cols-3">
+      <div className="mt-5 grid gap-3 md:grid-cols-3 items-start">
         {readingStages.map((stage) => {
-          // A stage with more books than fit one column takes the full row,
-          // so the shorter cards beside it are not stretched with dead space.
-          const wide = stage.books.length > 4;
+          // A stage whose list is long enough to need two columns takes the
+          // full row, so the shorter cards beside it are not stretched with
+          // dead space. `items-start` keeps every card at its own height.
+          const wide = stage.books.length > 6;
           return (
             <div
               key={stage.id}
