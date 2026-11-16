@@ -73,27 +73,51 @@ export default function NameBorder() {
 
     const reveal = () => el.classList.remove("is-off");
 
+    // The reveal starts when the whole name is on screen — the bottom edge of
+    // the last letter, not the top of the first. Until then the wordmark is
+    // invisible, so scrolling down to it shows the fade rather than a name that
+    // has been sitting there waiting.
+    const fullyVisible = () => {
+      const r = el.getBoundingClientRect();
+      return r.bottom <= window.innerHeight && r.top >= 0;
+    };
+
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      reveal();
+      io.disconnect();
+      window.clearInterval(fallback);
+      window.removeEventListener("scroll", onScroll);
+    };
+
     // Fallback: if the observer never fires — a browser quirk, or a page loaded
-    // already scrolled past the footer — the wordmark would otherwise stay at
-    // opacity 0 for good. Better to show it late than never show it.
-    const fallback = window.setTimeout(reveal, 2500);
+    // already scrolled past the footer — poll the position. It reveals only
+    // once the name is genuinely on screen, so the fade is never spent while
+    // the footer is still below the fold.
+    const fallback = window.setInterval(() => {
+      if (fullyVisible()) finish();
+    }, 500);
+    function onScroll() {
+      if (fullyVisible()) finish();
+    }
 
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            reveal();
-            io.disconnect();
-            window.clearTimeout(fallback);
-          }
+          if (entry.isIntersecting) finish();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 1 }
     );
     io.observe(el);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => {
       io.disconnect();
-      window.clearTimeout(fallback);
+      window.clearInterval(fallback);
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 

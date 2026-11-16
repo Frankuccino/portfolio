@@ -238,7 +238,12 @@ section[id] {
 .name-border {
   text-align: center;
   padding: 0.5rem 0 0.75rem;
-  transition: opacity 1.4s ease;
+  /* Slow at both ends, and long enough to read as a fade rather than a
+     switch. `ease` looks almost linear at this opacity range, so the curve is
+     spelled out: a steep S that holds back hard at the start and again at the
+     finish — at a tenth of the duration only a few percent of the fade has
+     happened, and the last tenth delivers the last few. */
+  transition: opacity 3s cubic-bezier(0.8, 0, 0.2, 1);
 }
 
 .name-border.is-off {
