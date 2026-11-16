@@ -10,7 +10,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="min-h-screen w-full flex items-center px-8 md:px-20 py-24 bg-slate-950 text-white relative overflow-hidden"
+      className="min-h-screen w-full flex items-center px-8 md:px-20 py-24 bg-slate-950 text-white relative overflow-x-clip"
     >
       <div className="mx-auto w-full max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-12 items-start">

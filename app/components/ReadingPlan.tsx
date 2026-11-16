@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   readingBookCount,
@@ -5,10 +7,16 @@ import {
   readingTotalHours,
   readingStages,
 } from "../data/readingPlan";
+import ReadingPlanLayout, { useActiveStage } from "./ReadingPlanLayout";
 
-export default function ReadingPlan() {
+/**
+ * The bands must be a child of the layout, not its sibling: the active stage
+ * comes from a context the layout provides, and a hook called in this component
+ * would read the default value instead of the scroll-spy's current one.
+ */
+function ReadingOrderHeader() {
   return (
-    <div className="mt-14 border-t border-slate-800/60 pt-8">
+    <div className="mt-14 border-t border-slate-800/60 pt-8 mb-5">
       <div className="flex items-baseline justify-between gap-3">
         <h3 className="text-xs font-mono uppercase tracking-widest text-slate-500">
           {"// Reading Order"}
@@ -19,8 +27,10 @@ export default function ReadingPlan() {
       </div>
 
       <p className="mt-2 max-w-2xl text-sm text-slate-400 leading-relaxed">
-        Priority order for the AI engineering stack. Stage 1 and Stage 2 are read cover
-        cover; Stage 3 is a reference shelf, opened when a problem demands it.
+        Priority order for the AI engineering stack — six stages and a domain
+        elective. Stages 1, 2, 3, 4 and 6 are read cover to cover; Stage 5 is a
+        reference shelf, and the elective is opened when a fraud or risk problem
+        appears.
       </p>
 
       <Link
@@ -30,39 +40,47 @@ export default function ReadingPlan() {
         <span>Chapter focus, hands-on work, and the stress-test protocol</span>
         <span className="text-slate-500">↗</span>
       </Link>
+    </div>
+  );
+}
 
-      <div className="mt-5 grid gap-3 md:grid-cols-3 items-start">
+/** The bands are a separate component so they render inside the layout's
+ *  provider and can read the active stage from context. */
+function ReadingPlanBands() {
+  const activeId = useActiveStage();
+
+  return (
+    <div className="space-y-3">
+      {/* One full-width band per stage, books in a responsive grid. Stages
+          hold between one and ten books; packing those into equal columns
+          either strands a short card beside empty space or squeezes a long one
+          into a skinny tower. A band sizes to its own content, so nothing is
+          stretched and nothing is cramped. */}
         {readingStages.map((stage) => {
-          // A stage whose list is long enough to need two columns takes the
-          // full row, so the shorter cards beside it are not stretched with
-          // dead space. `items-start` keeps every card at its own height.
-          const wide = stage.books.length > 6;
+          const isActive = stage.id === activeId;
           return (
-            <div
+            <section
               key={stage.id}
-              className={
-                wide
-                  ? "md:col-span-3 rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-4"
-                  : "rounded-xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-md p-4"
-              }
+              id={stage.id}
+              className={`scroll-mt-28 rounded-xl border p-4 backdrop-blur-md transition-colors ${
+                isActive
+                  ? "border-[#3e6274]/60 bg-[#3e6274]/[0.07]"
+                  : "border-slate-800/60 bg-slate-900/40"
+              }`}
             >
-              <h4 className="text-[11px] font-mono uppercase tracking-widest text-slate-400">
-                {stage.label}
-              </h4>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <h4 className="text-[11px] font-mono uppercase tracking-widest text-slate-400">
+                  {stage.label}
+                </h4>
+                <span className="text-[11px] tabular-nums text-slate-500">
+                  {stage.pages.toLocaleString()} pp · ~{stage.hours} h · {stage.note}
+                </span>
+              </div>
               <p className="mt-1 text-[11px] leading-snug text-slate-400">
                 {stage.objective}
               </p>
-              <p className="mt-1.5 text-[11px] leading-snug text-slate-500">
-                {stage.pages.toLocaleString()} pp · ~{stage.hours} h · {stage.note}
-              </p>
 
-              <ul
-                className={
-                  wide
-                    ? "mt-3 grid gap-x-6 gap-y-2.5 sm:grid-cols-2"
-                    : "mt-3 space-y-2.5"
-                }
-              >
+              <ul className="mt-3 grid gap-x-6 gap-y-2.5 sm:grid-cols-2 lg:grid-cols-3">
                 {stage.books.map((book) => (
                   <li key={book.order} className="flex items-baseline gap-2.5">
                     <span className="w-4 shrink-0 text-[10px] font-mono tabular-nums text-slate-600">
@@ -78,10 +96,17 @@ export default function ReadingPlan() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
           );
         })}
-      </div>
     </div>
+  );
+}
+
+export default function ReadingPlan() {
+  return (
+    <ReadingPlanLayout header={<ReadingOrderHeader />}>
+      <ReadingPlanBands />
+    </ReadingPlanLayout>
   );
 }

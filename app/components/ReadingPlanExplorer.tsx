@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { readingStages, daysToFinish, type ReadingBook } from "../data/readingPlan";
-import { coverUrl } from "../lib/covers";
+import { coverUrl, googleBooksCoverUrl } from "../lib/covers";
 import BookMapModal from "./BookMapModal";
 import BookCoverPreview, { type CoverPreviewState } from "./BookCoverPreview";
-
-const pad = (n: number) => String(n).padStart(2, "0");
+import { pad, shortLabel, useActiveStage } from "./ReadingPlanLayout";
 
 /** How long the pointer must rest on a card before the cover opens. */
 const OPEN_DELAY_MS = 90;
@@ -27,19 +26,25 @@ const priorityStyles: Record<string, string> = {
 export default function ReadingPlanExplorer() {
   const [selected, setSelected] = useState<number | null>(null);
   const [preview, setPreview] = useState<CoverPreviewState | null>(null);
+  // The layout owns the scroll-spy; consuming it here keeps the rail and this
+  // highlight from ever disagreeing about which stage is on screen.
+  const activeId = useActiveStage();
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Warm the cover cache after mount so the first hover is not a blank panel.
   useEffect(() => {
-    const ids = readingStages
-      .flatMap((stage) => stage.books)
-      .map((book) => book.coverId)
-      .filter((id): id is number => Boolean(id));
+    const books = readingStages.flatMap((stage) => stage.books);
     const timer = setTimeout(() => {
-      ids.forEach((id) => {
+      books.forEach((book) => {
+        const url = book.coverId
+          ? coverUrl(book.coverId)
+          : book.googleBooksId
+            ? googleBooksCoverUrl(book.googleBooksId)
+            : null;
+        if (!url) return;
         const img = new Image();
-        img.src = coverUrl(id);
+        img.src = url;
       });
     }, 600);
     return () => clearTimeout(timer);
@@ -53,7 +58,12 @@ export default function ReadingPlanExplorer() {
     [],
   );
 
-  const closeNow = () => {
+  /**
+   * Closing has to be referentially stable: the preview panel re-measures its
+   * anchor on every scroll frame and subscribes to `onClose`, so an inline
+   * function would tear down and rebuild that subscription on each render.
+   */
+  const closeNow = useCallback(() => {
     if (openTimer.current) {
       clearTimeout(openTimer.current);
       openTimer.current = null;
@@ -63,7 +73,7 @@ export default function ReadingPlanExplorer() {
       closeTimer.current = null;
     }
     setPreview(null);
-  };
+  }, []);
 
   const handleEnter = (book: ReadingBook, element: HTMLButtonElement) => {
     if (closeTimer.current) {
@@ -71,10 +81,10 @@ export default function ReadingPlanExplorer() {
       closeTimer.current = null;
     }
     if (openTimer.current) clearTimeout(openTimer.current);
-    // The rect is read when the timer fires, not on entry: the page may still be
-    // smooth-scrolling, and a rect captured now would place the panel wrongly.
+    // The anchor element is kept, not its rect: the panel re-measures it as the
+    // page scrolls, so the cover tracks its card instead of closing on scroll.
     openTimer.current = setTimeout(() => {
-      setPreview({ book, rect: element.getBoundingClientRect() });
+      setPreview({ book, anchor: element });
     }, OPEN_DELAY_MS);
   };
 
@@ -97,92 +107,151 @@ export default function ReadingPlanExplorer() {
 
   return (
     <>
-      {readingStages.map((entry, stageIndex) => (
-        <section key={entry.id} id={entry.id} className="mb-12">
-          {/* The index chip is what makes one stage visually distinct from the
-              next; the rule beneath is the shared baseline. */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#3e6274]/30 pb-2.5 mb-3">
-            <span className="text-[10px] font-mono tabular-nums px-1.5 py-0.5 rounded border border-[#3e6274]/40 bg-[#3e6274]/15 text-slate-200">
-              {pad(stageIndex + 1)}
-            </span>
-            <h2 className="text-sm font-semibold tracking-wide text-slate-100">
-              {entry.label}
-            </h2>
-            <span className="text-[11px] text-slate-500 tabular-nums">
-              {entry.pages.toLocaleString()} pp · ~{entry.hours} h
-            </span>
-            <span className="text-[11px] text-slate-500">{entry.note}</span>
-          </div>
-          <p className="mb-5 max-w-3xl text-xs leading-relaxed text-slate-400">
-            {entry.objective}
-          </p>
+      {/* Jump nav for the narrow viewport, where the rail has no room. */}
+      <div className="lg:hidden mb-10 -mx-1 overflow-x-auto">
+        <ol className="flex gap-1.5 px-1 py-1">
+          {readingStages.map((entry, i) => {
+            const isActive = entry.id === activeId;
+            return (
+              <li key={entry.id} className="shrink-0">
+                <a
+                  href={`#${entry.id}`}
+                  className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
+                    isActive
+                      ? "border-[#3e6274]/60 bg-[#3e6274]/15 text-slate-100"
+                      : "border-slate-800/70 text-slate-500 hover:text-slate-300"
+                  }`}
+                >
+                  <span className="font-mono tabular-nums text-[10px]">
+                    {entry.parallel ? "E" : pad(i + 1)}
+                  </span>
+                  {shortLabel(entry.label)}
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
 
-          {/* The accent rule binds every card in the grid to its stage. */}
-          <div className="border-l-2 border-[#3e6274]/40 pl-3 sm:pl-4">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {entry.books.map((item) => (
-              <button
-                key={item.order}
-                type="button"
-                onClick={() => setSelected(item.order)}
-                onMouseEnter={(event) => handleEnter(item, event.currentTarget)}
-                onMouseLeave={handleLeave}
-                className="group text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors cursor-pointer flex flex-col items-start"
+      {readingStages.map((entry, stageIndex) => {
+        const isActive = entry.id === activeId;
+        return (
+          <section key={entry.id} id={entry.id} className="mb-16 scroll-mt-28">
+            {/* The index chip is what makes one stage visually distinct from the
+                next; the rule beneath is the shared baseline. The active stage is
+                filled rather than outlined and its header carries a wash. The
+                padding is inset only — a negative margin here would push the
+                header past the column's edge, which is what made the page read
+                as jagged. */}
+            <div
+              className={`flex flex-wrap items-center gap-x-3 gap-y-1 rounded-md border-b px-2 pb-2.5 mb-4 transition-colors ${
+                isActive
+                  ? "border-[#3e6274]/60 bg-[#3e6274]/10"
+                  : "border-[#3e6274]/30"
+              }`}
+            >
+              <span
+                className={`text-[10px] font-mono tabular-nums px-1.5 py-0.5 rounded border transition-colors ${
+                  isActive
+                    ? "border-[#3e6274] bg-[#3e6274] text-white"
+                    : "border-[#3e6274]/40 bg-[#3e6274]/15 text-slate-200"
+                }`}
               >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-[10px] font-mono tabular-nums text-slate-600">
-                    {pad(item.order)}
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    {item.kind === "report" && (
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 border border-slate-800/70 rounded px-1.5 py-0.5">
-                        Report
-                      </span>
-                    )}
-                    {item.priority && (
-                      <span
-                        className={`text-[10px] font-mono uppercase tracking-widest border rounded px-1.5 py-0.5 ${priorityStyles[item.priority] ?? priorityStyles.medium}`}
-                      >
-                        {item.priority}
-                      </span>
-                    )}
-                    <span className="text-[11px] text-slate-500 tabular-nums">
-                      ~{item.hours} h
-                    </span>
-                  </div>
-                </div>
+                {/* A parallel elective is not part of the numbered sequence. */}
+                {entry.parallel ? "E" : pad(stageIndex + 1)}
+              </span>
+              <h2
+                className={`text-sm font-semibold tracking-wide transition-colors ${
+                  isActive ? "text-white" : "text-slate-100"
+                }`}
+              >
+                {entry.label}
+              </h2>
+              <span className="text-[11px] text-slate-500 tabular-nums">
+                {entry.pages.toLocaleString()} pp · ~{entry.hours} h
+              </span>
+              <span className="text-[11px] text-slate-500">{entry.note}</span>
+            </div>
+            <p className="mb-6 max-w-3xl text-xs leading-relaxed text-slate-400">
+              {entry.objective}
+            </p>
 
-                {/* Fixed title height so every body starts at the same Y. */}
-                <h3 className="mt-1.5 min-h-[2.5rem] text-sm font-semibold leading-snug text-slate-100">
-                  {item.title}
-                </h3>
-                <p className="mt-0.5 text-[11px] text-slate-500">
-                  {item.author} · {item.pages.toLocaleString()} pp
-                </p>
-                {item.track && (
-                  <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-[#3e6274]">
-                    {item.track}
-                  </p>
-                )}
-                <p className="mt-2 text-xs leading-relaxed text-slate-400">
-                  {item.tagline}
-                </p>
-                <p className="mt-2 text-[11px] tabular-nums text-slate-500">
-                  {item.dailyCommitment} min/day · {daysToFinish(item)} days
-                </p>
+            {/* The accent rule binds every card in the grid to its stage, and
+                brightens while that stage is the one on screen. */}
+            <div
+              className={`border-l-2 pl-3 sm:pl-4 transition-colors ${
+                isActive ? "border-[#3e6274]" : "border-[#3e6274]/40"
+              }`}
+            >
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {entry.books.map((item) => (
+                  <button
+                    key={item.order}
+                    type="button"
+                    onClick={() => setSelected(item.order)}
+                    onMouseEnter={(event) => handleEnter(item, event.currentTarget)}
+                    onMouseLeave={handleLeave}
+                    className="group text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors cursor-pointer flex flex-col items-start"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-mono tabular-nums text-slate-600">
+                        {pad(item.order)}
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        {item.kind === "report" && (
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 border border-slate-800/70 rounded px-1.5 py-0.5">
+                            Report
+                          </span>
+                        )}
+                        {item.priority && (
+                          <span
+                            className={`text-[10px] font-mono uppercase tracking-widest border rounded px-1.5 py-0.5 ${priorityStyles[item.priority] ?? priorityStyles.medium}`}
+                          >
+                            {item.priority}
+                          </span>
+                        )}
+                        <span className="text-[11px] text-slate-500 tabular-nums">
+                          ~{item.hours} h
+                        </span>
+                      </div>
+                    </div>
 
-                <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
-                  View map
-                  <span className="text-slate-500 group-hover:text-[#3e6274] transition-colors">
-                    →
-                  </span>
-                </span>
-              </button>
-            ))}
-          </div>
-          </div>
-        </section>
-      ))}
+                    {/* Fixed title height so every body starts at the same Y. */}
+                    <h3 className="mt-1.5 min-h-[2.5rem] text-sm font-semibold leading-snug text-slate-100">
+                      {item.title}
+                    </h3>
+                    <p className="mt-0.5 text-[11px] text-slate-500">
+                      {item.author} · {item.pages.toLocaleString()} pp
+                    </p>
+                    {item.track && (
+                      <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-[#3e6274]">
+                        {item.track}
+                      </p>
+                    )}
+                    <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                      {item.tagline}
+                    </p>
+                    {/* The footer is pushed to the card's bottom edge so the pace
+                        line and the action align across a row even when the
+                        taglines wrap to different lengths. */}
+                    <div className="mt-auto pt-2">
+                      <p className="text-[11px] tabular-nums text-slate-500">
+                        {item.dailyCommitment} min/day · {daysToFinish(item)} days
+                      </p>
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
+                        View map
+                        <span className="text-slate-500 group-hover:text-[#3e6274] transition-colors">
+                          →
+                        </span>
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })}
 
       <BookCoverPreview preview={preview} onClose={closeNow} />
 
