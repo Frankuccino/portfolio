@@ -293,6 +293,69 @@ export const featuredCertificates: FeaturedCertificate[] = [
     ],
   },
   {
+    id: "aws-ai-practitioner",
+    badge: "Completion Track",
+    title: "Becoming an AI Practitioner",
+    issuer: "AWS Skills Centers",
+    completed: "Mar 2026",
+    description:
+      "A five-part AWS Skills Centers track — AI fundamentals, generative AI, prompts and foundation models, customization and responsible AI, and implementation — completed across March 2026.",
+    images: [
+      {
+        src: "/certificates/aws-ai-practitioner-1.jpg",
+        label: "Part 1 — Introduction to AI",
+        width: 1400,
+        height: 806,
+      },
+      {
+        src: "/certificates/aws-ai-practitioner-2.jpg",
+        label: "Part 2 — Introduction to Generative AI",
+        width: 1400,
+        height: 806,
+      },
+      {
+        src: "/certificates/aws-ai-practitioner-3.jpg",
+        label: "Part 3 — Prompts and Working with FMs",
+        width: 1400,
+        height: 806,
+      },
+      {
+        src: "/certificates/aws-ai-practitioner-4.jpg",
+        label: "Part 4 — FM Customization and Responsible AI",
+        width: 1400,
+        height: 806,
+      },
+      {
+        src: "/certificates/aws-ai-practitioner-5.jpg",
+        label: "Part 5 — Implementing Generative AI",
+        width: 1400,
+        height: 806,
+      },
+    ],
+    stats: [
+      { label: "Total Coursework", value: "18 hrs" },
+      { label: "Parts Completed", value: "5" },
+    ],
+  },
+  {
+    id: "aws-cloud-technical-essentials",
+    badge: "Course Certificate",
+    title: "AWS Cloud Technical Essentials",
+    issuer: "AWS · Coursera",
+    completed: "Dec 24, 2023",
+    description:
+      "An online course authorized by Amazon Web Services and offered through Coursera — the AWS cloud fundamentals course, covering core services and the cloud's operating model.",
+    images: [
+      {
+        src: "/certificates/aws-cloud-technical-essentials.jpg",
+        label: "Certificate",
+        width: 1400,
+        height: 806,
+      },
+    ],
+    stats: [{ label: "Credential ID", value: "TEG35MXZR7NJ", mono: true }],
+  },
+  {
     id: "kodego-fullstack",
     badge: "Foundational Bootcamp",
     title: "Full Stack Web Development Bootcamp",

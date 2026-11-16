@@ -58,14 +58,16 @@ export default function CertificateCard({ cert, onOpen }: CertificateCardProps) 
       }
       className="group relative rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md overflow-hidden cursor-pointer transition-all hover:border-[#3e6274]/50 hover:shadow-[0_0_24px_rgba(62,98,116,0.18)]"
     >
-      <div className="relative overflow-hidden">
+      {/* Fixed frame, so a certificate of any source aspect keeps the grid
+          row even and switching documents never resizes the card. */}
+      <div className="relative aspect-[1400/806] overflow-hidden">
         <Image
           src={cert.image}
           alt={cert.title}
           width={CERT_WIDTH}
           height={CERT_HEIGHT}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="block w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+          className="absolute inset-0 block h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <span className="absolute bottom-2 right-2 text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded-md bg-slate-950/85 border border-slate-700 text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
