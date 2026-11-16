@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FooterArt from "./FooterArt";
 import NameBorder from "./NameBorder";
 
 const nav = [
@@ -43,6 +44,12 @@ export default function Footer() {
           `overflow-hidden`, so nothing clips the wordmark. */}
       <div className="footer-bg" aria-hidden="true" />
 
+      {/* The closing landscape, laid over the field and under the content. It
+          fills the whole footer rather than a band at the bottom, and is
+          masked so its opacity ramps from nothing at the top to full at the
+          bottom edge — the text sits where the painting has faded out. */}
+      <FooterArt />
+
       {/* Same measure as the hero: full-bleed with the hero's gutter, no
           max-width. The hero's `max-w-8xl` does not exist in this Tailwind
           setup and computes to `none`, so a max-width here would be the thing
@@ -51,7 +58,7 @@ export default function Footer() {
         {/* Identity and the two link columns. The name carries the hierarchy;
             the links are secondary, so they are smaller and dimmer but still
             above body-text contrast. */}
-        <div className="grid gap-10 pb-14 pt-16 sm:pb-16 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="grid gap-10 pt-16 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div>
             <p className="text-[10px] font-mono uppercase tracking-widest text-[#6f9ab5]">
               {"// Dumaguete City, Philippines"}
@@ -122,14 +129,14 @@ export default function Footer() {
         {/* Sits close under the columns; the leftover height drops below the
             sign-off instead of above it, so the name reads as the closer
             rather than floating in an empty band. */}
-        <div className="mt-10">
+        <div className="mt-4">
           <NameBorder />
         </div>
 
-        <div className="mt-auto border-t border-white/10">
-          <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-1.5 py-6 text-xs text-slate-400">
-            <p>© {new Date().getFullYear()} Frank Angelo A. Malubag</p>
-          </div>
+        {/* The copyright is the caption to the sign-off, so it sits directly
+            under the glyphs. */}
+        <div className="mt-5 flex flex-col-reverse sm:flex-row items-center justify-between gap-1.5 py-3 text-xs text-slate-400">
+          <p>© {new Date().getFullYear()} Frank Angelo A. Malubag</p>
         </div>
       </div>
     </footer>
