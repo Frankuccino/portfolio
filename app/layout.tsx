@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { GrainGradient } from "@paper-design/shaders-react";
 import Navbar from "./components/Navbar";
@@ -16,6 +16,18 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+/**
+ * Display face for the footer masthead. Kept separate from the body font on
+ * purpose: the name is the one place the site is allowed to have a voice of
+ * its own, and sharing the body face with it would make it read as a headline
+ * rather than a sign-off.
+ */
+const display = Bricolage_Grotesque({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["800"],
 });
 
 /**
@@ -106,7 +118,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
     >
       <head>
         {/* Person entity: connects this site to the same person on GitHub and LinkedIn */}

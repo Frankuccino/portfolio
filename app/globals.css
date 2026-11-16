@@ -210,25 +210,49 @@ section[id] {
   }
 }
 
-/* ——— Footer ghost name backdrop ——— */
+/* ——— Footer field ——— */
 
-.ghost-name {
-  font-size: clamp(2.5rem, 8.5vw, 9rem);
-  font-weight: 900;
-  line-height: 1.2;
-  letter-spacing: -0.035em;
-  white-space: nowrap;
-  /* The line box is taller than the glyphs, so nothing clips */
-  padding: 0.06em 0;
-  color: transparent;
-  background: linear-gradient(
-    to top,
-    transparent 0%,
-    rgba(148, 163, 184, 0.22) 22%,
-    rgba(148, 163, 184, 0.3) 50%,
-    rgba(148, 163, 184, 0.16) 74%,
-    transparent 96%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
+/* Charcoal on the left falling to a dark teal-slate on the right — the grain's
+   hue, kept low. The page behind is already near-black, so the shift is
+   deliberately quiet. */
+.footer-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(110% 70% at 82% 8%, rgba(62, 98, 116, 0.18) 0%, rgba(62, 98, 116, 0) 58%),
+    linear-gradient(100deg, #0b0e13 0%, #0c151b 35%, #122830 70%, #1e3d47 100%);
+  /* The top edge fades in over 180px instead of starting as a hard rule, so the
+     boundary with the page above reads as a blend rather than a seam. */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 180px);
+  mask-image: linear-gradient(180deg, transparent 0, #000 180px);
 }
+
+/* ——— Footer name border ——— */
+
+/* The footer wordmark: hollow outline type, straight and full width, sitting
+   inside the footer above the columns. Dim over most of the name, with one
+   light band doing the work. */
+
+.name-border {
+  text-align: center;
+  padding: 2rem 0 2.5rem;
+  transition: opacity 1.4s ease;
+}
+
+.name-border.is-off {
+  opacity: 0;
+}
+
+/* The wordmark is glyph geometry (see NameBorder.tsx), so there is no text
+   stylesheets to set here — the fill and the glow are painted inside the SVG.
+   `.name-border` carries the reveal and the spacing only. */
+
+@media (prefers-reduced-motion: reduce) {
+  .name-border {
+    transition: none;
+  }
+}
+
+

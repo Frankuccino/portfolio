@@ -79,7 +79,7 @@ export default function Hero() {
             WebkitTextFillColor: "transparent",
           }}
         >
-          Frank Angelo A. Malubag
+          Frank Angelo Malubag
         </h1>
 
         {/* Title - Scaled Larger */}

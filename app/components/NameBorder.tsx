@@ -1,0 +1,206 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+/**
+ * The footer's closing wordmark.
+ *
+ * The name is real glyph geometry, not a `<text>` element: each letter is an
+ * SVG `<path>` taken from the font's own outlines and laid out with the font's
+ * advances and kerning. That is the construction the reference site uses, and
+ * it buys three things a live `<text>` cannot:
+ *
+ *   - the gradient is a fill, so it covers the glyph bodies — a stroke can
+ *     only ever colour the outline, and `-webkit-text-stroke` takes no
+ *     gradient at all;
+ *   - the glyphs no longer depend on the webfont arriving, so the word cannot
+ *     silently swap face or fall back in a screenshot or a PDF;
+ *   - each letter is addressable, so per-glyph effects are possible later.
+ *
+ * Outlines were generated from Geist Mono (400) — the reference uses a mono
+ * for this exact element — at 100 units/em with the baseline at y=100. The
+ * geometry is frozen below; nothing is measured at render time.
+ *
+ * Decoration only — the identity column carries the name as real text.
+ */
+
+/**
+ * Glyph outlines for "Frank Angelo Malubag", in order, spaces omitted.
+ * Generated from Geist Mono 400; do not hand-edit. Re-run the extractor if the
+ * name or the face ever changes.
+ */
+const GLYPHS: string[] = [
+  "M18.600 100L10 100L10 29L54 29L54 37.200L18.600 37.200L18.600 61.200L52.200 61.200L52.200 69.400L18.600 69.400L18.600 100Z",
+  "M108 100L69 100L69 92.600L82.800 92.600L82.800 54.400L69 54.400L69 47L89.800 47L90.400 57.300Q91.500 52.800 94 50.300L94 50.300Q97.400 47 103.100 47L103.100 47L114 47L114 54.600L103.200 54.600Q99.300 54.600 96.650 56.150Q94 57.700 92.600 60.650Q91.200 63.600 91.200 68L91.200 68L91.200 92.600L108 92.600L108 100Z",
+  "M143 101.200L143 101.200Q138 101.200 134 99.400Q130 97.600 127.700 94.350Q125.400 91.100 125.400 86.800L125.400 86.800Q125.400 80 129.450 76.250Q133.500 72.500 142.200 70.800L142.200 70.800L160 67.200Q160 60.400 156.950 57.100Q153.900 53.800 148.200 53.800L148.200 53.800Q142.700 53.800 139.600 56.250Q136.500 58.700 135.300 63.300L135.300 63.300L126.400 62.600Q127.900 55.100 133.550 50.450Q139.200 45.800 148.200 45.800L148.200 45.800Q157.800 45.800 163.100 51.550Q168.400 57.300 168.400 67.400L168.400 67.400L168.400 89.400Q168.400 91.200 169.200 91.900Q170 92.600 171.600 92.600L171.600 92.600L175 92.600L175 100Q174.400 100.100 173.100 100.150Q171.800 100.200 170.600 100.200L170.600 100.200Q167.200 100.200 164.850 99.100Q162.500 98 161.300 95.500L161.300 95.500Q160.700 94.300 160.300 92.600L160.300 92.600Q159.500 94 158.300 95.300L158.300 95.300Q155.600 98.100 151.600 99.650Q147.600 101.200 143 101.200ZM143.800 93.800L143.800 93.800Q149.200 93.800 152.800 91.950Q156.400 90.100 158.200 86.750Q160 83.400 160 79L160 79L160 74.400L143.800 77.600Q138.400 78.600 136.300 80.650Q134.200 82.700 134.200 86L134.200 86Q134.200 89.700 136.750 91.750Q139.300 93.800 143.800 93.800Z",
+  "M196.800 100L188.400 100L188.400 47L196.100 47L196.300 56.500Q197.300 53.800 199.100 51.800L199.100 51.800Q201.700 48.800 205.400 47.300Q209.100 45.800 213.200 45.800L213.200 45.800Q219.300 45.800 223.350 48.500Q227.400 51.200 229.500 55.750Q231.600 60.300 231.600 65.900L231.600 65.900L231.600 100L223.200 100L223.200 68.300Q223.200 60.900 220.300 57.050Q217.400 53.200 211.400 53.200L211.400 53.200Q207.300 53.200 204 54.950Q200.700 56.700 198.750 60.050Q196.800 63.400 196.800 68.300L196.800 68.300L196.800 100Z",
+  "M257.400 100L249 100L249 29L257.400 29L257.400 75.500L283.200 47L294.400 47L273.500 69.500L295.400 100L285.200 100L267.800 75.200L257.400 86.200L257.400 100Z",
+  "M371.800 100L362.600 100L384.200 29L395.800 29L417.400 100L408.200 100L402.400 79.800L377.600 79.800L371.800 100ZM380 71.400L400 71.400L390 36.800L380 71.400Z",
+  "M436.800 100L428.400 100L428.400 47L436.100 47L436.300 56.500Q437.300 53.800 439.100 51.800L439.100 51.800Q441.700 48.800 445.400 47.300Q449.100 45.800 453.200 45.800L453.200 45.800Q459.300 45.800 463.350 48.500Q467.400 51.200 469.500 55.750Q471.600 60.300 471.600 65.900L471.600 65.900L471.600 100L463.200 100L463.200 68.300Q463.200 60.900 460.300 57.050Q457.400 53.200 451.400 53.200L451.400 53.200Q447.300 53.200 444 54.950Q440.700 56.700 438.750 60.050Q436.800 63.400 436.800 68.300L436.800 68.300L436.800 100Z",
+  "M509.700 116.200L509.700 116.200Q504 116.200 499.400 114.300Q494.800 112.400 491.700 108.900Q488.600 105.400 487.500 100.800L487.500 100.800L496.300 100.200Q497.500 103.900 500.550 106.050Q503.600 108.200 509.700 108.200L509.700 108.200Q516.900 108.200 520.750 105.300Q524.600 102.400 524.600 96.600L524.600 96.600L524.600 88Q522.700 92.200 518.500 94.700Q514.300 97.200 509.100 97.200L509.100 97.200Q502.400 97.200 497.150 93.900Q491.900 90.600 488.950 84.800Q486 79 486 71.500L486 71.500Q486 63.900 488.900 58.150Q491.800 52.400 496.950 49.100Q502.100 45.800 508.700 45.800L508.700 45.800Q514.300 45.800 518.750 48.400Q523.200 51 525 55.400L525 55.400L525 47L533 47L533 96.400Q533 102.600 530.200 107.050Q527.400 111.500 522.200 113.850Q517 116.200 509.700 116.200ZM509.500 89.200L509.500 89.200Q516.300 89.200 520.400 84.450Q524.500 79.700 524.600 71.500L524.600 71.500Q524.700 66 522.850 62.050Q521 58.100 517.550 55.950Q514.100 53.800 509.500 53.800L509.500 53.800Q502.500 53.800 498.650 58.550Q494.800 63.300 494.800 71.500L494.800 71.500Q494.800 79.700 498.750 84.450Q502.700 89.200 509.500 89.200Z",
+  "M570.600 101.200L570.600 101.200Q563.100 101.200 557.650 97.800Q552.200 94.400 549.250 88.150Q546.300 81.900 546.300 73.500L546.300 73.500Q546.300 65.100 549.250 58.900Q552.200 52.700 557.550 49.250Q562.900 45.800 570.200 45.800L570.200 45.800Q577.100 45.800 582.400 49.050Q587.700 52.300 590.700 58.500Q593.700 64.700 593.700 73.600L593.700 73.600L593.700 76.100L555.100 76.100Q555.600 84.600 559.650 88.900Q563.700 93.200 570.600 93.200L570.600 93.200Q575.800 93.200 579.150 90.750Q582.500 88.300 583.800 84.300L583.800 84.300L592.800 85Q590.700 92.100 584.850 96.650Q579 101.200 570.600 101.200ZM555.100 68.700L555.100 68.700L584.500 68.700Q583.900 61 580 57.400Q576.100 53.800 570.200 53.800L570.200 53.800Q564.100 53.800 560.150 57.550Q556.200 61.300 555.100 68.700Z",
+  "M654 100L606 100L606 92.600L627.300 92.600L627.300 43.200Q627.300 40 625.500 38.200Q623.700 36.400 620.500 36.400L620.500 36.400L608 36.400L608 29L620.900 29Q628.200 29 631.950 32.750Q635.700 36.500 635.700 43.800L635.700 43.800L635.700 92.600L654 92.600L654 100Z",
+  "M690 101.200L690 101.200Q682.700 101.200 677.250 97.800Q671.800 94.400 668.800 88.150Q665.800 81.900 665.800 73.500L665.800 73.500Q665.800 65 668.800 58.800Q671.800 52.600 677.250 49.200Q682.700 45.800 690 45.800L690 45.800Q697.300 45.800 702.750 49.200Q708.200 52.600 711.200 58.800Q714.200 65 714.200 73.500L714.200 73.500Q714.200 81.900 711.200 88.150Q708.200 94.400 702.750 97.800Q697.300 101.200 690 101.200ZM690 93.200L690 93.200Q697.300 93.200 701.350 87.950Q705.400 82.700 705.400 73.500L705.400 73.500Q705.400 64.300 701.350 59.050Q697.300 53.800 690 53.800L690 53.800Q682.700 53.800 678.650 59.050Q674.600 64.300 674.600 73.500L674.600 73.500Q674.600 82.700 678.650 87.950Q682.700 93.200 690 93.200Z",
+  "M813.800 92L806.200 92L793.600 40.300L793.600 100L785 100L785 29L798 29L810 79.100L822 29L835 29L835 100L826.400 100L826.400 40.300L813.800 92Z",
+  "M863 101.200L863 101.200Q858 101.200 854 99.400Q850 97.600 847.700 94.350Q845.400 91.100 845.400 86.800L845.400 86.800Q845.400 80 849.450 76.250Q853.500 72.500 862.200 70.800L862.200 70.800L880 67.200Q880 60.400 876.950 57.100Q873.900 53.800 868.200 53.800L868.200 53.800Q862.700 53.800 859.600 56.250Q856.500 58.700 855.300 63.300L855.300 63.300L846.400 62.600Q847.900 55.100 853.550 50.450Q859.200 45.800 868.200 45.800L868.200 45.800Q877.800 45.800 883.100 51.550Q888.400 57.300 888.400 67.400L888.400 67.400L888.400 89.400Q888.400 91.200 889.200 91.900Q890 92.600 891.600 92.600L891.600 92.600L895 92.600L895 100Q894.400 100.100 893.100 100.150Q891.800 100.200 890.600 100.200L890.600 100.200Q887.200 100.200 884.850 99.100Q882.500 98 881.300 95.500L881.300 95.500Q880.700 94.300 880.300 92.600L880.300 92.600Q879.500 94 878.300 95.300L878.300 95.300Q875.600 98.100 871.600 99.650Q867.600 101.200 863 101.200ZM863.800 93.800L863.800 93.800Q869.200 93.800 872.800 91.950Q876.400 90.100 878.200 86.750Q880 83.400 880 79L880 79L880 74.400L863.800 77.600Q858.400 78.600 856.300 80.650Q854.200 82.700 854.200 86L854.200 86Q854.200 89.700 856.750 91.750Q859.300 93.800 863.800 93.800Z",
+  "M954 100L906 100L906 92.600L927.300 92.600L927.300 43.200Q927.300 40 925.500 38.200Q923.700 36.400 920.500 36.400L920.500 36.400L908 36.400L908 29L920.900 29Q928.200 29 931.950 32.750Q935.700 36.500 935.700 43.800L935.700 43.800L935.700 92.600L954 92.600L954 100Z",
+  "M986.300 101.200L986.300 101.200Q978.400 101.200 973.700 95.850Q969 90.500 969 81.100L969 81.100L969 47L977.400 47L977.400 78.800Q977.400 86.500 980.150 90.150Q982.900 93.800 988.600 93.800L988.600 93.800Q994.800 93.800 998.400 89.750Q1002 85.700 1002 78.600L1002 78.600L1002 47L1010.400 47L1010.400 100L1002.400 100L1002.400 91.400Q1000.700 95.200 997.600 97.600L997.600 97.600Q993.100 101.200 986.300 101.200Z",
+  "M1053.300 101.200L1053.300 101.200Q1049.100 101.200 1045.600 99.800Q1042.100 98.400 1039.600 95.700L1039.600 95.700Q1038 94.100 1036.900 92L1036.900 92L1036.600 100L1029 100L1029 29L1037.400 29L1037.400 54.400Q1038.300 52.900 1039.800 51.400L1039.800 51.400Q1042.100 49 1045.600 47.400Q1049.100 45.800 1053.300 45.800L1053.300 45.800Q1060.300 45.800 1065.400 49.200Q1070.500 52.600 1073.250 58.800Q1076 65 1076 73.500Q1076 82 1073.250 88.200Q1070.500 94.400 1065.400 97.800Q1060.300 101.200 1053.300 101.200ZM1052.800 93.200L1052.800 93.200Q1059.500 93.200 1063.350 87.900Q1067.200 82.600 1067.200 73.500L1067.200 73.500Q1067.200 64.300 1063.350 59.050Q1059.500 53.800 1053 53.800L1053 53.800Q1048.100 53.800 1044.600 56.150Q1041.100 58.500 1039.250 62.900Q1037.400 67.300 1037.400 73.500L1037.400 73.500Q1037.400 79.500 1039.250 83.950Q1041.100 88.400 1044.550 90.800Q1048 93.200 1052.800 93.200Z",
+  "M1103 101.200L1103 101.200Q1098 101.200 1094 99.400Q1090 97.600 1087.700 94.350Q1085.400 91.100 1085.400 86.800L1085.400 86.800Q1085.400 80 1089.450 76.250Q1093.500 72.500 1102.200 70.800L1102.200 70.800L1120 67.200Q1120 60.400 1116.950 57.100Q1113.900 53.800 1108.200 53.800L1108.200 53.800Q1102.700 53.800 1099.600 56.250Q1096.500 58.700 1095.300 63.300L1095.300 63.300L1086.400 62.600Q1087.900 55.100 1093.550 50.450Q1099.200 45.800 1108.200 45.800L1108.200 45.800Q1117.800 45.800 1123.100 51.550Q1128.400 57.300 1128.400 67.400L1128.400 67.400L1128.400 89.400Q1128.400 91.200 1129.200 91.900Q1130 92.600 1131.600 92.600L1131.600 92.600L1135 92.600L1135 100Q1134.400 100.100 1133.100 100.150Q1131.800 100.200 1130.600 100.200L1130.600 100.200Q1127.200 100.200 1124.850 99.100Q1122.500 98 1121.300 95.500L1121.300 95.500Q1120.700 94.300 1120.300 92.600L1120.300 92.600Q1119.500 94 1118.300 95.300L1118.300 95.300Q1115.600 98.100 1111.600 99.650Q1107.600 101.200 1103 101.200ZM1103.800 93.800L1103.800 93.800Q1109.200 93.800 1112.800 91.950Q1116.400 90.100 1118.200 86.750Q1120 83.400 1120 79L1120 79L1120 74.400L1103.800 77.600Q1098.400 78.600 1096.300 80.650Q1094.200 82.700 1094.200 86L1094.200 86Q1094.200 89.700 1096.750 91.750Q1099.300 93.800 1103.800 93.800Z",
+  "M1169.700 116.200L1169.700 116.200Q1164 116.200 1159.400 114.300Q1154.800 112.400 1151.700 108.900Q1148.600 105.400 1147.500 100.800L1147.500 100.800L1156.300 100.200Q1157.500 103.900 1160.550 106.050Q1163.600 108.200 1169.700 108.200L1169.700 108.200Q1176.900 108.200 1180.750 105.300Q1184.600 102.400 1184.600 96.600L1184.600 96.600L1184.600 88Q1182.700 92.200 1178.500 94.700Q1174.300 97.200 1169.100 97.200L1169.100 97.200Q1162.400 97.200 1157.150 93.900Q1151.900 90.600 1148.950 84.800Q1146 79 1146 71.500L1146 71.500Q1146 63.900 1148.900 58.150Q1151.800 52.400 1156.950 49.100Q1162.100 45.800 1168.700 45.800L1168.700 45.800Q1174.300 45.800 1178.750 48.400Q1183.200 51 1185 55.400L1185 55.400L1185 47L1193 47L1193 96.400Q1193 102.600 1190.200 107.050Q1187.400 111.500 1182.200 113.850Q1177 116.200 1169.700 116.200ZM1169.500 89.200L1169.500 89.200Q1176.300 89.200 1180.400 84.450Q1184.500 79.700 1184.600 71.500L1184.600 71.500Q1184.700 66 1182.850 62.050Q1181 58.100 1177.550 55.950Q1174.100 53.800 1169.500 53.800L1169.500 53.800Q1162.500 53.800 1158.650 58.550Q1154.800 63.300 1154.800 71.500L1154.800 71.500Q1154.800 79.700 1158.750 84.450Q1162.700 89.200 1169.500 89.200Z",
+];
+
+/**
+ * The viewBox the outlines live in, and where the ink starts inside it. The
+ * glyphs' cap height sits at y=29 of a 120-high box, which is what the scroll
+ * sweep anchors to.
+ */
+const GLYPH_VIEWBOX_HEIGHT = 120;
+const GLYPH_TOP_UNITS = 29;
+
+export default function NameBorder() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // Hidden up front so the reveal has somewhere to come from. The footer is
+    // below the fold on every load, so this is never seen as a flash.
+    el.classList.add("is-off");
+
+    const reveal = () => el.classList.remove("is-off");
+
+    // Fallback: if the observer never fires — a browser quirk, or a page loaded
+    // already scrolled past the footer — the wordmark would otherwise stay at
+    // opacity 0 for good. Better to show it late than never show it.
+    const fallback = window.setTimeout(reveal, 2500);
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            reveal();
+            io.disconnect();
+            window.clearTimeout(fallback);
+          }
+        }
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, []);
+
+  // The glow sweeps left to right as the footer scrolls into view. The
+  // gradient is translated rather than rebuilt: one attribute write per frame,
+  // and the band keeps its width because the whole ramp moves with it.
+  //
+  // Deliberately NOT gated on `prefers-reduced-motion`. The reveal above is an
+  // automatic fade, which is what that setting exists to suppress. This is
+  // scroll-linked and user-driven — the reader is already moving the page, the
+  // glow only follows — and the wordmark is decorative (`aria-hidden`). Gating
+  // it meant anyone with Reduce Motion turned on got a static band and never
+  // saw the effect at all.
+  useEffect(() => {
+    const gradient = ref.current?.querySelector<SVGLinearGradientElement>(
+      "#nb-fill"
+    );
+    const footer = ref.current?.closest("footer");
+    if (!gradient || !footer) return;
+
+    let last = -1;
+
+    const sweep = () => {
+      const vh = window.innerHeight;
+      const footerRect = footer.getBoundingClientRect();
+      const svgRect = gradient.ownerSVGElement?.getBoundingClientRect();
+      if (!svgRect) return;
+
+      // The ink starts 29 units into the 120-high viewBox (cap height), so the
+      // letters' top edge sits that far below the SVG's box. Anchoring to the
+      // ink rather than the box is what makes the glow sit on the F at the
+      // moment the first letter becomes visible — anchoring to the box starts
+      // it roughly a letter and a half further along.
+      const inkTop =
+        svgRect.top + (GLYPH_TOP_UNITS / GLYPH_VIEWBOX_HEIGHT) * svgRect.height;
+
+      // 0 while the footer's top edge is still one viewport below, 1 once it
+      // reaches the top of the screen.
+      const progress = Math.min(1, Math.max(0, (vh - footerRect.top) / vh));
+
+      // Progress at the instant the ink first enters the viewport, expressed in
+      // the same units. Everything before it clamps to 0, so the band waits at
+      // the F instead of travelling while the name is still off screen.
+      const appear = Math.min(
+        0.95,
+        Math.max(0, (inkTop - footerRect.top) / vh)
+      );
+      const t = Math.min(1, Math.max(0, (progress - appear) / (1 - appear)));
+
+      // Written directly from the handler rather than through rAF: a throttled
+      // or backgrounded tab can starve rAF entirely, and the band would then
+      // freeze at whatever value it had. One attribute write is cheap.
+      if (t === last) return;
+      last = t;
+      const dx = (t - 0.5) * 1140;
+      gradient.setAttribute("gradientTransform", `translate(${dx.toFixed(1)}, 0)`);
+    };
+
+    sweep();
+    window.addEventListener("scroll", sweep, { passive: true });
+    window.addEventListener("resize", sweep);
+    return () => {
+      window.removeEventListener("scroll", sweep);
+      window.removeEventListener("resize", sweep);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      className="name-border pointer-events-none relative z-10 w-full"
+    >
+      <svg viewBox="0 0 1200 120" className="block w-full overflow-visible">
+        <defs>
+          {/* A flat dim field with one narrow bright band, not a broad ramp.
+              A wide ramp only changes the word's overall brightness as it
+              moves, so the travel is invisible; a tight spot reads as a glow
+              visiting each letter in turn. `userSpaceOnUse` is the point —
+              with the default `objectBoundingBox` each `<path>` would get its
+              own box and the gradient would restart inside every letter. */}
+          <linearGradient id="nb-fill" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="rgba(150,185,200,0.5)" />
+            <stop offset="0.46" stopColor="rgba(150,185,200,0.5)" />
+            <stop offset="0.5" stopColor="rgba(215,242,248,1)" />
+            <stop offset="0.54" stopColor="rgba(150,185,200,0.5)" />
+            <stop offset="1" stopColor="rgba(150,185,200,0.5)" />
+          </linearGradient>
+
+          {/* The reference's glow. Soft and tight, so it reads as a halo rather
+              than a cast shadow. */}
+          <filter id="nb-glow" x="-10%" y="-30%" width="120%" height="160%">
+            <feDropShadow
+              dx="0"
+              dy="0"
+              stdDeviation="7"
+              floodColor="rgba(140,190,210,0.35)"
+            />
+          </filter>
+        </defs>
+
+        <g filter="url(#nb-glow)" fill="url(#nb-fill)" fillRule="evenodd">
+          {GLYPHS.map((d, i) => (
+            <path key={i} d={d} />
+          ))}
+        </g>
+      </svg>
+    </div>
+  );
+}
