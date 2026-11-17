@@ -353,3 +353,18 @@ section[id] {
 }
 
 
+
+/* The site is a set of records; each section is a ledger page and the rule
+   across its top is the page break. Kept quiet so the tonal alternation still
+   carries most of the separation. */
+main > section {
+  border-top: 1px solid rgb(51 65 85 / 0.6);
+}
+
+/* Keyboard focus is part of the interface, not a browser default we inherit.
+   Tailwind's preflight already draws a ring; this makes it the accent and
+   raises the specificity so it wins over the preflight. */
+body :focus-visible {
+  outline: 2px solid #5f93a8;
+  outline-offset: 2px;
+}

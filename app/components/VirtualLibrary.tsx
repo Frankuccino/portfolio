@@ -106,6 +106,10 @@ function BookCover({ book, src }: { book: Book; src?: string }) {
 export default function VirtualLibrary() {
   const [filter, setFilter] = useState<Filter>("all");
   const [shelfWidth, setShelfWidth] = useState(0);
+  // The book under the pointer or focus, mirrored in the catalogue card so
+  // the shelf is legible without hovering — which is how most phone readers
+  // meet it.
+  const [activeId, setActiveId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -143,6 +147,8 @@ export default function VirtualLibrary() {
   );
   const shelves = balanceShelves(visible, perShelf);
 
+  const activeBook = books.find((book) => book.id === activeId) ?? null;
+
   return (
     <div ref={containerRef}>
       <div className="flex items-baseline justify-between gap-3 mb-3">
@@ -175,7 +181,7 @@ export default function VirtualLibrary() {
         ))}
       </div>
 
-      <div aria-label="Bookshelf">
+      <div aria-label="Bookshelf" onMouseLeave={() => setActiveId(null)}>
         {shelves.map((shelf, index) => (
           <div key={shelf[0]?.id ?? index} className="mb-7 last:mb-0">
             <div className="shelf-row flex items-end" style={{ gap: SHELF_GAP }}>
@@ -191,6 +197,8 @@ export default function VirtualLibrary() {
                     style={{ width: SPINE_WIDTH, height: BOOK_HEIGHT }}
                     tabIndex={0}
                     role="button"
+                    onMouseEnter={() => setActiveId(book.id)}
+                    onFocus={() => setActiveId(book.id)}
                     aria-label={`${book.title}${
                       book.author ? ` by ${book.author}` : ""
                     } — ${book.category}`}
@@ -222,6 +230,26 @@ export default function VirtualLibrary() {
             <div className="shelf-plank" />
           </div>
         ))}
+      </div>
+
+      {/* Catalogue card: mirrors the book under the pointer or focus, so the
+          shelf reads on a phone where there is no hover. */}
+      <div className="mt-5 min-h-[3.5rem] flex items-baseline gap-3 text-xs border-l-2 border-[#3e6274]/40 pl-3">
+        {activeBook ? (
+          <>
+            <span className="font-semibold text-slate-100">
+              {activeBook.title}
+            </span>
+            <span className="text-slate-400 font-mono">{activeBook.author}</span>
+            <span className="ml-auto text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
+              {activeBook.category}
+            </span>
+          </>
+        ) : (
+          <span className="text-slate-500">
+            Hover or focus a spine for its catalogue entry.
+          </span>
+        )}
       </div>
 
       <p className="mt-5 text-[10px] text-slate-600">

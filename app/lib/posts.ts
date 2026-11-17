@@ -1,6 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
+// The pure helpers live in `postMeta` so a client component can use them
+// without dragging this module — and `node:fs` — into the browser bundle.
+// They are re-exported here so existing imports keep working.
+export { formatDate, readingMinutes } from "./postMeta";
+
 export type Post = {
   slug: string;
   title: string;
@@ -69,25 +74,4 @@ export function getPost(slug: string): Post | null {
   const file = `${slug}.md`;
   if (!fs.existsSync(path.join(POSTS_DIR, file))) return null;
   return readPost(file);
-}
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-export function formatDate(iso: string): string {
-  const [year, month, day] = iso.split("-").map(Number);
-  if (!year || !month || !day) return iso;
-  return `${MONTHS[month - 1]} ${day}, ${year}`;
 }

@@ -11,8 +11,12 @@ export type SkillGroup = {
   items: string[];
 };
 
+export type ProjectDomain = "ai" | "backend" | "systems" | "web";
+
 export type Project = {
   id: string;
+  /** Case-file filter. Drives the section's index. */
+  domain: ProjectDomain;
   title: string;
   role: string;
   year: string;
@@ -155,6 +159,7 @@ export const skillGroups: SkillGroup[] = [
 export const projects: Project[] = [
   {
     id: "northstar",
+    domain: "ai",
     title: "Northstar",
     role: "Software Engineer",
     year: "2026 — Present",
@@ -181,6 +186,7 @@ export const projects: Project[] = [
   },
   {
     id: "video-streaming",
+    domain: "systems",
     title: "Video Streaming Microservices",
     role: "Software Engineer",
     year: "2026",
@@ -208,6 +214,7 @@ export const projects: Project[] = [
   },
   {
     id: "hrms",
+    domain: "backend",
     title: "HR Management System",
     role: "Lead Software Engineer",
     year: "2023",
@@ -222,6 +229,7 @@ export const projects: Project[] = [
   },
   {
     id: "sionna-receiver",
+    domain: "ai",
     title: "Sionna Neural Receiver",
     role: "AI / ML Engineer",
     year: "2026",
@@ -236,6 +244,7 @@ export const projects: Project[] = [
   },
   {
     id: "coinopulence",
+    domain: "web",
     title: "CoinOpulence",
     role: "Developer",
     year: "2023",
@@ -369,7 +378,10 @@ export const featuredCertificates: FeaturedCertificate[] = [
         height: 806,
       },
     ],
-    stats: [{ label: "Credential ID", value: "TEG35MXZR7NJ", mono: true }],
+    stats: [
+      { label: "Total Coursework", value: "20 hrs" },
+      { label: "Credential ID", value: "TEG35MXZR7NJ", mono: true },
+    ],
   },
   {
     id: "kodego-fullstack",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SectionHeading from "./SectionHeading";
 import CertificateCard, { type LightboxImage } from "./CertificateCard";
 import CertificateLightbox from "./CertificateLightbox";
@@ -20,8 +20,31 @@ function hasImage(cert: Certificate): cert is CertificateWithImage {
   return Boolean(cert.image);
 }
 
+const ALL = "all";
+
 export default function Certificates() {
   const [activeImage, setActiveImage] = useState<LightboxImage | null>(null);
+  const [issuer, setIssuer] = useState<string>(ALL);
+
+  // The ledger is the featured plates plus the course certificates; the
+  // badges and memberships are supporting rows and stay put.
+  const issuers = useMemo(
+    () => [
+      ...new Set([
+        ...featuredCertificates.map((cert) => cert.issuer),
+        ...certificates.map((cert) => cert.issuer),
+      ]),
+    ],
+    [],
+  );
+
+  const visibleFeatured =
+    issuer === ALL
+      ? featuredCertificates
+      : featuredCertificates.filter((cert) => cert.issuer === issuer);
+  const visibleCourse = certificates
+    .filter(hasImage)
+    .filter((cert) => issuer === ALL || cert.issuer === issuer);
 
   return (
     <section
@@ -32,21 +55,63 @@ export default function Certificates() {
         <SectionHeading
           index="04."
           title="Certificates"
-          description="Formal verification of the craft — a DataCamp AI associate certification, an AWS AI practitioner track, an AWS Cloud Technical Essentials credential, and a full-stack bootcamp, backed by nine course certificates."
+          description="Formal verification of the craft — a DataCamp AI associate certification, an AWS AI practitioner track, an AWS Cloud Technical Essentials credential, and a full-stack bootcamp, backed by nine course certificates. Open any plate for the document."
         />
 
+        {/* The ledger's index: filter the plates by who issued them. */}
+        <div className="flex flex-wrap items-center gap-1.5 mb-6">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mr-1">
+            Issuer
+          </span>
+          <button
+            type="button"
+            onClick={() => setIssuer(ALL)}
+            aria-pressed={issuer === ALL}
+            className={`text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-md border transition-colors cursor-pointer ${
+              issuer === ALL
+                ? "bg-[#3e6274]/25 border-[#3e6274]/50 text-slate-100"
+                : "bg-slate-950/50 border-slate-800 text-slate-400 hover:text-slate-300"
+            }`}
+          >
+            All
+          </button>
+          {issuers.map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() =>
+                setIssuer((current) => (current === item ? ALL : item))
+              }
+              aria-pressed={issuer === item}
+              className={`text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-md border transition-colors cursor-pointer ${
+                issuer === item
+                  ? "bg-[#3e6274]/25 border-[#3e6274]/50 text-slate-100"
+                  : "bg-slate-950/50 border-slate-800 text-slate-400 hover:text-slate-300"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+          <span className="ml-auto text-[11px] font-mono tabular-nums text-slate-500">
+            {visibleFeatured.length + visibleCourse.length} of{" "}
+            {featuredCertificates.length + certificates.length} plates
+          </span>
+        </div>
+
         {/* Featured certifications */}
-        {featuredCertificates.map((cert) => (
-          <FeaturedCertificateCard
-            key={cert.id}
-            cert={cert}
-            onOpen={setActiveImage}
-          />
-        ))}
+        <div className="space-y-3 mb-3">
+          {visibleFeatured.map((cert) => (
+            <FeaturedCertificateCard
+              key={cert.id}
+              cert={cert}
+              onOpen={setActiveImage}
+            />
+          ))}
+        </div>
 
         {/* Course certificates */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
-          {certificates.filter(hasImage).map((cert) => (
+          {visibleCourse.map((cert) => (
             <CertificateCard key={cert.id} cert={cert} onOpen={setActiveImage} />
           ))}
         </div>

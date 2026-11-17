@@ -1,77 +1,130 @@
+"use client";
+
+import { useState } from "react";
 import StackIcon from "tech-stack-icons";
 import SectionHeading from "./SectionHeading";
-import { skillGroups } from "../data/portfolio";
+import { skillGroups, type SkillGroup } from "../data/portfolio";
 
-const featured = skillGroups.filter((group) => group.featured);
-const supporting = skillGroups.filter((group) => !group.featured);
+const pad = (n: number) => String(n).padStart(2, "0");
 
-const chip =
-  "text-[11px] px-2 py-1 rounded-md bg-slate-950/60 border border-slate-800/60 text-slate-300";
+function SpecRow({
+  group,
+  index,
+  open,
+  onToggle,
+}: {
+  group: SkillGroup;
+  index: number;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div className="border-b border-slate-800/70 last:border-b-0">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-controls={`spec-${group.title}`}
+        className="group w-full text-left flex items-baseline gap-3 sm:gap-5 px-2 sm:px-3 py-4 cursor-pointer"
+      >
+        <span className="text-[11px] font-mono tabular-nums text-slate-500 shrink-0 w-6">
+          {pad(index + 1)}
+        </span>
+        <span className="shrink-0 flex items-center gap-2 sm:w-44">
+          <StackIcon name={group.icon} className="w-4 h-4" />
+          <span className="text-sm font-semibold text-slate-100 group-hover:text-white transition-colors">
+            {group.title}
+          </span>
+        </span>
+        <span className="flex-1 min-w-0 text-xs sm:text-sm text-slate-400 leading-relaxed">
+          {group.summary}
+        </span>
+        <span className="hidden sm:block text-[10px] font-mono uppercase tracking-widest text-[#5f93a8] shrink-0 w-28 text-right">
+          {group.featured ? "Primary focus" : ""}
+        </span>
+        <span
+          aria-hidden="true"
+          className="shrink-0 text-slate-500 group-hover:text-slate-200 transition-colors text-lg leading-none"
+        >
+          {open ? "−" : "+"}
+        </span>
+      </button>
+
+      {open ? (
+        <div
+          id={`spec-${group.title}`}
+          className="px-2 sm:px-3 pb-5 sm:pl-16"
+        >
+          <div className="flex flex-wrap gap-1.5">
+            {group.items.map((item) => (
+              <span
+                key={item}
+                className="text-[11px] px-2 py-1 rounded-md bg-slate-950/60 border border-slate-800/60 text-slate-300"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export default function Skills() {
+  const [open, setOpen] = useState<Record<string, boolean>>(() =>
+    // The primary-focus groups start open; the supporting ones stay closed.
+    Object.fromEntries(
+      skillGroups.map((group) => [group.title, Boolean(group.featured)]),
+    ),
+  );
+  const allOpen = skillGroups.every((group) => open[group.title]);
+
   return (
     <section id="skills" className="px-4 sm:px-6 py-24 md:py-32 bg-slate-950/40">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           index="02."
           title="Skills"
-          description="Applied AI engineering first, then the engineering foundation that ships it. Each group says what I can actually do with it, not just the names."
+          description="Applied AI engineering first, then the engineering foundation that ships it. Each group says what I can actually do with it — open a row for the tools."
         />
 
-        {/* Featured: the two groups that do the differentiating */}
-        <div className="grid gap-3 lg:grid-cols-2">
-          {featured.map((group) => (
-            <article
-              key={group.title}
-              className="p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <StackIcon name={group.icon} className="w-4 h-4" />
-                <h3 className="text-sm font-semibold text-slate-100">
-                  {group.title}
-                </h3>
-                <span className="ml-auto text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
-                  Primary focus
-                </span>
-              </div>
-              <p className="text-xs leading-relaxed text-slate-400">
-                {group.summary}
-              </p>
-              <div className="flex flex-wrap gap-1.5 mt-3">
-                {group.items.map((item) => (
-                  <span key={item} className={chip}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+            {skillGroups.length} groups
+          </span>
+          <button
+            type="button"
+            onClick={() =>
+              setOpen(
+                allOpen
+                  ? {}
+                  : Object.fromEntries(
+                      skillGroups.map((group) => [group.title, true]),
+                    ),
+              )
+            }
+            className="text-[11px] font-mono uppercase tracking-wider text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+          >
+            {allOpen ? "Collapse all" : "Expand all"}
+          </button>
         </div>
 
-        {/* Supporting groups */}
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 mt-3">
-          {supporting.map((group) => (
-            <div
+        {/* The spec sheet: ruled rows, not cards. */}
+        <div className="border-t border-slate-800/70">
+          {skillGroups.map((group, index) => (
+            <SpecRow
               key={group.title}
-              className="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
-            >
-              <div className="flex items-center gap-2 mb-1.5">
-                <StackIcon name={group.icon} className="w-4 h-4" />
-                <h3 className="text-sm font-semibold text-slate-100">
-                  {group.title}
-                </h3>
-              </div>
-              <p className="text-[11px] leading-relaxed text-slate-400 mb-3">
-                {group.summary}
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {group.items.map((item) => (
-                  <span key={item} className={chip}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+              group={group}
+              index={index}
+              open={Boolean(open[group.title])}
+              onToggle={() =>
+                setOpen((current) => ({
+                  ...current,
+                  [group.title]: !current[group.title],
+                }))
+              }
+            />
           ))}
         </div>
       </div>

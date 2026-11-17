@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { canonical } from "../lib/siteUrl";
 import { getPosts } from "../lib/posts";
+import { roadmapSteps } from "../data/roadmap";
 import BlogCard from "../components/BlogCard";
 
 export const metadata: Metadata = {
@@ -49,6 +50,30 @@ export default function BlogIndex() {
             No posts yet — the first one is in the works.
           </p>
         )}
+
+        {/* The index points forward: the plan behind the notes. Derived from
+            the roadmap data so it cannot drift from /next. */}
+        <Link
+          href="/next"
+          className="group mt-6 flex items-baseline gap-3 px-3 py-3 rounded-lg border border-slate-800/70 hover:border-[#3e6274]/50 hover:bg-slate-900/30 transition-colors"
+        >
+          <span className="shrink-0 text-[11px] font-mono uppercase tracking-widest text-[#5f93a8]">
+            /next
+          </span>
+          <span className="flex-1 min-w-0">
+            <span className="block text-sm font-semibold text-slate-100 group-hover:text-white transition-colors">
+              Where I&apos;m headed
+            </span>
+            <span className="block text-xs text-slate-400 mt-0.5">
+              {roadmapSteps.length} steps, starting{" "}
+              {roadmapSteps[0].order.toLowerCase()} — the plan behind these
+              notes.
+            </span>
+          </span>
+          <span className="shrink-0 text-xs font-mono text-slate-500 group-hover:text-slate-300 transition-colors">
+            Open →
+          </span>
+        </Link>
       </div>
     </main>
   );
