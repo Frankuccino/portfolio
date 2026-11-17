@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { canonical } from "../../lib/siteUrl";
+import { canonical, siteUrl } from "../../lib/siteUrl";
 import { ogImage } from "../../lib/ogImage";
 import { getPost, getPosts, formatDate } from "../../lib/posts";
 import { Markdown } from "../../lib/markdown";
@@ -50,9 +50,44 @@ export default async function BlogPost({
   const post = getPost(slug);
   if (!post) notFound();
 
+  const url = canonical(`/blog/${post.slug}`);
+
   return (
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
       <article className="mx-auto max-w-3xl">
+        {/* Article entity, attached to the Person entity declared site-wide so
+            the posts are attributable to the same author. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              "@id": `${url}#article`,
+              mainEntityOfPage: url,
+              headline: post.title,
+              description: post.excerpt,
+              datePublished: post.date,
+              dateModified: post.date,
+              inLanguage: "en",
+              keywords: post.tags.join(", "),
+              image: `${siteUrl}/og-image.png`,
+              author: {
+                "@type": "Person",
+                "@id": `${siteUrl}/#person`,
+                name: "Frank Angelo A. Malubag",
+                url: siteUrl,
+              },
+              publisher: {
+                "@type": "Person",
+                "@id": `${siteUrl}/#person`,
+                name: "Frank Angelo A. Malubag",
+                url: siteUrl,
+              },
+            }),
+          }}
+        />
+
         <Link
           href="/blog"
           className="text-xs text-slate-400 hover:text-slate-300 transition-colors"

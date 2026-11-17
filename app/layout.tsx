@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { GrainGradient } from "@paper-design/shaders-react";
 import Navbar from "./components/Navbar";
+import ScrollProgress from "./components/ScrollProgress";
 import Footer from "./components/Footer";
 import { ogImage } from "./lib/ogImage";
 import { siteUrl } from "./lib/siteUrl";
@@ -163,6 +164,7 @@ export default function RootLayout({
           rotation={88}
         />
         <Navbar />
+        <ScrollProgress />
         <div id="main" className="flex-1">
           {children}
         </div>

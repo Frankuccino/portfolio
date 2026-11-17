@@ -15,9 +15,17 @@ const links = [
   { label: "Contact", href: "/#contact" },
 ];
 
+/** The home-page records, in order. Anchors on other routes are not sections. */
+const SECTION_IDS = ["about", "skills", "projects", "certificates", "contact"];
+
+/** The section a nav link points at, or null for a standalone page. */
+const sectionOf = (href: string) =>
+  href.startsWith("/#") ? href.slice(2) : null;
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -26,6 +34,45 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Scrollspy, derived from scroll position rather than an
+  // IntersectionObserver: the answer is deterministic and costs one pass over
+  // five elements per scroll event, with no layout writes to force a reflow.
+  // The current record is the last section whose top has crossed the upper
+  // third of the viewport; at the bottom of the page the final record wins,
+  // because the footer follows it rather than sitting inside it.
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const update = () => {
+      const probe = window.scrollY + window.innerHeight * 0.35;
+      let current: string | null = null;
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top + window.scrollY <= probe) {
+          current = id;
+        }
+      }
+      const atBottom =
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 4;
+      setActive(atBottom ? SECTION_IDS[SECTION_IDS.length - 1] : current);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [pathname]);
+
+  const isActive = (href: string) => {
+    const section = sectionOf(href);
+    return pathname === href || (pathname === "/" && section !== null && section === active);
+  };
 
   const shell = scrolled || open;
 
@@ -51,7 +98,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className={`text-xs font-medium transition-colors ${
-                pathname === link.href
+                isActive(link.href)
                   ? "text-white"
                   : "text-slate-400 hover:text-white"
               }`}
@@ -101,7 +148,7 @@ export default function Navbar() {
               href={link.href}
               onClick={() => setOpen(false)}
               className={`text-xs font-medium transition-colors ${
-                pathname === link.href
+                isActive(link.href)
                   ? "text-white"
                   : "text-slate-300 hover:text-white"
               }`}
