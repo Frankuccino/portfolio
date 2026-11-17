@@ -260,7 +260,15 @@ export type FeaturedCertificate = {
   issuer: string;
   completed: string;
   description: string;
-  images: { src: string; label: string; width: number; height: number }[];
+  images: {
+    src: string;
+    label: string;
+    /** Compact form for the switcher row, which sits under the image and has
+     *  to stay on one line. Falls back to `label`. */
+    shortLabel?: string;
+    width: number;
+    height: number;
+  }[];
   stats: { label: string; value: string; mono?: boolean }[];
 };
 
@@ -277,12 +285,14 @@ export const featuredCertificates: FeaturedCertificate[] = [
       {
         src: "/certificates/aied-associate.jpg",
         label: "Credential",
+        shortLabel: "Credential",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aied-track.jpg",
         label: "Track Certificate",
+        shortLabel: "Track",
         width: 1400,
         height: 806,
       },
@@ -304,30 +314,35 @@ export const featuredCertificates: FeaturedCertificate[] = [
       {
         src: "/certificates/aws-ai-practitioner-1.jpg",
         label: "Part 1 — Introduction to AI",
+        shortLabel: "Part 1",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aws-ai-practitioner-2.jpg",
         label: "Part 2 — Introduction to Generative AI",
+        shortLabel: "Part 2",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aws-ai-practitioner-3.jpg",
         label: "Part 3 — Prompts and Working with FMs",
+        shortLabel: "Part 3",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aws-ai-practitioner-4.jpg",
         label: "Part 4 — FM Customization and Responsible AI",
+        shortLabel: "Part 4",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aws-ai-practitioner-5.jpg",
         label: "Part 5 — Implementing Generative AI",
+        shortLabel: "Part 5",
         width: 1400,
         height: 806,
       },
@@ -349,6 +364,7 @@ export const featuredCertificates: FeaturedCertificate[] = [
       {
         src: "/certificates/aws-cloud-technical-essentials.jpg",
         label: "Certificate",
+        shortLabel: "Certificate",
         width: 1400,
         height: 806,
       },
