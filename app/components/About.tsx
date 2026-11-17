@@ -19,7 +19,7 @@ export default function About() {
             <VirtualLibrary />
 
             <div className="mt-6 max-w-md border-l-2 border-[#3e6274]/40 pl-4">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
                 {"// Continuous Learning"}
               </p>
               <p className="mt-2 text-sm text-slate-300 leading-relaxed">
@@ -33,12 +33,14 @@ export default function About() {
 
           {/* Right — about text and the developer pass */}
           <div className="lg:col-span-2 order-1 lg:order-2 lg:text-right space-y-5">
-            <h2 className="text-xs font-mono uppercase tracking-widest text-slate-500">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
               {"// 01. About Me"}
             </h2>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-100 leading-tight">
+            {/* An h2, not an h1: the hero already owns the page's single h1,
+                and every other section heading is an h2. */}
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-slate-100 leading-tight">
               Self-taught, high-stake software engineering.
-            </h1>
+            </h2>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
               I specialize in systems architecture, distributed backends, and
               building resilient tooling with technologies like Rust, Go, and
@@ -88,7 +90,7 @@ export default function About() {
                 className="inline-flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 text-sm font-medium select-none transition-all hover:border-[#3e6274]/50 hover:text-white"
               >
                 <span>Visit developer.nvidia.com</span>
-                <span className="text-slate-500">↗</span>
+                <span className="text-slate-400">↗</span>
               </a>
             </div>
 
@@ -98,7 +100,7 @@ export default function About() {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 text-sm font-medium select-none transition-all hover:border-[#3e6274]/50 hover:text-white"
               >
                 <span>View Technical Stack</span>
-                <span className="text-slate-500">↗</span>
+                <span className="text-slate-400">↗</span>
               </Link>
             </div>
           </div>

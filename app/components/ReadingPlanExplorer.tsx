@@ -18,9 +18,9 @@ const CLOSE_GRACE_MS = 160;
  * rather than being guessed at.
  */
 const priorityStyles: Record<string, string> = {
-  "very-high": "text-[#3e6274] border-[#3e6274]/50 bg-[#3e6274]/15",
+  "very-high": "text-[#5f93a8] border-[#3e6274]/50 bg-[#3e6274]/15",
   high: "text-slate-400 border-slate-700/70 bg-slate-800/30",
-  medium: "text-slate-500 border-slate-800/60 bg-transparent",
+  medium: "text-slate-400 border-slate-800/60 bg-transparent",
 };
 
 export default function ReadingPlanExplorer() {
@@ -107,9 +107,12 @@ export default function ReadingPlanExplorer() {
 
   return (
     <>
-      {/* Jump nav for the narrow viewport, where the rail has no room. */}
-      <div className="lg:hidden mb-10 -mx-1 overflow-x-auto">
-        <ol className="flex gap-1.5 px-1 py-1">
+      {/* Jump nav for the narrow viewport, where the rail has no room. The
+          right edge is masked so the row announces that it scrolls — without
+          the fade, a 1160px row in a 366px window looks like it is cut off
+          rather than scrollable. */}
+      <div className="lg:hidden mb-10 -mx-1 overflow-x-auto [mask-image:linear-gradient(to_right,#000_0,#000_calc(100%-2.5rem),transparent_100%)]">
+        <ol className="flex gap-1.5 px-1 py-1 pr-10">
           {readingStages.map((entry, i) => {
             const isActive = entry.id === activeId;
             return (
@@ -119,7 +122,7 @@ export default function ReadingPlanExplorer() {
                   className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
                     isActive
                       ? "border-[#3e6274]/60 bg-[#3e6274]/15 text-slate-100"
-                      : "border-slate-800/70 text-slate-500 hover:text-slate-300"
+                      : "border-slate-800/70 text-slate-400 hover:text-slate-300"
                   }`}
                 >
                   <span className="font-mono tabular-nums text-[10px]">
@@ -167,10 +170,10 @@ export default function ReadingPlanExplorer() {
               >
                 {entry.label}
               </h2>
-              <span className="text-[11px] text-slate-500 tabular-nums">
+              <span className="text-[11px] text-slate-400 tabular-nums">
                 {entry.pages.toLocaleString()} pp · ~{entry.hours} h
               </span>
-              <span className="text-[11px] text-slate-500">{entry.note}</span>
+              <span className="text-[11px] text-slate-400">{entry.note}</span>
             </div>
             <p className="mb-6 max-w-3xl text-xs leading-relaxed text-slate-400">
               {entry.objective}
@@ -199,7 +202,7 @@ export default function ReadingPlanExplorer() {
                       </span>
                       <div className="flex items-center gap-1.5">
                         {item.kind === "report" && (
-                          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 border border-slate-800/70 rounded px-1.5 py-0.5">
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 border border-slate-800/70 rounded px-1.5 py-0.5">
                             Report
                           </span>
                         )}
@@ -210,7 +213,7 @@ export default function ReadingPlanExplorer() {
                             {item.priority}
                           </span>
                         )}
-                        <span className="text-[11px] text-slate-500 tabular-nums">
+                        <span className="text-[11px] text-slate-400 tabular-nums">
                           ~{item.hours} h
                         </span>
                       </div>
@@ -220,11 +223,11 @@ export default function ReadingPlanExplorer() {
                     <h3 className="mt-1.5 min-h-[2.5rem] text-sm font-semibold leading-snug text-slate-100">
                       {item.title}
                     </h3>
-                    <p className="mt-0.5 text-[11px] text-slate-500">
+                    <p className="mt-0.5 text-[11px] text-slate-400">
                       {item.author} · {item.pages.toLocaleString()} pp
                     </p>
                     {item.track && (
-                      <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-[#3e6274]">
+                      <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
                         {item.track}
                       </p>
                     )}
@@ -235,12 +238,12 @@ export default function ReadingPlanExplorer() {
                         line and the action align across a row even when the
                         taglines wrap to different lengths. */}
                     <div className="mt-auto pt-2">
-                      <p className="text-[11px] tabular-nums text-slate-500">
+                      <p className="text-[11px] tabular-nums text-slate-400">
                         {item.dailyCommitment} min/day · {daysToFinish(item)} days
                       </p>
                       <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
                         View map
-                        <span className="text-slate-500 group-hover:text-[#3e6274] transition-colors">
+                        <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
                           →
                         </span>
                       </span>
