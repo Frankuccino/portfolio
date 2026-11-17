@@ -42,7 +42,7 @@ export default function Navbar() {
           href="/"
           className="text-sm font-semibold tracking-wide text-slate-100"
         >
-          <span className="text-[#3e6274]">/</span>Frankuccino
+          <span className="text-[#5f93a8]">/</span>Frankuccino
         </Link>
 
         <div className="hidden md:flex items-center gap-5">

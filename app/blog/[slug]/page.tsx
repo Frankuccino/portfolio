@@ -55,13 +55,13 @@ export default async function BlogPost({
       <article className="mx-auto max-w-3xl">
         <Link
           href="/blog"
-          className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+          className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
         >
           ← Back to all posts
         </Link>
 
         <header className="mt-6 mb-8 space-y-3">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-500">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-400">
             <span>{formatDate(post.date)}</span>
             {post.tags.length > 0 ? (
               <>

@@ -24,13 +24,13 @@ export default function NextPage() {
       <div className="mx-auto max-w-3xl">
         <Link
           href="/"
-          className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+          className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
         >
           ← Back to home
         </Link>
 
         <header className="mt-6 mb-12 space-y-3">
-          <p className="text-xs font-mono uppercase tracking-widest text-slate-500">
+          <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
             {"//"} What&apos;s Next
           </p>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-slate-100 leading-tight">
@@ -56,7 +56,7 @@ export default function NextPage() {
                     <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
                       {step.order}
                     </span>
-                    <span className="text-[11px] text-slate-500">
+                    <span className="text-[11px] text-slate-400">
                       {step.issuer}
                       {step.url ? (
                         <>
@@ -65,7 +65,7 @@ export default function NextPage() {
                             href={step.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#3e6274] hover:text-slate-300 transition-colors"
+                            className="text-[#5f93a8] hover:text-slate-300 transition-colors"
                           >
                             {hostOf(step.url)} ↗
                           </a>
@@ -76,7 +76,7 @@ export default function NextPage() {
                   <h2 className="text-lg md:text-xl font-semibold text-white leading-snug">
                     {step.title}
                   </h2>
-                  <p className="text-[11px] text-slate-500 mt-1">
+                  <p className="text-[11px] text-slate-400 mt-1">
                     {step.credentialType} · {step.commitment}
                   </p>
                   <p className="text-sm text-slate-400 leading-relaxed mt-3">
@@ -85,7 +85,7 @@ export default function NextPage() {
                   <ul className="mt-3 space-y-1">
                     {step.outcomes.map((outcome) => (
                       <li key={outcome} className="text-xs text-slate-400 flex gap-2">
-                        <span className="text-[#3e6274] shrink-0">▸</span>
+                        <span className="text-[#5f93a8] shrink-0">▸</span>
                         <span>{outcome}</span>
                       </li>
                     ))}
@@ -98,7 +98,7 @@ export default function NextPage() {
 
         {/* Why this order */}
         <section className="mb-12 space-y-3">
-          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-500">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
             {"//"} Why this order
           </h2>
           <p className="text-sm md:text-base text-slate-400 leading-relaxed">
@@ -115,7 +115,7 @@ export default function NextPage() {
 
         {/* What I'm looking for */}
         <section className="mb-12 space-y-3">
-          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-500">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
             {"//"} What I&apos;m looking for
           </h2>
           <div className="p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md">

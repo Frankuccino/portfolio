@@ -146,10 +146,10 @@ export default function VirtualLibrary() {
   return (
     <div ref={containerRef}>
       <div className="flex items-baseline justify-between gap-3 mb-3">
-        <h2 className="text-xs font-mono uppercase tracking-widest text-slate-500">
+        <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
           {"// My Library"}
         </h2>
-        <span className="text-[11px] text-slate-500 tabular-nums">
+        <span className="text-[11px] text-slate-400 tabular-nums">
           {visible.length} {visible.length === 1 ? "book" : "books"}
         </span>
       </div>
@@ -164,11 +164,11 @@ export default function VirtualLibrary() {
             className={`text-[10px] font-medium uppercase tracking-wider px-2.5 py-1 rounded-md border transition-colors cursor-pointer ${
               filter === item.id
                 ? "bg-[#3e6274]/25 border-[#3e6274]/50 text-slate-100"
-                : "bg-slate-950/50 border-slate-800 text-slate-500 hover:text-slate-300"
+                : "bg-slate-950/50 border-slate-800 text-slate-400 hover:text-slate-300"
             }`}
           >
             {item.label}
-            <span className="ml-1.5 text-slate-500 tabular-nums">
+            <span className="ml-1.5 text-slate-400 tabular-nums">
               {countFor(item.id)}
             </span>
           </button>

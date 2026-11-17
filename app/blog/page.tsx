@@ -19,13 +19,13 @@ export default function BlogIndex() {
       <div className="mx-auto max-w-3xl">
         <Link
           href="/"
-          className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+          className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
         >
           ← Back to home
         </Link>
 
         <div className="mt-6 mb-10 space-y-3">
-          <p className="text-xs font-mono uppercase tracking-widest text-slate-500">
+          <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
             {"//"} Blog
           </p>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-slate-100">
@@ -45,7 +45,7 @@ export default function BlogIndex() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-400">
             No posts yet — the first one is in the works.
           </p>
         )}

@@ -18,10 +18,10 @@ function ReadingOrderHeader() {
   return (
     <div className="mt-14 border-t border-slate-800/60 pt-8 mb-5">
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-xs font-mono uppercase tracking-widest text-slate-500">
+        <h3 className="text-xs font-mono uppercase tracking-widest text-slate-400">
           {"// Reading Order"}
         </h3>
-        <span className="text-[11px] text-slate-500 tabular-nums">
+        <span className="text-[11px] text-slate-400 tabular-nums">
           {readingBookCount} books · ~{readingTotalHours} h · core ~{readingCoreHours} h
         </span>
       </div>
@@ -38,7 +38,7 @@ function ReadingOrderHeader() {
         className="inline-flex items-center gap-2 text-[11px] font-medium text-slate-400 hover:text-white transition-colors"
       >
         <span>Chapter focus, hands-on work, and the stress-test protocol</span>
-        <span className="text-slate-500">↗</span>
+        <span className="text-slate-400">↗</span>
       </Link>
     </div>
   );
@@ -72,7 +72,7 @@ function ReadingPlanBands() {
                 <h4 className="text-[11px] font-mono uppercase tracking-widest text-slate-400">
                   {stage.label}
                 </h4>
-                <span className="text-[11px] tabular-nums text-slate-500">
+                <span className="text-[11px] tabular-nums text-slate-400">
                   {stage.pages.toLocaleString()} pp · ~{stage.hours} h · {stage.note}
                 </span>
               </div>
@@ -88,9 +88,9 @@ function ReadingPlanBands() {
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="text-[13px] leading-snug text-slate-200">{book.title}</p>
-                      <p className="text-[10px] text-slate-500">{book.author}</p>
+                      <p className="text-[10px] text-slate-400">{book.author}</p>
                     </div>
-                    <span className="shrink-0 text-[10px] tabular-nums text-slate-500">
+                    <span className="shrink-0 text-[10px] tabular-nums text-slate-400">
                       ~{book.hours} h
                     </span>
                   </li>

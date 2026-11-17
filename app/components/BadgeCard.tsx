@@ -44,11 +44,11 @@ export default function BadgeCard({ badge, onOpen }: BadgeCardProps) {
         <p className="text-sm font-medium text-slate-100 leading-snug">
           {badge.title}
         </p>
-        <p className="text-[11px] text-slate-500 mt-0.5">
+        <p className="text-[11px] text-slate-400 mt-0.5">
           {badge.issuer} · {badge.completed}
         </p>
         {badge.url ? (
-          <p className="text-[10px] font-medium text-[#3e6274] mt-0.5 group-hover:text-slate-300 transition-colors">
+          <p className="text-[10px] font-medium text-[#5f93a8] mt-0.5 group-hover:text-slate-300 transition-colors">
             Verify credential →
           </p>
         ) : null}

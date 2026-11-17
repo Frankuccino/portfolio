@@ -33,13 +33,13 @@ function CoverArt({ book }: { book: ReadingBook }) {
         className="flex flex-col justify-between p-3 bg-gradient-to-b from-[#3e6274]/25 to-slate-950"
         style={{ height: ART_HEIGHT }}
       >
-        <span className="text-[9px] font-mono uppercase tracking-widest text-[#3e6274]">
+        <span className="text-[9px] font-mono uppercase tracking-widest text-[#5f93a8]">
           {book.author}
         </span>
         <span className="text-sm font-semibold leading-snug text-slate-100">
           {book.title}
         </span>
-        <span className="text-[9px] font-mono tabular-nums text-slate-500">
+        <span className="text-[9px] font-mono tabular-nums text-slate-400">
           {book.pages.toLocaleString()} pp
         </span>
       </div>
@@ -152,7 +152,7 @@ export default function BookCoverPreview({ preview, onClose }: Props) {
           <p className="text-[11px] font-semibold leading-snug text-slate-100">
             {book.title}
           </p>
-          <p className="text-[10px] text-slate-500">
+          <p className="text-[10px] text-slate-400">
             {book.author} · {book.pages.toLocaleString()} pp
           </p>
         </div>

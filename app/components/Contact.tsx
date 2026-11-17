@@ -37,7 +37,7 @@ export default function Contact() {
         <SectionHeading
           index="06."
           title="Contact"
-          description="Open to backend, AI engineering, and full-stack roles — especially where the work is hard and the standards are high."
+          description="Open to backend, AI engineering, and full-stack roles — with an emphasis on applied AI and distributed systems."
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -50,7 +50,7 @@ export default function Contact() {
               className="group relative p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-center justify-between gap-2">
-                <p className="text-[11px] uppercase tracking-wider text-slate-500">
+                <p className="text-[11px] uppercase tracking-wider text-slate-400">
                   {channel.label}
                 </p>
                 <span className="text-slate-600 group-hover:text-slate-300 group-hover:translate-x-0.5 transition-all">
@@ -60,7 +60,7 @@ export default function Contact() {
               <p className="text-sm font-medium text-slate-100 mt-1.5 group-hover:text-white transition-colors break-all">
                 {channel.value}
               </p>
-              <p className="text-[11px] text-slate-500 mt-1">{channel.note}</p>
+              <p className="text-[11px] text-slate-400 mt-1">{channel.note}</p>
             </a>
           ))}
         </div>
@@ -73,9 +73,10 @@ export default function Contact() {
           </p>
           <a
             href="mailto:frankamalubag@gmail.com"
-            className="text-xs font-medium px-3 py-1.5 rounded-md border border-[#3e6274]/50 text-slate-200 hover:bg-[#3e6274]/20 transition-colors shrink-0"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-md bg-[#3e6274]/30 border border-[#3e6274]/60 text-white hover:bg-[#3e6274]/45 transition-colors shrink-0"
           >
-            Start a conversation
+            Email me
+            <span aria-hidden="true">→</span>
           </a>
         </div>
       </div>

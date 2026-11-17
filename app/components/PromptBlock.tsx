@@ -38,7 +38,7 @@ export default function PromptBlock({ prompt }: { prompt: string }) {
         className="mt-2.5 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 hover:text-white transition-colors cursor-pointer"
       >
         {copied ? "Copied to clipboard" : "Copy prompt"}
-        <span className="text-slate-500">{copied ? "✓" : "⧉"}</span>
+        <span className="text-slate-400">{copied ? "✓" : "⧉"}</span>
       </button>
     </div>
   );

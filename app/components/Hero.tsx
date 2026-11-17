@@ -118,17 +118,19 @@ export default function Hero() {
           </Link>
         </div>
 
-        {/* Optional: Static Tech Badges instead of Marquee for a cleaner editorial look */}
-        <div className="flex flex-wrap items-center gap-2.5 pb-6">
+        {/* The stack, kept to one tight row: the icons carry the recognition,
+            the labels stay small so the row reads as a line of text rather
+            than a wall of chips. */}
+        <div className="flex flex-wrap items-center gap-1.5 pb-6">
           {techStack.map((tech, idx) => {
             if ("divider" in tech && tech.divider) return null;
             if (!("name" in tech)) return null;
             return (
               <div
                 key={idx}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-900/80 border border-slate-800 text-xs md:text-sm font-medium text-slate-300 backdrop-blur-sm"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/80 border border-slate-800 text-[11px] md:text-xs font-medium text-slate-300 backdrop-blur-sm"
               >
-                <StackIcon name={tech.name} className="w-4 h-4" />
+                <StackIcon name={tech.name} className="w-3.5 h-3.5" />
                 <span>{tech.label}</span>
               </div>
             );

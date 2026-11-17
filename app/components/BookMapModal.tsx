@@ -23,8 +23,8 @@ const priorityStyles: Record<string, string> = {
  */
 function SectionHeading({ index, children }: { index: string; children: React.ReactNode }) {
   return (
-    <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-slate-500">
-      <span className="text-[#3e6274] tabular-nums" aria-hidden="true">
+    <h4 className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-slate-400">
+      <span className="text-[#5f93a8] tabular-nums" aria-hidden="true">
         {index}
       </span>{" "}
       {children}
@@ -102,7 +102,7 @@ export default function BookMapModal({
         <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-[#3e6274]/20 bg-[#0e0d16]/50 shrink-0">
           <div className="flex items-center gap-2.5 truncate mr-2">
             <div className="w-2.5 h-2.5 rounded-full bg-[#3e6274] shrink-0" />
-            <span className="text-[11px] font-mono tabular-nums text-slate-500 shrink-0">
+            <span className="text-[11px] font-mono tabular-nums text-slate-400 shrink-0">
               {pad(book.order)}
             </span>
             <span className="text-xs sm:text-sm font-medium tracking-wide text-slate-200 truncate">
@@ -137,14 +137,14 @@ export default function BookMapModal({
           className="overflow-y-auto px-4 sm:px-6 py-5 space-y-5 [--scrollbar-width:thin] [scrollbar-color:rgba(100,116,139,0.4)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-600/40 [&::-webkit-scrollbar-thumb]:rounded-full"
         >
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="text-xs font-mono uppercase tracking-widest text-slate-500">
+            <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
               {stageLabel}
             </span>
             <span className="text-[11px] text-slate-400">
               {book.kind === "report" ? "Report" : "Book"}
               {book.track ? ` · ${book.track}` : ""} · {book.author}
             </span>
-            <span className="ml-auto text-[11px] text-slate-500 tabular-nums">
+            <span className="ml-auto text-[11px] text-slate-400 tabular-nums">
               {book.pages.toLocaleString()} pp · ~{book.hours} h
             </span>
           </div>
@@ -156,19 +156,19 @@ export default function BookMapModal({
             <SectionHeading index="02">Timing</SectionHeading>
             <div className="mt-2 rounded-lg border border-slate-800/60 bg-slate-950/50 p-3 space-y-1.5">
               <div className="flex items-baseline justify-between gap-3 text-xs">
-                <span className="text-slate-500">Reading</span>
+                <span className="text-slate-400">Reading</span>
                 <span className="tabular-nums text-slate-300">
                   ~{book.hours} h at {book.dailyCommitment} min/day
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-3 text-xs">
-                <span className="text-slate-500">Finish in</span>
+                <span className="text-slate-400">Finish in</span>
                 <span className="tabular-nums text-slate-300">
                   {daysToFinish(book)} days
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-3 text-xs">
-                <span className="text-slate-500">Consolidation</span>
+                <span className="text-slate-400">Consolidation</span>
                 <span className="tabular-nums text-slate-300">
                   ~{book.consolidationHours} h
                 </span>
@@ -182,7 +182,7 @@ export default function BookMapModal({
             </div>
             <ul className="mt-2 space-y-1">
               <li className="flex gap-2 text-[11px] text-slate-400">
-                <span className="text-[#3e6274] shrink-0">▸</span>
+                <span className="text-[#5f93a8] shrink-0">▸</span>
                 <span>
                   Recall protocol: {RECALL_MINUTES_PER_FOCUS_CHAPTER} min ×{" "}
                   {book.focus.filter((item) => item.priority === "focus").length} focus
@@ -196,11 +196,11 @@ export default function BookMapModal({
                 </span>
               </li>
               <li className="flex gap-2 text-[11px] text-slate-400">
-                <span className="text-[#3e6274] shrink-0">▸</span>
+                <span className="text-[#5f93a8] shrink-0">▸</span>
                 <span>LLM reinforcement: {LLM_REINFORCEMENT_HOURS} h</span>
               </li>
               <li className="flex gap-2 text-[11px] text-slate-400">
-                <span className="text-[#3e6274] shrink-0">▸</span>
+                <span className="text-[#5f93a8] shrink-0">▸</span>
                 <span>Stage capstone: {STAGE_CAPSTONE_HOURS} h</span>
               </li>
             </ul>
@@ -238,7 +238,7 @@ export default function BookMapModal({
               <ul className="mt-2 space-y-1.5">
                 {book.handsOn.map((item) => (
                   <li key={item} className="flex gap-2 text-xs text-slate-400">
-                    <span className="text-[#3e6274] shrink-0">▸</span>
+                    <span className="text-[#5f93a8] shrink-0">▸</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -259,7 +259,7 @@ export default function BookMapModal({
 
           <div>
             <SectionHeading index="06">Reinforcement prompt</SectionHeading>
-            <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
+            <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
               Paste this into an LLM along with the notes you just took. It will
               question you, explain the gaps, and re-ask in different words.
             </p>
@@ -278,7 +278,7 @@ export default function BookMapModal({
           >
             ← Prev book
           </button>
-          <span className="text-[11px] text-slate-500 tabular-nums hidden sm:inline">
+          <span className="text-[11px] text-slate-400 tabular-nums hidden sm:inline">
             {pad(book.order)} / {pad(total)}
           </span>
           <button

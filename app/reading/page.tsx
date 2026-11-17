@@ -30,13 +30,13 @@ export default function ReadingPage() {
         <ReadingPlanLayout>
           <Link
             href="/#about"
-            className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+            className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
           >
             ← Back to home
           </Link>
 
           <header className="mt-6 mb-10 space-y-3">
-            <p className="text-xs font-mono uppercase tracking-widest text-slate-500">
+            <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
               {"//"} Reading Plan
             </p>
             <h1 className="text-3xl md:text-5xl font-black tracking-tight text-slate-100 leading-tight">
@@ -48,7 +48,7 @@ export default function ReadingPage() {
               for the chapters that earn their pages, what to build while reading, and
               the closed-book questions that prove it landed.
             </p>
-            <p className="text-[11px] text-slate-500 tabular-nums">
+            <p className="text-[11px] text-slate-400 tabular-nums">
               {readingBookCount} books · ~{readingTotalHours} h reading + ~
               {readingConsolidationHours} h consolidation = ~
               {readingTotalCommitmentHours} h total · core path ~{readingCoreHours} h
@@ -87,7 +87,7 @@ export default function ReadingPage() {
             className="border-t border-slate-800/60 pt-8 mt-14 space-y-6"
           >
             <div className="space-y-3">
-              <h2 className="text-xs font-mono uppercase tracking-widest text-slate-500">
+              <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
                 {"//"} Knowledge stress test
               </h2>
               <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
@@ -113,7 +113,7 @@ export default function ReadingPage() {
             </ol>
 
             <div className="p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md max-w-3xl">
-              <h3 className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-3">
+              <h3 className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-3">
                 Stage stress tests
               </h3>
               <ul className="space-y-2.5">

@@ -77,14 +77,14 @@ export default function CertificateCard({ cert, onOpen }: CertificateCardProps) 
 
       <div className="p-3">
         <p className="text-xs font-medium text-slate-100 leading-snug">{cert.title}</p>
-        <p className="text-[11px] text-slate-500 mt-1">
+        <p className="text-[11px] text-slate-400 mt-1">
           {cert.issuer} · {cert.completed}
         </p>
         {cert.hours > 0 ? (
           <p className="text-[11px] text-slate-400">{cert.hours} hrs</p>
         ) : null}
         {cert.credentialId ? (
-          <p className="text-[10px] font-mono text-slate-500">
+          <p className="text-[10px] font-mono text-slate-400">
             {cert.credentialId}
           </p>
         ) : null}

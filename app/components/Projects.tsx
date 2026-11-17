@@ -30,7 +30,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
           <h3 className="text-base md:text-lg font-semibold text-slate-100">
             {project.title}
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-400 mt-0.5">
             {project.role} · {project.year}
           </p>
         </div>
@@ -51,7 +51,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             key={highlight}
             className="text-xs text-slate-400 leading-relaxed flex gap-2"
           >
-            <span className="text-[#3e6274] shrink-0">▸</span>
+            <span className="text-[#5f93a8] shrink-0">▸</span>
             <span>{highlight}</span>
           </li>
         ))}
@@ -67,7 +67,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
               rel="noopener noreferrer"
               className="text-xs font-medium text-slate-300 hover:text-white transition-colors"
             >
-              {link.label} <span className="text-slate-500">↗</span>
+              {link.label} <span className="text-slate-400">↗</span>
             </a>
           ))}
         </div>

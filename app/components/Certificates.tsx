@@ -68,7 +68,7 @@ export default function Certificates() {
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
               <div>
                 <p className="text-sm font-medium text-slate-200">{item.title}</p>
-                <p className="text-[11px] text-slate-500 mt-0.5">
+                <p className="text-[11px] text-slate-400 mt-0.5">
                   {item.issuer} · {item.completed}
                 </p>
               </div>

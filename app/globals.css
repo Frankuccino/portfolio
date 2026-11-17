@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* The loaded faces are wired into Tailwind's font tokens, so `font-sans`,
+   `font-mono` and the body's own `font-family` all resolve to them. Without
+   this the site renders in the OS default while shipping three webfonts. */
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo,
+    monospace;
+}
+
 :root {
   --background: #090e0b;
   --foreground: #e2e8f0;
@@ -210,6 +219,33 @@ section[id] {
   }
 }
 
+/* ——— Skip link ——— */
+
+/* The first focusable element on every page, so a keyboard user can jump
+   past the fixed nav. Off-screen until focused, never display:none — a
+   hidden element cannot receive focus. */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 200;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.375rem;
+  background: #0e0d16;
+  border: 1px solid #3e6274;
+  color: #f1f5f9;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transform: translateY(-160%);
+  transition: transform 0.15s ease;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid #5f93a8;
+  outline-offset: 2px;
+}
+
 /* ——— Footer field ——— */
 
 /* Charcoal on the left falling to a dark teal-slate on the right — the grain's
@@ -287,7 +323,7 @@ section[id] {
       rgba(11, 14, 19, 0.5) 82%,
       rgba(11, 14, 19, 0.85) 100%
     ),
-    url("/footer-monet.jpg");
+    url("/footer-monet.webp");
   background-position:
     center, center, center, center 60%;
   background-size: cover, cover, cover, cover;

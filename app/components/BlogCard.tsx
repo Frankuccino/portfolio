@@ -8,7 +8,7 @@ export default function BlogCard({ post }: { post: Post }) {
       href={`/blog/${post.slug}`}
       className="block p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors group"
     >
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-500">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-400">
         <span>{formatDate(post.date)}</span>
         {post.tags.length > 0 ? (
           <>
@@ -23,7 +23,7 @@ export default function BlogCard({ post }: { post: Post }) {
       <p className="text-sm text-slate-400 mt-1 leading-relaxed line-clamp-3">
         {post.excerpt}
       </p>
-      <span className="text-xs font-medium text-slate-500 group-hover:text-slate-300 transition-colors mt-2 inline-block">
+      <span className="text-xs font-medium text-slate-400 group-hover:text-slate-300 transition-colors mt-2 inline-block">
         Read more →
       </span>
     </Link>

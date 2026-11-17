@@ -16,7 +16,7 @@ export default function BlogSection() {
         />
 
         <div className="flex items-center justify-between mb-3">
-          <span className="text-xs text-slate-500">Latest posts</span>
+          <span className="text-xs text-slate-400">Latest posts</span>
           <Link
             href="/blog"
             className="text-xs font-medium text-slate-300 hover:text-white transition-colors"

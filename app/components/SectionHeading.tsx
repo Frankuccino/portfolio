@@ -11,7 +11,7 @@ export default function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className="mb-10 space-y-3">
-      <p className="text-xs font-mono uppercase tracking-widest text-slate-500">
+      <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
         {"//"} {index} {title}
       </p>
       <h2 className="text-3xl md:text-5xl font-black tracking-tight text-slate-100">

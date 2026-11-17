@@ -85,7 +85,7 @@ function CodeBlock({ language, code }: { language: string; code: string }) {
   return (
     <div className="my-4 rounded-lg border border-slate-800 bg-slate-950 overflow-hidden">
       {language ? (
-        <div className="px-3 py-1.5 border-b border-slate-800 text-[10px] font-mono uppercase tracking-wider text-slate-500">
+        <div className="px-3 py-1.5 border-b border-slate-800 text-[10px] font-mono uppercase tracking-wider text-slate-400">
           {language}
         </div>
       ) : null}
@@ -190,7 +190,7 @@ export function Markdown({ content }: { content: string }) {
       blocks.push(
         <ul
           key={key++}
-          className="list-disc list-inside space-y-1 my-3 text-sm text-slate-300 marker:text-[#3e6274]"
+          className="list-disc list-inside space-y-1 my-3 text-sm text-slate-300 marker:text-[#5f93a8]"
         >
           {items.map((item, itemIndex) => (
             <li key={itemIndex}>{parseInline(item)}</li>
@@ -209,7 +209,7 @@ export function Markdown({ content }: { content: string }) {
       blocks.push(
         <ol
           key={key++}
-          className="list-decimal list-inside space-y-1 my-3 text-sm text-slate-300 marker:text-[#3e6274]"
+          className="list-decimal list-inside space-y-1 my-3 text-sm text-slate-300 marker:text-[#5f93a8]"
         >
           {items.map((item, itemIndex) => (
             <li key={itemIndex}>{parseInline(item)}</li>

@@ -30,7 +30,7 @@ export default function Skills() {
                 <h3 className="text-sm font-semibold text-slate-100">
                   {group.title}
                 </h3>
-                <span className="ml-auto text-[10px] font-mono uppercase tracking-widest text-[#3e6274]">
+                <span className="ml-auto text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
                   Primary focus
                 </span>
               </div>

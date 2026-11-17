@@ -145,20 +145,27 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
+      {/* First focusable thing on the page, so a keyboard user can jump
+          past the fixed nav. Hidden until focused. */}
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
         <GrainGradient
           className="fixed inset-0 w-full h-full object-cover pointer-events-none -z-10"
           colors={["#3e6274"]}
           colorBack="#0e0d16"
           softness={1}
-          intensity={1}
-          noise={1}
+          intensity={0.45}
+          noise={0.35}
           shape="corners"
           speed={0}
           scale={0.88}
           rotation={88}
         />
         <Navbar />
-        <div className="flex-1">{children}</div>
+        <div id="main" className="flex-1">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

@@ -77,7 +77,7 @@ export default function ReadingPlanLayout({
         <aside className="hidden lg:block">
           <div className="sticky top-24 space-y-5">
             <div className="flex items-baseline justify-between">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
                 {"// On this page"}
               </p>
               <span className="text-[10px] font-mono tabular-nums text-slate-600">
@@ -96,7 +96,7 @@ export default function ReadingPlanLayout({
                       className={`flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-[11px] transition-colors ${
                         isActive
                           ? "bg-[#3e6274]/15 text-slate-100"
-                          : "text-slate-500 hover:bg-slate-800/40 hover:text-slate-300"
+                          : "text-slate-400 hover:bg-slate-800/40 hover:text-slate-300"
                       }`}
                     >
                       <span
@@ -114,7 +114,7 @@ export default function ReadingPlanLayout({
             </ol>
 
             <div className="border-t border-slate-800/60 pt-4">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-[#3e6274]">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
                 {active.parallel
                   ? `Elective · ${active.books.length} book`
                   : `Stage ${activeIndex + 1} · ${active.books.length} books`}
@@ -122,10 +122,10 @@ export default function ReadingPlanLayout({
               <p className="mt-2 text-xs leading-relaxed text-slate-300">
                 {active.objective}
               </p>
-              <p className="mt-2 text-[11px] tabular-nums text-slate-500">
+              <p className="mt-2 text-[11px] tabular-nums text-slate-400">
                 {active.pages.toLocaleString()} pp · ~{active.hours} h
               </p>
-              <p className="mt-1 text-[11px] leading-snug text-slate-500">{active.note}</p>
+              <p className="mt-1 text-[11px] leading-snug text-slate-400">{active.note}</p>
             </div>
           </div>
         </aside>

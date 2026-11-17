@@ -12,7 +12,7 @@ export default function ReadingRationale() {
     <>
       {/* Why these books */}
       <section className="mb-12">
-        <h2 className="text-xs font-mono uppercase tracking-widest text-slate-500">
+        <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
           {"//"} Why these books
         </h2>
         <p className="mt-3 max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
@@ -49,7 +49,7 @@ export default function ReadingRationale() {
 
       {/* How to read them */}
       <section className="mb-12">
-        <h2 className="text-xs font-mono uppercase tracking-widest text-slate-500">
+        <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
           {"//"} How to read them
         </h2>
         <p className="mt-3 max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
@@ -63,7 +63,7 @@ export default function ReadingRationale() {
               key={item.step}
               className="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md"
             >
-              <span className="text-[10px] font-mono tabular-nums text-[#3e6274]">
+              <span className="text-[10px] font-mono tabular-nums text-[#5f93a8]">
                 {item.step}
               </span>
               <h3 className="mt-1 text-sm font-semibold text-slate-100">
@@ -77,7 +77,7 @@ export default function ReadingRationale() {
         </div>
 
         <div className="mt-3 p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md">
-          <h3 className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+          <h3 className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
             The standard
           </h3>
           <p className="mt-2 text-xs leading-relaxed text-slate-300">
@@ -86,7 +86,7 @@ export default function ReadingRationale() {
           <ul className="mt-3 space-y-1.5">
             {readingGuardrails.map((rule) => (
               <li key={rule} className="flex gap-2 text-xs text-slate-400">
-                <span className="text-[#3e6274]">—</span>
+                <span className="text-[#5f93a8]">—</span>
                 <span>{rule}</span>
               </li>
             ))}

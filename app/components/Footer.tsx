@@ -79,7 +79,7 @@ export default function Footer() {
               className="mt-5 inline-flex items-center gap-2 text-[11px] font-medium px-3 py-1.5 rounded-md border border-[#3e6274]/50 text-slate-200 hover:bg-[#3e6274]/20 hover:text-white transition-colors"
             >
               <span>Start a conversation</span>
-              <span className="text-slate-500">↗</span>
+              <span className="text-slate-400">↗</span>
             </Link>
           </div>
 
@@ -120,7 +120,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <p className="mt-5 text-[11px] leading-snug text-slate-500">
+            <p className="mt-5 text-[11px] leading-snug text-slate-400">
               Usually replies within a day.
             </p>
           </div>

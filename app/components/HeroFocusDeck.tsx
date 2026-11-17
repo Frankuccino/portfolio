@@ -44,7 +44,7 @@ export default function HeroFocusDeck({ cards }: HeroFocusDeckProps) {
       >
         {/* Header with Category and Dot */}
         <div className="flex items-center justify-between pr-4">
-          <span className="text-[10px] font-mono text-slate-500">
+          <span className="text-[10px] font-mono text-slate-400">
             {currentIndex + 1}/{cards.length}
           </span>
           <div className="flex items-center gap-1.5">
@@ -72,7 +72,7 @@ export default function HeroFocusDeck({ cards }: HeroFocusDeckProps) {
         </div>
 
         {/* Click target */}
-        <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-slate-500 group-hover:text-slate-300 transition-colors">
+        <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-slate-400 group-hover:text-slate-300 transition-colors">
           {currentCard.cta}
           <span className="transition-transform duration-200 group-hover:translate-x-0.5">
             →
