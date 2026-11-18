@@ -30,14 +30,18 @@ function ReadingOrderHeader() {
         Priority order for the AI engineering stack — six stages and a domain
         elective. Stages 1, 2, 3, 4 and 6 are read cover to cover; Stage 5 is a
         reference shelf, and the elective is opened when a fraud or risk problem
-        appears.
+        appears. The full rationale, per-book chapter maps and the stress-test
+        protocol live on the reading page.
       </p>
 
+      {/* A CTA rather than the quiet inline link this replaced: the reading
+          order is a summary of a full page, and the way into it should look
+          like a way in. */}
       <Link
         href="/reading"
-        className="inline-flex items-center gap-2 text-[11px] font-medium text-slate-400 hover:text-white transition-colors"
+        className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 text-sm font-medium select-none transition-all hover:border-[#3e6274]/50 hover:text-white"
       >
-        <span>Chapter focus, hands-on work, and the stress-test protocol</span>
+        <span>Open the reading plan</span>
         <span className="text-slate-400">↗</span>
       </Link>
     </div>
@@ -99,6 +103,25 @@ function ReadingPlanBands() {
             </section>
           );
         })}
+
+      {/* The close of the order. The header button navigates; this one sells
+          the destination, because the reader only wants to know what the page
+          holds after seeing the summary. It sits at the right edge and carries
+          the accent tint so the block has one primary action, not two equal
+          ones. */}
+      <div className="pt-5 border-t border-slate-800/60 flex flex-wrap items-center gap-3">
+        <p className="text-xs text-slate-400 leading-relaxed max-w-md">
+          This is the summary — the reading page carries the rationale, a
+          chapter map for each book, and the closed-book stress test.
+        </p>
+        <Link
+          href="/reading"
+          className="ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#3e6274]/60 bg-[#3e6274]/15 text-slate-100 text-sm font-medium select-none transition-all hover:bg-[#3e6274]/25 hover:border-[#3e6274]/80 hover:text-white"
+        >
+          <span>Interested in the process? Read the full rationale</span>
+          <span className="text-slate-300">→</span>
+        </Link>
+      </div>
     </div>
   );
 }

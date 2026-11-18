@@ -4,6 +4,7 @@ import { canonical } from "../lib/siteUrl";
 import ReadingPlanExplorer from "../components/ReadingPlanExplorer";
 import ReadingPlanLayout from "../components/ReadingPlanLayout";
 import ReadingRationale from "../components/ReadingRationale";
+import TrackClose from "../components/TrackClose";
 import {
   readingBookCount,
   readingCoreHours,
@@ -130,6 +131,15 @@ export default function ReadingPage() {
               </ul>
             </div>
           </section>
+
+          <TrackClose
+            note="This is the long form. The summary lives in the About reading order, the certificates are the credential layer sitting on top of it, and the blog is where the reading turns into build notes."
+            links={[
+              { label: "The reading order", href: "/#about" },
+              { label: "Certificates", href: "/#certificates" },
+              { label: "Blog", href: "/blog" },
+            ]}
+          />
         </ReadingPlanLayout>
       </div>
     </main>

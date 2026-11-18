@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { canonical } from "../lib/siteUrl";
 import { lookingFor, roadmapSteps } from "../data/roadmap";
+import TrackClose from "../components/TrackClose";
 
 const hostOf = (url: string) => {
   try {
@@ -130,27 +131,16 @@ export default function NextPage() {
           </div>
         </section>
 
-        {/* Closing */}
-        <section className="space-y-3 border-t border-slate-800/60 pt-8">
-          <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-            The credentials are proof points. The goal is the capability — and the
-            ability to help a team build AI systems that hold up in production.
-          </p>
-          <div className="flex flex-wrap gap-3 pt-2">
-            <Link
-              href="/#contact"
-              className="text-xs font-medium px-3 py-1.5 rounded-md border border-[#3e6274]/50 text-slate-200 hover:bg-[#3e6274]/20 transition-colors"
-            >
-              Get in touch →
-            </Link>
-            <Link
-              href="/blog"
-              className="text-xs font-medium px-3 py-1.5 rounded-md border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors"
-            >
-              Read the blog
-            </Link>
-          </div>
-        </section>
+        {/* Closing — where the plan sits, not just what it is */}
+        <TrackClose
+          note="The credentials are proof points; the goal is the capability behind them, and the ability to help a team build AI systems that hold up in production. The reading order is the depth underneath, and the blog is where that depth shows up as work."
+          links={[
+            { label: "The reading plan", href: "/reading" },
+            { label: "Certificates", href: "/#certificates" },
+            { label: "Blog", href: "/blog" },
+            { label: "Get in touch", href: "/#contact" },
+          ]}
+        />
       </div>
     </main>
   );
