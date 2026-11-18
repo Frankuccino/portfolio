@@ -55,7 +55,7 @@ export default function Certificates() {
         <SectionHeading
           index="04."
           title="Certificates"
-          description="Formal verification of the craft — a DataCamp AI associate certification, an AWS AI practitioner track, an AWS Cloud Technical Essentials credential, and a full-stack bootcamp, backed by nine course certificates. Open any plate for the document."
+          description={`Formal verification of the craft — a DataCamp AI associate certification, an AWS AI practitioner track, an AWS Cloud Technical Essentials credential, and a full-stack bootcamp, backed by ${certificates.length} course certificates. Open any plate for the document.`}
         />
 
         {/* The ledger's index: filter the plates by who issued them. */}

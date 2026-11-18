@@ -34,7 +34,7 @@ const focusCards = [
       <>
         Building neural networks from scratch with{" "}
         <span className="text-white font-medium">Karpathy&apos;s Zero to Hero</span>{" "}
-        & studying{" "}
+        and studying{" "}
         <span className="text-white font-medium">
           Chip Huyen&apos;s AI Engineering
         </span>{" "}
@@ -51,8 +51,8 @@ const focusCards = [
     cta: "View projects",
     description: (
       <>
-        Self-taught engineer forged through rigorous books, hands-on
-        architecture, and open knowledge share.{" "}
+        Self-taught engineer: deep reading, hands-on architecture, and open
+        knowledge sharing.{" "}
         <span className="text-white font-medium">
           NVIDIA 6G Developer Member
         </span>
