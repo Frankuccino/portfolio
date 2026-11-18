@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { canonical } from "../lib/siteUrl";
 import { getPosts } from "../lib/posts";
 import { roadmapSteps } from "../data/roadmap";
-import BlogCard from "../components/BlogCard";
+import BlogIndex from "../components/BlogIndex";
 
 export const metadata: Metadata = {
   title: "Blog — Frank Angelo Malubag",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: canonical("/blog") },
 };
 
-export default function BlogIndex() {
+export default function BlogArchive() {
   const posts = getPosts();
 
   return (
@@ -29,7 +29,7 @@ export default function BlogIndex() {
           <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
             {"//"} Blog
           </p>
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight text-slate-100">
+          <h1 className="text-3xl md:text-5xl font-black tracking-tight font-display text-slate-100">
             Writing on engineering.
           </h1>
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
@@ -39,12 +39,10 @@ export default function BlogIndex() {
           </p>
         </div>
 
+        {/* Same ruled index as the home page, minus the link to itself. The
+            archive is the full catalog rather than a four-row preview. */}
         {posts.length > 0 ? (
-          <div className="space-y-3">
-            {posts.map((post) => (
-              <BlogCard key={post.slug} post={post} />
-            ))}
-          </div>
+          <BlogIndex posts={posts} showArchiveLink={false} />
         ) : (
           <p className="text-sm text-slate-400">
             No posts yet — the first one is in the works.

@@ -158,6 +158,36 @@ export const skillGroups: SkillGroup[] = [
 
 export const projects: Project[] = [
   {
+    id: "platform-atlas",
+    domain: "systems",
+    title: "Platform Atlas",
+    role: "Software Engineer",
+    year: "2026 — Present",
+    stack: [
+      "TypeScript",
+      "React",
+      "Vite",
+      "D3 (zoom, transitions)",
+      "Neon Postgres",
+      "Refresh-cookie auth",
+      "Vitest",
+      "Playwright",
+      "knip",
+    ],
+    summary:
+      "A personal map of the tools a company can be built on — 211 products across 39 categories and 7 domains — with a spaced-repetition loop over the catalog.",
+    highlights: [
+      "Catalog lives in code and is checked by a validation script; study state sits in Neon Postgres behind httpOnly refresh-cookie auth with server-side sessions.",
+      "Deterministic spaced-repetition scheduler: due calculation, per-product intervals, and skip behaviour.",
+      "Quality gates wired into the build — Vitest, Playwright e2e, knip for dead code, and type-coverage.",
+    ],
+    links: [
+      { label: "Repository", href: "https://github.com/Frankuccino/platform-atlas" },
+      { label: "Live", href: "https://platformatlas.vercel.app/" },
+    ],
+    featured: true,
+  },
+  {
     id: "northstar",
     domain: "ai",
     title: "Northstar",
@@ -182,7 +212,6 @@ export const projects: Project[] = [
       "96-test Vitest + Supertest suite covering the AI chat flow with a deterministic stub provider.",
     ],
     links: [{ label: "Repository", href: "https://github.com/Frankuccino/northstar" }],
-    featured: true,
   },
   {
     id: "video-streaming",

@@ -15,7 +15,7 @@ export default function BlogSection() {
           title="Blog"
           description="Notes on backend engineering, distributed systems, and applied AI — written to be re-read, not just published."
         />
-        <BlogIndex posts={posts} />
+        <BlogIndex posts={posts} limit={4} />
       </div>
     </section>
   );
