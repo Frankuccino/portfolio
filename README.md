@@ -166,7 +166,7 @@ Posts are plain markdown files with frontmatter (`title`, `date`, `excerpt`, `ta
 Open, and deliberately not built yet:
 
 - **Project imagery.** The six case files carry no visuals; a dedicated pass would add a plate per project.
-- **A custom domain.** `frankamalubag.vercel.app` is what the OG card, the navbar and every shared URL say today.
+- **A custom domain — `fuiss.com`, registered.** See `docs/custom-domain.md` for the runbook: Vercel records, the `NEXT_PUBLIC_SITE_URL` switch, the OG card re-render, the Domain-property Search Console verification, subdomains and email.
 - **business-atlas.** `Frankuccino/business-atlas` (69 entries across 14 domains) is not among the case files.
 - **A generated OG route.** `@vercel/og` would make the card live data; at four posts a committed raster is the better call.
 - **Accent focus ring.** The override in `globals.css` loses the cascade to Tailwind's preflight, so the ring renders slate-200.
