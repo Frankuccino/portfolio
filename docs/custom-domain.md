@@ -15,7 +15,7 @@ always come from the Vercel domain card, not from this file.
   `https://fuiss.com` — there is no CLI/MCP command for it.
 - **`NEXT_PUBLIC_SITE_URL=https://www.fuiss.com`** on the Vercel project (`portfolio`).
   It is inlined at build time, so it takes effect on the next production deploy.
-- **Remaining:** the four unpushed commits (Platform Atlas, the display face, the study-page closes, the FUISS runbook) still need a push — the live deploy is `4c29fc9`, so the OG card on the domain is still the previous design. After the push: confirm the card, then a Domain property in Search Console (see below), and Email Routing.
+- **Remaining:** the analytics commit is the only unpushed work. After it lands, confirm the dashboard's Web Analytics toggle is on (it provisions the `/_vercel/insights/*` routes), then a Domain property in Search Console (see below), and Email Routing.
 
 ## 1. Point the portfolio at the domain
 
