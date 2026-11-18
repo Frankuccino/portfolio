@@ -9,7 +9,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 - **Framework:** Next.js (App Router)
 - **Styling:** Tailwind CSS
 - **Visual Shaders:** `@paper-design/shaders-react` (`GrainGradient`)
-- **Typography:** Geist and Geist Mono, wired into Tailwind's `--font-sans` / `--font-mono` tokens (`@theme` in `app/globals.css`). The footer wordmark is glyph geometry, not live text.
+- **Typography:** Geist and Geist Mono, wired into Tailwind's `--font-sans` / `--font-mono` tokens (`@theme` in `app/globals.css`), plus Bricolage Grotesque 800 as `--font-display`. The display face is applied by **class** (`.font-display`), not by tag: most `h2`s on the site are small mono eyebrow labels, so a tag rule would have set them in a display grotesque. The footer wordmark is glyph geometry, not live text.
 - **Blog:** Markdown posts in `content/posts/`, rendered by a dependency-free React markdown engine (`app/lib/markdown.tsx`).
 
 ---
@@ -29,6 +29,8 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   └── page.tsx
 │   ├── reading/
 │   │   └── page.tsx
+│   ├── not-found.tsx                # 404 — "record not found"
+│   ├── icon.tsx                     # app/icon → <link rel="icon">
 │   ├── components/
 │   │   ├── Navbar.tsx
 │   │   ├── Hero.tsx
@@ -46,7 +48,10 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   ├── CertificateLightbox.tsx
 │   │   ├── BadgeCard.tsx
 │   │   ├── BlogSection.tsx
-│   │   ├── BlogCard.tsx
+│   │   ├── BlogIndex.tsx
+│   │   ├── ScrollProgress.tsx
+│   │   ├── NameBorder.tsx
+│   │   ├── FooterArt.tsx
 │   │   ├── Contact.tsx
 │   │   ├── Footer.tsx
 │   │   ├── SectionHeading.tsx
@@ -59,6 +64,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   └── roadmap.ts
 │   └── lib/
 │       ├── posts.ts
+│       ├── postMeta.ts
 │       ├── markdown.tsx
 │       └── covers.ts
 ├── content/
@@ -134,8 +140,33 @@ Below the library, `ReadingPlan.tsx` renders the priority order for the AI engin
 
 `/reading` is the long-form version of the `About` block. It opens with `ReadingRationale`: the case for the books over the certificate layer, the misuse risk, and the read protocol — preview, read actively, retrieve, space the review, apply, sleep — with the session standard, its guardrails, and the learning-science mechanisms it is built on. `ReadingPlanExplorer` renders a clickable index — six stages plus a parallel domain elective, one card per book, each with its order, page count, hour estimate, one-line hook, and minimum daily commitment. On the wide measure the whole page sits in one centred block: a reading column on the left holding every prose block and every card, and `ReadingPlanLayout`'s sticky rail in the right-hand column — an "on this page" list of the seven blocks with a position counter, and beneath it a note panel that always names the block currently on screen: its objective, page and hour cost, and reading instruction. Because the block is a single grid rather than a rail appended to a narrower container, every left and right edge lines up and nothing protrudes past the centred measure. A scroll-spy (the last stage whose heading has crossed a probe line a third down the viewport) drives both the rail's active row and a fill-and-wash highlight on the active stage's own header; clicking a rail row jumps to that stage with a scroll margin that clears the fixed nav. Below the wide breakpoint the rail is replaced by a horizontally scrolling chip row carrying the same active state. The same layout wraps the `About` page's reading-order summary, so its bands highlight as they pass; that section's `overflow-hidden` had to become `overflow-x-clip`, because a clipping ancestor is a scroll container and pins `position: sticky` to itself instead of the viewport. Each stage carries an index chip and a left accent rule binding its cards to it, and priority is colour-coded so the top tier reads at a glance. Books in the Forward Deployed stage also carry their sub-track (Intelligence Augmentation, Communication & Stakeholders, Customer Discovery, Sensemaking & Investigation, or Execution & Adaptability) and a priority rating; the elective carries an `E` chip instead of a number because it sits alongside the sequence rather than after it. Hovering a card opens `BookCoverPreview`, a portal panel showing the cover — hotlinked from the Open Library Covers API, keyed on CoverID since the ISBN key is rate-limited per IP, and for the titles Open Library has no art for, from Google Books, keyed on the volume id — with a typographic tile for the one title neither catalogue carries. The panel is pinned to its card and re-measured on scroll, so it tracks the card instead of closing; it closes when the card leaves the viewport or the pointer leaves the card. Clicking a card opens `BookMapModal`, a portal dialog with that book's dedicated map: the focus chapters (tagged `focus` / `skim` / `reference`, numbered so the reader can see where they are), the hands-on work to do while reading, the closed-book stress-test questions, and a ready-to-paste reinforcement prompt (`PromptBlock`, with a copy button) to hand an LLM alongside your notes. Each book carries a timing model — a minimum daily commitment, the days to finish, and a consolidation budget of 30 min recall per focus chapter + 1 h LLM reinforcement + 2 h stage capstone. The modal supports Escape, backdrop click, and prev/next (arrow keys too), and locks body scroll while open. The page closes with the knowledge stress-test protocol and a per-stage capstone. Content lives in `app/data/readingPlan.ts`; the same plan with pacing tables lives in the vault at `Readings/AI Engineering Reading Plan.md`, the method with its references at `Readings/How to Read These Books.md`, and the verbatim chapter lists in `Readings/AI Engineering Book TOCs.md`.
 
+## Site Chrome
+
+The six home sections share one language — mono eyebrows, `// 0N.` indices, hairlines, tabular numerals, one teal accent — and differ in **structure**, not palette: About is a shelf plus a catalogue card, Skills a ruled spec sheet with accordions, Projects a domain-filtered case-file index, Certificates an issuer-filtered ledger, Blog a ruled index, Contact a single letter sheet. Separation is systemic rather than per-section: the backgrounds alternate (`slate-950` opaque, `slate-950/40`, transparent) and `main > section { border-top: … }` gives every current *and future* section its hairline in one line.
+
+`ScrollProgress` is mounted once in the layout as a 2px rule under the nav. It hides itself when the page fits the viewport and writes `transform` straight from the scroll handler instead of through rAF, because a throttled tab starves rAF and freezes the bar. The navbar's scroll-spy is likewise scroll-position derived rather than `IntersectionObserver`: it takes the last section whose top has crossed a probe at 35% of the viewport, which is deterministic and works on a page loaded already scrolled. `SECTION_IDS` deliberately excludes `/blog`, `/next` and `/reading` — they are linked but never numbered, because numbering eight links against five sections creates two competing numbering systems.
+
+`BlogIndex` is the one blog surface: a client component taking `posts`, an optional `limit` (the home section passes `4`) and `showArchiveLink` (the archive passes `false`). `/blog` renders the same ruled rows as the home section instead of a second card treatment, and `BlogCard` was deleted with its last caller rather than left as an orphan. `app/lib/postMeta.ts` holds the pure `formatDate`/`readingMinutes` helpers so a client component never pulls `node:fs` in through `lib/posts.ts`; `posts.ts` re-exports them.
+
+`not-found.tsx` is the 404, framed as a record lookup that failed rather than a dead end. `app/icon.tsx` answers `<link rel="icon">` only — the conventional `/favicon.ico` path is answered separately by `public/favicon.ico`.
+
+## Colour & Print
+
+Body copy is `text-slate-400` (7.59:1 on the page background) and the accent `#5f93a8` measures 5.77:1. `text-slate-500` was retired from the newer surfaces: it measured 4.09:1, under AA. An accent `:focus-visible` override is declared in `globals.css`, but Tailwind's preflight ring currently outranks it, so the ring renders slate-200. A ring exists and is clearly visible; only its colour is off.
+
+`@media print` exists because the site is a dark textured screen. Printing yields one ink colour (`#101828`) on white, no grain canvas, no footer art, no nav or skip link, and each section starting on its own page. It wins by blanket override rather than by token, which is the right call for exactly one theme and the wrong call the moment a second appears.
+
 ## Blog
 
-Posts are plain markdown files with frontmatter (`title`, `date`, `excerpt`, `tags`) in `content/posts/`. Add a file, and both `/blog` and `/blog/[slug]` pick it up at build time.
+Posts are plain markdown files with frontmatter (`title`, `date`, `excerpt`, `tags`) in `content/posts/`. Add a file, and both `/blog` and `/blog/[slug]` pick it up at build time. `lib/posts.ts` reads them with `node:fs`; the pure date/reading-time helpers live in `lib/postMeta.ts` so client components can import them without dragging `node:fs` into the browser bundle.
 
-### Added Ideas to roadmap:
+## Ideas Backlog
+
+Open, and deliberately not built yet:
+
+- **Project imagery.** The six case files carry no visuals; a dedicated pass would add a plate per project.
+- **A custom domain.** `frankamalubag.vercel.app` is what the OG card, the navbar and every shared URL say today.
+- **business-atlas.** `Frankuccino/business-atlas` (69 entries across 14 domains) is not among the case files.
+- **A generated OG route.** `@vercel/og` would make the card live data; at four posts a committed raster is the better call.
+- **Accent focus ring.** The override in `globals.css` loses the cascade to Tailwind's preflight, so the ring renders slate-200.
+- **Search Console.** The verification hook and the sitemap exist; the property itself has to be created and submitted against a URL-prefix property, since DNS verification is impossible on a hosting subdomain.
