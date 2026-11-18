@@ -15,7 +15,7 @@ const hostOf = (url: string) => {
 export const metadata: Metadata = {
   title: "What's Next — Frank Angelo Malubag",
   description:
-    "Where I'm headed: the Microsoft AI & ML Engineering Professional Certificate first, then LangChain Academy, then Stanford CS221 — building the depth to lead in AI engineering.",
+    "Where I'm headed: AI & ML breadth with Microsoft and DeepLearning.AI, then the AWS Solutions Architect and AWS Generative AI Developer Advanced certificates, then LangChain Academy and Stanford CS221 — building the depth to lead in AI engineering.",
   alternates: { canonical: canonical("/next") },
 };
 
@@ -40,8 +40,9 @@ export default function NextPage() {
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering — the kind that lets me design production systems and set
-            technical direction, not just implement against an API. Three steps, in
-            this order.
+            technical direction, not just implement against an API. Six steps, in three
+            phases: the foundation, the platform and the applied layer, then the
+            mathematics that makes it durable.
           </p>
         </header>
 
@@ -102,16 +103,29 @@ export default function NextPage() {
           <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
             {"//"} Why this order
           </h2>
-          <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-            The Microsoft certificate comes first because it is the breadth: AI &amp;
-            ML infrastructure, data pipelines, algorithms, and the ML lifecycle. The
-            LangChain Academy then builds the applied layer on that foundation —
-            agents across the full lifecycle, from build through deploy and monitor.
-            CS221 supplies the mathematical foundations that make all of it durable.
-            Breadth first, then the tool layer, then the mathematics — because the
-            applied layer is tool-specific and will age, while the breadth and the
-            mathematics compound.
-          </p>
+          <div className="space-y-3">
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+              The Microsoft certificate comes first because it is the breadth: AI &amp;
+              ML infrastructure, data pipelines, algorithms, and the ML lifecycle. The
+              DeepLearning.AI specialization then goes deeper on the fundamentals —
+              supervised and unsupervised learning, and the practices that make models
+              generalise rather than memorise.
+            </p>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+              The AWS Solutions Architect certificate is the platform: the services
+              everything else is built on, and how to design against cost, performance
+              and operational excellence. The AWS Generative AI Developer Advanced
+              certificate builds the applied layer on that platform — foundation models
+              through Bedrock, agentic patterns, responsible AI, and evaluation.
+            </p>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+              LangChain Academy is the orchestration tooling that ties models into
+              working software, and CS221 supplies the mathematics underneath all of it.
+              Breadth, then fundamentals, then platform and applied work, then the
+              tooling and the theory — because the applied layer is tool-specific and
+              will age, while the breadth and the mathematics compound.
+            </p>
+          </div>
         </section>
 
         {/* What I'm looking for */}
