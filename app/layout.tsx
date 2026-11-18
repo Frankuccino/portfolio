@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GrainGradient } from "@paper-design/shaders-react";
 import Navbar from "./components/Navbar";
 import ScrollProgress from "./components/ScrollProgress";
@@ -169,6 +171,13 @@ export default function RootLayout({
           {children}
         </div>
         <Footer />
+        {/* Vercel Web Analytics: cookie-less and IP-anonymised, so no consent
+            banner, and a no-op outside production. The dashboard must have Web
+            Analytics enabled for the project before any data lands. */}
+        <Analytics />
+        {/* Real-user Core Web Vitals, from the same privacy posture. Free tier
+            reports a subset of the vitals; Plus unlocks all of them. */}
+        <SpeedInsights />
       </body>
     </html>
   );

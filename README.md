@@ -117,7 +117,7 @@ The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL` (falling back to
 
 Every routable page declares `alternates.canonical` through the `canonical()` helper, and the blog post template sets its own `openGraph`/`twitter` block (`type: "article"`, `publishedTime`, tags) so a shared post carries its own title and excerpt rather than the site's. The root layout also emits a schema.org `Person` record whose `sameAs` links the site to the GitHub and LinkedIn profiles — that is what lets a search engine treat them as one entity.
 
-Set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (from a Search Console **URL prefix** property, HTML-tag method) to add the verification tag; it is omitted while unset.
+Set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to add the verification tag; it is omitted while unset. A **URL prefix** property uses the HTML-tag method; now that the site is on `fuiss.com`, a **Domain** property is possible and verifies by DNS TXT, covering both hosts and every subdomain at once.
 
 ## Virtual Library
 
@@ -150,6 +150,16 @@ The six home sections share one language — mono eyebrows, `// 0N.` indices, ha
 `BlogIndex` is the one blog surface: a client component taking `posts`, an optional `limit` (the home section passes `4`) and `showArchiveLink` (the archive passes `false`). `/blog` renders the same ruled rows as the home section instead of a second card treatment, and `BlogCard` was deleted with its last caller rather than left as an orphan. `app/lib/postMeta.ts` holds the pure `formatDate`/`readingMinutes` helpers so a client component never pulls `node:fs` in through `lib/posts.ts`; `posts.ts` re-exports them.
 
 `not-found.tsx` is the 404, framed as a record lookup that failed rather than a dead end. `app/icon.tsx` answers `<link rel="icon">` only — the conventional `/favicon.ico` path is answered separately by `public/favicon.ico`.
+
+## Analytics
+
+Three trackers run in production, mounted once in the root layout:
+
+- **Vercel Web Analytics** (`@vercel/analytics/next`) — cookie-less and IP-anonymised, so no consent banner. Page views and referrers. Needs the project's Web Analytics toggle enabled in the dashboard, which is what provisions the `/_vercel/insights/*` routes.
+- **Vercel Speed Insights** (`@vercel/speed-insights/next`) — real-user Core Web Vitals from the same privacy posture. The free tier reports a subset of the vitals; Plus unlocks all of them and the breakdowns.
+- **GA4** (`gtag.js`, `G-4SB47FY02C`) — kept for the familiar UI. It sets cookies, so it is the one of the three that would need a consent banner for EU visitors.
+
+The two Vercel packages are no-ops outside production, so local development reports nothing. Speed Insights is a separate package from Web Analytics, not a subpath of it.
 
 ## Colour & Print
 
