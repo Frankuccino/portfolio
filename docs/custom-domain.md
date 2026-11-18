@@ -4,6 +4,19 @@ Registered 2026-11-18. This is the checklist for pointing it at the portfolio an
 for everything else a domain unlocks. Registrar-agnostic: the exact record values
 always come from the Vercel domain card, not from this file.
 
+## Current state (live)
+
+- **DNS is configured.** `fuiss.com` resolves and `307`-redirects to `www.fuiss.com`;
+  `www.fuiss.com` serves the portfolio. Vercel issued the certificate.
+- **`www` is the primary host.** Vercel's domain config redirects `fuiss.com` →
+  `www.fuiss.com`, which is also Vercel's recommendation (a `www` CNAME routes more
+  flexibly than a fixed apex A record). Making the apex primary instead means
+  removing that redirect in the Vercel dashboard and setting the canonical to
+  `https://fuiss.com` — there is no CLI/MCP command for it.
+- **`NEXT_PUBLIC_SITE_URL=https://www.fuiss.com`** on the Vercel project (`portfolio`).
+  It is inlined at build time, so it takes effect on the next production deploy.
+- **Remaining:** the four unpushed commits (Platform Atlas, the display face, the study-page closes, the FUISS runbook) still need a push — the live deploy is `4c29fc9`, so the OG card on the domain is still the previous design. After the push: confirm the card, then a Domain property in Search Console (see below), and Email Routing.
+
 ## 1. Point the portfolio at the domain
 
 1. Vercel dashboard → the portfolio project → **Settings → Domains** → add

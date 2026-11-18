@@ -166,7 +166,7 @@ Posts are plain markdown files with frontmatter (`title`, `date`, `excerpt`, `ta
 Open, and deliberately not built yet:
 
 - **Project imagery.** The six case files carry no visuals; a dedicated pass would add a plate per project.
-- **A custom domain — `fuiss.com`, registered.** See `docs/custom-domain.md` for the runbook: Vercel records, the `NEXT_PUBLIC_SITE_URL` switch, the OG card re-render, the Domain-property Search Console verification, subdomains and email.
+- **A custom domain — `fuiss.com`, live.** `www.fuiss.com` is the canonical host (Vercel redirects the apex to it) and `NEXT_PUBLIC_SITE_URL` is set to match. `docs/custom-domain.md` carries the runbook and the remaining steps: Search Console Domain property, Email Routing, project subdomains.
 - **business-atlas.** `Frankuccino/business-atlas` (69 entries across 14 domains) is not among the case files.
 - **A generated OG route.** `@vercel/og` would make the card live data; at four posts a committed raster is the better call.
 - **Accent focus ring.** The override in `globals.css` loses the cascade to Tailwind's preflight, so the ring renders slate-200.
