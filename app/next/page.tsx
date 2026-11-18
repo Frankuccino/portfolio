@@ -33,7 +33,7 @@ export default function NextPage() {
           <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
             {"//"} What&apos;s Next
           </p>
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight text-slate-100 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-black tracking-tight font-display text-slate-100 leading-tight">
             Where I&apos;m headed.
           </h1>
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">

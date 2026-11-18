@@ -27,7 +27,7 @@ export default function NotFound() {
           {"//"} 404 — record not found
         </p>
 
-        <h1 className="mt-4 text-7xl md:text-9xl font-black tracking-tighter leading-none text-slate-100">
+        <h1 className="mt-4 text-7xl md:text-9xl font-black tracking-tighter font-display leading-none text-slate-100">
           404<span className="text-[#5f93a8]">.</span>
         </h1>
 
@@ -53,7 +53,7 @@ export default function NotFound() {
           ))}
         </div>
 
-        <p className="mt-6 text-xs text-slate-500">
+        <p className="mt-6 text-xs text-slate-400">
           <Link
             href="/"
             className="text-slate-300 hover:text-white transition-colors"

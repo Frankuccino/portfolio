@@ -60,7 +60,7 @@ export default function Certificates() {
 
         {/* The ledger's index: filter the plates by who issued them. */}
         <div className="flex flex-wrap items-center gap-1.5 mb-6">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mr-1">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mr-1">
             Issuer
           </span>
           <button
@@ -92,7 +92,7 @@ export default function Certificates() {
               {item}
             </button>
           ))}
-          <span className="ml-auto text-[11px] font-mono tabular-nums text-slate-500">
+          <span className="ml-auto text-[11px] font-mono tabular-nums text-slate-400">
             {visibleFeatured.length + visibleCourse.length} of{" "}
             {featuredCertificates.length + certificates.length} plates
           </span>

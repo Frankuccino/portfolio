@@ -27,7 +27,7 @@ function SpecRow({
         aria-controls={`spec-${group.title}`}
         className="group w-full text-left flex items-baseline gap-3 sm:gap-5 px-2 sm:px-3 py-4 cursor-pointer"
       >
-        <span className="text-[11px] font-mono tabular-nums text-slate-500 shrink-0 w-6">
+        <span className="text-[11px] font-mono tabular-nums text-slate-400 shrink-0 w-6">
           {pad(index + 1)}
         </span>
         <span className="shrink-0 flex items-center gap-2 sm:w-44">
@@ -44,7 +44,7 @@ function SpecRow({
         </span>
         <span
           aria-hidden="true"
-          className="shrink-0 text-slate-500 group-hover:text-slate-200 transition-colors text-lg leading-none"
+          className="shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors text-lg leading-none"
         >
           {open ? "−" : "+"}
         </span>
@@ -90,7 +90,7 @@ export default function Skills() {
         />
 
         <div className="flex items-center justify-between mb-4">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
             {skillGroups.length} groups
           </span>
           <button

@@ -246,7 +246,7 @@ export default function VirtualLibrary() {
             </span>
           </>
         ) : (
-          <span className="text-slate-500">
+          <span className="text-slate-400">
             Hover or focus a spine for its catalogue entry.
           </span>
         )}

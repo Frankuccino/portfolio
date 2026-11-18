@@ -20,10 +20,10 @@ const geistMono = Geist_Mono({
 });
 
 /**
- * Display face for the footer masthead. Kept separate from the body font on
- * purpose: the name is the one place the site is allowed to have a voice of
- * its own, and sharing the body face with it would make it read as a headline
- * rather than a sign-off.
+ * Display face, currently used by the display-scale headings via the
+ * `font-display` utility in globals.css. Kept separate from the body font on
+ * purpose: a heading that shares the body face reads as a headline, not as the
+ * site's voice.
  */
 const display = Bricolage_Grotesque({
   variable: "--font-display",

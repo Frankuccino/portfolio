@@ -14,7 +14,7 @@ export default function SectionHeading({
       <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
         {"//"} {index} {title}
       </p>
-      <h2 className="text-3xl md:text-5xl font-black tracking-tight text-slate-100">
+      <h2 className="text-3xl md:text-5xl font-black tracking-tight font-display text-slate-100">
         {title}
       </h2>
       {description ? (

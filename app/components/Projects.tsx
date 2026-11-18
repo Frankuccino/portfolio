@@ -51,7 +51,7 @@ function CaseFile({
         aria-controls={`case-${project.id}`}
         className="group w-full text-left flex items-baseline gap-3 sm:gap-4 px-2 sm:px-3 py-4 cursor-pointer"
       >
-        <span className="text-[11px] font-mono tabular-nums text-slate-500 shrink-0 w-6">
+        <span className="text-[11px] font-mono tabular-nums text-slate-400 shrink-0 w-6">
           {pad(index + 1)}
         </span>
         <span className="flex-1 min-w-0">
@@ -74,7 +74,7 @@ function CaseFile({
         </span>
         <span
           aria-hidden="true"
-          className="shrink-0 text-slate-500 group-hover:text-slate-200 transition-colors text-lg leading-none"
+          className="shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors text-lg leading-none"
         >
           {open ? "−" : "+"}
         </span>
@@ -87,13 +87,13 @@ function CaseFile({
           className="px-2 sm:px-3 pb-5 sm:pl-12 space-y-3"
         >
           <div>
-            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-1.5">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-1.5">
               Stack
             </p>
             <StackChips items={project.stack} />
           </div>
           <div>
-            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-1.5">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-1.5">
               Evidence
             </p>
             <ul className="space-y-1.5">
@@ -150,7 +150,7 @@ export default function Projects() {
 
         {/* The index: filter the files by the kind of system they are. */}
         <div className="flex flex-wrap items-center gap-1.5 mb-6">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mr-1">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mr-1">
             Filter
           </span>
           {DOMAINS.map((item) => (
@@ -168,7 +168,7 @@ export default function Projects() {
               {item.label}
             </button>
           ))}
-          <span className="ml-auto text-[11px] font-mono tabular-nums text-slate-500">
+          <span className="ml-auto text-[11px] font-mono tabular-nums text-slate-400">
             {visible.length} of {projects.length} files
           </span>
         </div>

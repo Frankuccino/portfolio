@@ -362,9 +362,63 @@ main > section {
 }
 
 /* Keyboard focus is part of the interface, not a browser default we inherit.
-   Tailwind's preflight already draws a ring; this makes it the accent and
+   Tailwind's preflight already draws the ring; this makes it the accent and
    raises the specificity so it wins over the preflight. */
-body :focus-visible {
+html body :focus-visible {
   outline: 2px solid #5f93a8;
   outline-offset: 2px;
+}
+
+/* The display face — Bricolage Grotesque, and only its 800 weight is loaded.
+   Pinning the weight here rather than relying on `font-black` (900) matching
+   down to 800 keeps the intent explicit and rules out a synthesised heavier
+   weight on a face that cannot supply one.
+   Applied by class, not by tag: most `h2`s on the site are small mono eyebrow
+   labels, so only the display scale should change voice. */
+.font-display {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+}
+
+/* Print: the site is a dark, textured screen, and a recruiter printing it
+   should get a document. One ink colour, no decoration, no blur, and each
+   record starting on its own page. */
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    color: #101828 !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  body {
+    background: #ffffff !important;
+  }
+
+  /* Decoration that means nothing on paper */
+  canvas,
+  .footer-art,
+  .footer-bg,
+  .name-border,
+  .skip-link,
+  header {
+    display: none !important;
+  }
+
+  main > section {
+    border-top: 1px solid #cbd5e1 !important;
+    break-before: page;
+  }
+
+  main > section:first-of-type {
+    break-before: auto;
+  }
+
+  a {
+    text-decoration: underline;
+  }
 }

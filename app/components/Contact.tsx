@@ -56,7 +56,7 @@ export default function Contact() {
         {/* The letter: one sheet with ruled rows, not three panels. */}
         <div className="rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md divide-y divide-slate-800/70">
           <div className="p-5 sm:p-6">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
               Write to
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-3">
@@ -90,7 +90,7 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="group flex items-baseline gap-3 sm:gap-5 px-5 sm:px-6 py-4 hover:bg-slate-900/40 transition-colors"
             >
-              <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 w-20 shrink-0">
+              <span className="text-[11px] font-mono uppercase tracking-widest text-slate-400 w-20 shrink-0">
                 {channel.label}
               </span>
               <span className="flex-1 min-w-0">
@@ -103,7 +103,7 @@ export default function Contact() {
               </span>
               <span
                 aria-hidden="true"
-                className="text-slate-500 group-hover:text-slate-200 group-hover:translate-x-0.5 transition-all"
+                className="text-slate-400 group-hover:text-slate-200 group-hover:translate-x-0.5 transition-all"
               >
                 ↗
               </span>

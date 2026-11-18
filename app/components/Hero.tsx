@@ -71,7 +71,7 @@ export default function Hero() {
       <div className="relative z-10 flex-1 w-full max-w-8xl mx-auto flex flex-col justify-end items-start text-left select-none px-8 md:px-20 pt-28 pb-16 md:pb-20">
         {/* Name - Scaled Larger */}
         <h1
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none pb-3 drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)]"
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none pb-3 font-display drop-shadow-[0_20px_30px_rgba(0,0,0,0.7)]"
           style={{
             background:
               "linear-gradient(135deg, #f8fafc 0%, #94a3b8 35%, #ffffff 50%, #475569 65%, #cbd5e1 100%)",

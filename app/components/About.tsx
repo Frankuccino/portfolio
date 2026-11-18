@@ -38,7 +38,7 @@ export default function About() {
             </h2>
             {/* An h2, not an h1: the hero already owns the page's single h1,
                 and every other section heading is an h2. */}
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-slate-100 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
               Self-taught, high-stake software engineering.
             </h2>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
