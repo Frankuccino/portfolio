@@ -31,11 +31,11 @@ function applyTransition(
 `assertTransitionAllowed` is where the domain lives:
 
 - A card can only move **forward** through the workflow, or back one step.
-- **WIP limits** are enforced per column — a full column rejects the move, not the UI.
+- **WIP limits** are enforced per column: a full column rejects the move, not the UI.
 - Only the assignee or a board admin may move a card out of review.
 - Archived cards are immutable.
 
-The key point: these rules are not in the React components, and they are not in the prompt. They are in one place, on the server, and every write path — REST handler, AI tool, future CLI — funnels through it.
+The key point: these rules are not in the React components, and they are not in the prompt. They are in one place, on the server, and every write path (REST handler, AI tool, future CLI) funnels through it.
 
 ## Why not trust the prompt?
 
@@ -62,7 +62,7 @@ When a transition is rejected, the rejection is fed back to the model as a tool 
 
 ## The design trade-off
 
-A server-authoritative model costs you flexibility. You cannot encode "the AI knows best" without weakening the rules, and every new transition is a migration. But the alternative — client-side validation plus a prompt saying "please be careful" — is how boards end up with three copies of the same card.
+A server-authoritative model costs you flexibility. You cannot encode "the AI knows best" without weakening the rules, and every new transition is a migration. But the alternative (client-side validation plus a prompt saying "please be careful") is how boards end up with three copies of the same card.
 
 > Validate at the boundary that has the authority to say no. Everything upstream is a suggestion.
 

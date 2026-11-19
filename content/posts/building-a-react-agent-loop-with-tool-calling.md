@@ -1,11 +1,11 @@
 ---
 title: "Building a ReAct-Style Agent Loop with Tool Calling"
 date: 2026-11-10
-excerpt: "How Northstar runs natural-language board operations through a server-side agent loop — and why the model's output is treated as untrusted input."
+excerpt: "How Northstar runs natural-language board operations through a server-side agent loop, and why the model's output is treated as untrusted input."
 tags: [AI Engineering, Agentic Systems, Northstar]
 ---
 
-Most "AI feature" demos stop at a single chat completion: the user types, the model answers, and the app never changes state. A real agent feature is different. The model has to **act** — and every action it proposes has to survive contact with your domain rules.
+Most "AI feature" demos stop at a single chat completion: the user types, the model answers, and the app never changes state. A real agent feature is different. The model has to **act**, and every action it proposes has to survive contact with your domain rules.
 
 That is the problem Northstar sets out to solve: a Kanban board where you can type *"move the auth refactor to in progress and add a review task"* and have it actually happen.
 
@@ -13,10 +13,10 @@ That is the problem Northstar sets out to solve: a Kanban board where you can ty
 
 The core is a classic ReAct-style cycle, kept deliberately small:
 
-1. **Reason** — send the conversation plus a tool schema to the model.
-2. **Act** — if it requests a tool, execute that tool against the backend.
-3. **Observe** — append the tool result and loop again.
-4. **Stop** — when the model returns a final message instead of a tool call.
+1. **Reason**: send the conversation plus a tool schema to the model.
+2. **Act**: if it requests a tool, execute that tool against the backend.
+3. **Observe**: append the tool result and loop again.
+4. **Stop**: when the model returns a final message instead of a tool call.
 
 ```ts
 type AgentStep =
@@ -52,7 +52,7 @@ Three details matter more than the rest.
 
 ### 1. Tools are schemas, not strings
 
-Every tool is a typed schema — name, description, JSON Schema for arguments. The model is never writing code; it is filling in a form. That keeps the attack surface small and makes the tool set testable in isolation.
+Every tool is a typed schema: name, description, JSON Schema for arguments. The model is never writing code; it is filling in a form. That keeps the attack surface small and makes the tool set testable in isolation.
 
 ### 2. Every tool call goes through the same validation as the REST API
 
@@ -60,7 +60,7 @@ The agent does not get a back door. `move_card` is the same handler the UI calls
 
 ### 3. The loop is observable
 
-Each step — tool name, arguments, result, latency — is streamed to the frontend over SSE. The user watches the agent work instead of staring at a spinner.
+Each step (tool name, arguments, result, latency) is streamed to the frontend over SSE. The user watches the agent work instead of staring at a spinner.
 
 ## What I would not repeat
 

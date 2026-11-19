@@ -5,11 +5,11 @@ excerpt: "Why SSE beat WebSockets for Northstar's agent activity feed, and the t
 tags: [AI Engineering, Backend, SSE]
 ---
 
-A chat interface that waits three seconds and then dumps a finished answer feels slower than one that shows the model thinking. The fix is streaming — but the transport choice is not cosmetic. For Northstar, Server-Sent Events won decisively.
+A chat interface that waits three seconds and then dumps a finished answer feels slower than one that shows the model thinking. The fix is streaming, but the transport choice is not cosmetic. For Northstar, Server-Sent Events won decisively.
 
 ## The requirements that decided it
 
-Northstar streams one thing: **events from the server to the browser**. The agent emits a sequence — `reasoning_started`, `tool_call`, `tool_result`, `token`, `done` — and the frontend renders them as they arrive.
+Northstar streams one thing: **events from the server to the browser**. The agent emits a sequence (`reasoning_started`, `tool_call`, `tool_result`, `token`, `done`) and the frontend renders them as they arrive.
 
 That is a unidirectional flow, and SSE is a unidirectional protocol.
 
@@ -58,7 +58,7 @@ export async function POST(req: Request, ctx: RouteContext<"/api/board/[id]/chat
 | Proxies / firewalls | Works everywhere | Sometimes blocked |
 | Complexity for this use case | Trivial | Unjustified |
 
-WebSockets would be the right answer if the browser needed to push frequent messages upstream on the same connection. It does not — the user sends a message, then the server talks for a while.
+WebSockets would be the right answer if the browser needed to push frequent messages upstream on the same connection. It does not: the user sends a message, then the server talks for a while.
 
 ## The trade-offs that actually bit
 
@@ -66,7 +66,7 @@ WebSockets would be the right answer if the browser needed to push frequent mess
 
 **2. Buffering hides the stream.** Without `X-Accel-Buffering: no` and `Cache-Control: no-transform`, a proxy can hold the whole response and defeat the point. Verify streaming at the byte level, not in dev.
 
-**3. Partial tool calls are not a thing.** SSE gives you tokens, not structured objects. The frontend assembles the tool call from deltas and only renders it once it is complete — streaming a half-parsed JSON object to the UI is how you get flicker.
+**3. Partial tool calls are not a thing.** SSE gives you tokens, not structured objects. The frontend assembles the tool call from deltas and only renders it once it is complete, since streaming a half-parsed JSON object to the UI is how you get flicker.
 
 **4. The connection must close.** A leaked `ReadableStream` is a leaked request. Always `close()` in a `finally`, and always send a terminal event so the client can stop its spinner.
 
