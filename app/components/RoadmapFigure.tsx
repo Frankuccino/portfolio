@@ -1,16 +1,14 @@
-import type { RoadmapCourse } from "../data/roadmap";
-
-type Figure = NonNullable<RoadmapCourse["image"]>;
+import type { RoadmapImage } from "../data/roadmap";
 
 /**
- * A course's diagram, with its credit.
+ * A module's diagram with its caption and credit.
  *
- * Caption and credit are separate lines: the caption says what the picture is,
- * the credit says who drew it.
+ * Deliberately free of outer spacing: the parent decides where the figure sits,
+ * because on the course page it shares a card with the module's text.
  */
-export default function RoadmapFigure({ image }: { image: Figure }) {
+export default function RoadmapFigure({ image }: { image: RoadmapImage }) {
   return (
-    <figure className="mt-4">
+    <figure>
       {/* Local asset, so a plain <img> with intrinsic dimensions: the
           width/height reserve the box and prevent a layout shift. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}

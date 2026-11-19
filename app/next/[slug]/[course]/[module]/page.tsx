@@ -62,7 +62,7 @@ export default async function RoadmapModulePage({
 
   return (
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         <Link
           href={`/next/${step.id}/${course.slug}`}
           className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
@@ -83,7 +83,7 @@ export default async function RoadmapModulePage({
         </header>
 
         {/* The picture the breakdown refers to, so the page stands alone. */}
-        {course.image ? <RoadmapFigure image={course.image} /> : null}
+        {mod.image ? <RoadmapFigure image={mod.image} /> : null}
 
         {/* The breakdown: every component the diagram lists, and what it is
             actually for. Grouped the way the diagram groups them. */}
@@ -93,7 +93,7 @@ export default async function RoadmapModulePage({
               <h2 className="text-xs font-mono uppercase tracking-widest text-[#5f93a8]">
                 {group.group}
               </h2>
-              <ul className="space-y-3">
+              <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {group.items.map((item) => (
                   <li
                     key={item.name}
