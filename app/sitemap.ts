@@ -17,11 +17,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.5,
     },
-    ...(step.courses ?? []).map((course) => ({
-      url: `${siteUrl}/next/${step.id}/${course.slug}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.4 as const,
-    })),
+    ...(step.courses ?? []).flatMap((course) => [
+      {
+        url: `${siteUrl}/next/${step.id}/${course.slug}`,
+        changeFrequency: "monthly" as const,
+        priority: 0.4,
+      },
+      ...course.modules.map((module) => ({
+        url: `${siteUrl}/next/${step.id}/${course.slug}/${module.slug}`,
+        changeFrequency: "monthly" as const,
+        priority: 0.3 as const,
+      })),
+    ]),
   ]);
 
   return [

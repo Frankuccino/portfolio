@@ -1,33 +1,14 @@
-/**
- * A pointer at a block elsewhere on the site that already covers a module's
- * ground. By id, never by URL: the label and href are resolved from the
- * target's own data at render time, so a rename propagates and a typo throws
- * instead of 404ing.
- */
-export type ReinforcementRef =
-  | { kind: "skillGroup"; id: string }
-  | { kind: "project"; id: string }
-  | { kind: "readingStage"; id: string }
-  | { kind: "post"; slug: string };
-
 export type RoadmapModule = {
+  /** URL segment, so the module's breakdown has its own page. */
+  slug: string;
   title: string;
-  /** One line on what the module actually covers, in the reader's terms. */
+  /** One-line hook, shown on the course page. */
   summary: string;
   /**
-   * Optional diagram of the module's ground. The summary stays: an image of
-   * text is neither readable by a screen reader nor indexable, so the figure
-   * illustrates rather than replaces it.
+   * The diagram's components, explained, in the diagram's own groupings. The
+   * picture says what is there; this says what each part is for.
    */
-  image?: {
-    src: string;
-    alt: string;
-    caption: string;
-    /** Intrinsic size, so the box is reserved before the file arrives. */
-    width: number;
-    height: number;
-  };
-  reinforces: ReinforcementRef[];
+  breakdown: { group: string; items: { name: string; role: string }[] }[];
 };
 
 export type RoadmapCourse = {
@@ -36,6 +17,17 @@ export type RoadmapCourse = {
   title: string;
   /** Optional: what the course as a whole is for. */
   summary?: string;
+  /** The environment the course's modules are read against. */
+  image?: {
+    src: string;
+    alt: string;
+    caption: string;
+    /** Who drew it. */
+    credit: string;
+    /** Intrinsic size, so the box is reserved before the file arrives. */
+    width: number;
+    height: number;
+  };
   modules: RoadmapModule[];
 };
 
@@ -77,22 +69,138 @@ export const roadmapSteps: RoadmapStep[] = [
       {
         slug: "course-1",
         title: "Course 1: Foundations of AI and Machine Learning",
+        summary:
+          "The foundations first: what an AI/ML environment actually is, the data and model lifecycle that runs through it, and the practices that make models generalise rather than memorise.",
+        image: {
+          src: "/roadmap/microsoft-course-1-module-1.png",
+          alt: "Diagram of the Azure AI/ML environment: Event Hub and Data Factory ingesting IoT, database, external API and CRM/ERP sources into Databricks over a Data Lake with bronze, silver and gold layers, SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure Machine Learning SDK for model development, and AKS, Azure Machine Learning Service, App Service and Functions behind Monitor and Application Insights.",
+          caption: "The Azure AI/ML environment, end to end.",
+          credit: "Diagrammed by Frank Angelo Malubag",
+          width: 1680,
+          height: 784,
+        },
         modules: [
           {
+            slug: "introduction-to-ai-ml-environments",
             title: "Module 1: Introduction to AI/ML Environments",
             summary:
-              "The Azure ML stack end to end: Event Hub and Data Factory ingesting and orchestrating raw sources (IoT, databases, external APIs, CRM and ERP) into Databricks, a Data Lake split into bronze, silver and gold layers with SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure ML SDK for model development, then AKS, App Service and Functions behind Monitor and Application Insights.",
-            image: {
-              src: "/roadmap/microsoft-course-1-module-1.png",
-              alt: "Diagram of the Azure AI/ML environment: Event Hub and Data Factory ingesting IoT, database, external API and CRM/ERP sources into Databricks over a Data Lake with bronze, silver and gold layers, SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure Machine Learning SDK for model development, and AKS, Azure Machine Learning Service, App Service and Functions behind Monitor and Application Insights.",
-              caption: "The environment Module 1 describes, end to end.",
-              width: 1137,
-              height: 771,
-            },
-            reinforces: [
-              { kind: "skillGroup", id: "ml-data" },
-              { kind: "skillGroup", id: "architecture-cloud" },
-              { kind: "readingStage", id: "core" },
+              "The environment end to end: ingestion, the lakehouse layers, the model frameworks, deployment, and the monitoring that closes the loop.",
+            breakdown: [
+              {
+                group: "Raw data sources",
+                items: [
+                  {
+                    name: "IoT",
+                    role: "Sensor and device telemetry: the streaming source that arrives continuously rather than in batches.",
+                  },
+                  {
+                    name: "DB",
+                    role: "Existing operational and analytical databases, the structured record of the business.",
+                  },
+                  {
+                    name: "External API",
+                    role: "Third-party data and services pulled in over HTTP at ingest time.",
+                  },
+                  {
+                    name: "CRM, ERP",
+                    role: "The customer and back-office systems (Salesforce, SAP and peers) whose records describe the business directly.",
+                  },
+                ],
+              },
+              {
+                group: "Ingestion & orchestration",
+                items: [
+                  {
+                    name: "Event Hub",
+                    role: "Azure's streaming ingestion service: takes in millions of events per second and hands them to consumers or to storage.",
+                  },
+                  {
+                    name: "Azure Data Factory",
+                    role: "The orchestration layer: schedules and chains the pipelines that move and transform data across services.",
+                  },
+                ],
+              },
+              {
+                group: "Processing & transformation",
+                items: [
+                  {
+                    name: "Azure Databricks",
+                    role: "The Apache Spark-based analytics engine where raw data is cleaned, joined and engineered into features.",
+                  },
+                ],
+              },
+              {
+                group: "Storage",
+                items: [
+                  {
+                    name: "Azure Data Lake Storage",
+                    role: "The landing store, in medallion layers: bronze holds raw ingested data, silver holds cleaned and conformed data, gold holds the aggregates ready for consumption.",
+                  },
+                  {
+                    name: "Azure SQL Database",
+                    role: "The relational store for structured, transactional and reporting workloads.",
+                  },
+                  {
+                    name: "Azure Cosmos DB",
+                    role: "The distributed NoSQL store for globally replicated, low-latency reads and writes at scale.",
+                  },
+                ],
+              },
+              {
+                group: "Model development frameworks",
+                items: [
+                  {
+                    name: "TensorFlow",
+                    role: "Google's framework for building and training deep models, from research through to production serving.",
+                  },
+                  {
+                    name: "PyTorch",
+                    role: "The research-first deep learning framework that dominates papers and experimentation.",
+                  },
+                  {
+                    name: "scikit-learn",
+                    role: "The classical ML library: regression, classification, clustering, and the evaluation tooling around them.",
+                  },
+                  {
+                    name: "Azure Machine Learning SDK",
+                    role: "The Azure-native API for tracking experiments, packaging models and managing their lifecycle.",
+                  },
+                ],
+              },
+              {
+                group: "Deployment platforms",
+                items: [
+                  {
+                    name: "Azure Kubernetes Service (AKS)",
+                    role: "Managed Kubernetes, for containerised services that scale on demand.",
+                  },
+                  {
+                    name: "Azure Machine Learning Service",
+                    role: "The managed serving and lifecycle layer for trained models: endpoints, retraining and rollout.",
+                  },
+                  {
+                    name: "Azure App Service",
+                    role: "The managed web app host for APIs and front ends, without managing the underlying machines.",
+                  },
+                  {
+                    name: "Azure Functions",
+                    role: "Event-driven serverless compute: run a small unit of logic in response to a trigger and pay per execution.",
+                  },
+                ],
+              },
+              {
+                group: "Continuous monitoring",
+                items: [
+                  {
+                    name: "Azure Monitor",
+                    role: "Platform-wide metrics and logs: the health of every Azure resource in one place.",
+                  },
+                  {
+                    name: "Application Insights",
+                    role: "Application-level telemetry: requests, dependencies, exceptions and user flows inside the deployed app.",
+                  },
+                ],
+              },
             ],
           },
         ],
