@@ -51,9 +51,8 @@ const GLYPHS: string[] = [
 ];
 
 /**
- * The viewBox the outlines live in, and where the ink starts inside it. The
- * glyphs' cap height sits at y=29 of a 120-high box, which is what the scroll
- * sweep anchors to.
+ * The viewBox the outlines live in, and where the ink starts inside it: cap
+ * height sits at y=29 of a 120-high box, which the sweep anchors to.
  */
 const GLYPH_VIEWBOX_HEIGHT = 120;
 const GLYPH_TOP_UNITS = 29;
@@ -121,16 +120,12 @@ export default function NameBorder() {
     };
   }, []);
 
-  // The glow sweeps left to right as the footer scrolls into view. The
-  // gradient is translated rather than rebuilt: one attribute write per frame,
-  // and the band keeps its width because the whole ramp moves with it.
+  // The glow travels left to right as the footer scrolls into view, on a wide
+  // viewport. On a phone the word is small and the travel reads as noise, so
+  // there the band simply parks at the centre: the same glow, static.
   //
-  // Deliberately NOT gated on `prefers-reduced-motion`. The reveal above is an
-  // automatic fade, which is what that setting exists to suppress. This is
-  // scroll-linked and user-driven — the reader is already moving the page, the
-  // glow only follows — and the wordmark is decorative (`aria-hidden`). Gating
-  // it meant anyone with Reduce Motion turned on got a static band and never
-  // saw the effect at all.
+  // The gradient is translated rather than rebuilt: one attribute write per
+  // frame, and the band keeps its width because the whole ramp moves with it.
   useEffect(() => {
     const gradient = ref.current?.querySelector<SVGLinearGradientElement>(
       "#nb-fill"
@@ -138,9 +133,18 @@ export default function NameBorder() {
     const footer = ref.current?.closest("footer");
     if (!gradient || !footer) return;
 
-    let last = -1;
+    const wide = window.matchMedia("(min-width: 640px)");
+    let last: number | null = null;
 
     const sweep = () => {
+      if (!wide.matches) {
+        if (last !== null) {
+          last = null;
+          gradient.removeAttribute("gradientTransform");
+        }
+        return;
+      }
+
       const vh = window.innerHeight;
       const footerRect = footer.getBoundingClientRect();
       const svgRect = gradient.ownerSVGElement?.getBoundingClientRect();
@@ -177,9 +181,11 @@ export default function NameBorder() {
     };
 
     sweep();
+    wide.addEventListener("change", sweep);
     window.addEventListener("scroll", sweep, { passive: true });
     window.addEventListener("resize", sweep);
     return () => {
+      wide.removeEventListener("change", sweep);
       window.removeEventListener("scroll", sweep);
       window.removeEventListener("resize", sweep);
     };

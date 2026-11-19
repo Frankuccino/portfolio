@@ -23,6 +23,46 @@ const priorityStyles: Record<string, string> = {
   medium: "text-slate-400 border-slate-800/60 bg-transparent",
 };
 
+/**
+ * Mobile-only cover thumb.
+ *
+ * The hover preview is a pointer affordance, so on a phone the card carries its
+ * own art instead of hiding the cover behind a gesture the reader does not
+ * have. Hidden from `sm` up, where the preview works.
+ */
+function BookCoverThumb({ book }: { book: ReadingBook }) {
+  // Computed once: a book's cover sources do not change over its lifetime.
+  // `M` art, not `S`: the thumb is ~80 CSS px wide but 160 device px on a
+  // retina phone, so the small size would render soft.
+  const [src] = useState<string | null>(() =>
+    book.coverId
+      ? coverUrl(book.coverId, "M")
+      : book.googleBooksId
+        ? googleBooksCoverUrl(book.googleBooksId)
+        : null,
+  );
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <div
+      aria-hidden="true"
+      className="sm:hidden mr-3 w-28 shrink-0 self-stretch rounded-md overflow-hidden border border-[#3e6274]/30 bg-[#3e6274]/15"
+    >
+      {src && !failed ? (
+        // Third-party hotlink, so a plain <img> rather than next/image's proxy.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt=""
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="block h-full w-full object-cover"
+        />
+      ) : null}
+    </div>
+  );
+}
+
 export default function ReadingPlanExplorer() {
   const [selected, setSelected] = useState<number | null>(null);
   const [preview, setPreview] = useState<CoverPreviewState | null>(null);
@@ -194,59 +234,63 @@ export default function ReadingPlanExplorer() {
                     onClick={() => setSelected(item.order)}
                     onMouseEnter={(event) => handleEnter(item, event.currentTarget)}
                     onMouseLeave={handleLeave}
-                    className="group text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors cursor-pointer flex flex-col items-start"
+                    className="group text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors cursor-pointer flex flex-row items-start"
                   >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[10px] font-mono tabular-nums text-slate-600">
-                        {pad(item.order)}
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        {item.kind === "report" && (
-                          <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 border border-slate-800/70 rounded px-1.5 py-0.5">
-                            Report
+                    <BookCoverThumb book={item} />
+                    <div className="min-w-0 flex-1 flex flex-col">
+                      <div className="flex items-center justify-between gap-2">
+                          <span className="text-[10px] font-mono tabular-nums text-slate-600">
+                            {pad(item.order)}
                           </span>
-                        )}
-                        {item.priority && (
-                          <span
-                            className={`text-[10px] font-mono uppercase tracking-widest border rounded px-1.5 py-0.5 ${priorityStyles[item.priority] ?? priorityStyles.medium}`}
-                          >
-                            {item.priority}
+                          <div className="flex items-center gap-1.5">
+                            {item.kind === "report" && (
+                              <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 border border-slate-800/70 rounded px-1.5 py-0.5">
+                                Report
+                              </span>
+                            )}
+                            {item.priority && (
+                              <span
+                                className={`text-[10px] font-mono uppercase tracking-widest border rounded px-1.5 py-0.5 ${priorityStyles[item.priority] ?? priorityStyles.medium}`}
+                              >
+                                {item.priority}
+                              </span>
+                            )}
+                            <span className="text-[11px] text-slate-400 tabular-nums">
+                              ~{item.hours} h
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Fixed title height so every body starts at the same Y. */}
+                        <h3 className="mt-1.5 min-h-[2.5rem] text-sm font-semibold leading-snug text-slate-100">
+                          {item.title}
+                        </h3>
+                        <p className="mt-0.5 text-[11px] text-slate-400">
+                          {item.author} · {item.pages.toLocaleString()} pp
+                        </p>
+                      {item.track && (
+                        <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
+                          {item.track}
+                        </p>
+                      )}
+
+                      <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                        {item.tagline}
+                      </p>
+                      {/* The footer is pushed to the card's bottom edge so the pace
+                          line and the action align across a row even when the
+                          taglines wrap to different lengths. */}
+                      <div className="mt-auto pt-2">
+                        <p className="text-[11px] tabular-nums text-slate-400">
+                          {item.dailyCommitment} min/day · {daysToFinish(item)} days
+                        </p>
+                        <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
+                          View map
+                          <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
+                            →
                           </span>
-                        )}
-                        <span className="text-[11px] text-slate-400 tabular-nums">
-                          ~{item.hours} h
                         </span>
                       </div>
-                    </div>
-
-                    {/* Fixed title height so every body starts at the same Y. */}
-                    <h3 className="mt-1.5 min-h-[2.5rem] text-sm font-semibold leading-snug text-slate-100">
-                      {item.title}
-                    </h3>
-                    <p className="mt-0.5 text-[11px] text-slate-400">
-                      {item.author} · {item.pages.toLocaleString()} pp
-                    </p>
-                    {item.track && (
-                      <p className="mt-1 text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
-                        {item.track}
-                      </p>
-                    )}
-                    <p className="mt-2 text-xs leading-relaxed text-slate-400">
-                      {item.tagline}
-                    </p>
-                    {/* The footer is pushed to the card's bottom edge so the pace
-                        line and the action align across a row even when the
-                        taglines wrap to different lengths. */}
-                    <div className="mt-auto pt-2">
-                      <p className="text-[11px] tabular-nums text-slate-400">
-                        {item.dailyCommitment} min/day · {daysToFinish(item)} days
-                      </p>
-                      <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
-                        View map
-                        <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
-                          →
-                        </span>
-                      </span>
                     </div>
                   </button>
                 ))}
