@@ -52,7 +52,7 @@ const person = {
   "@id": `${siteUrl}/#person`,
   name: "Frank Angelo A. Malubag",
   url: siteUrl,
-  image: `${siteUrl}/og-image.png`,
+  image: `${siteUrl}/og-image.jpg`,
   jobTitle: "Software & AI Engineer",
   description:
     "Backend-focused software engineer and DataCamp-certified AI Engineer Associate building full-stack systems, distributed backends, and applied LLM applications.",

@@ -4,8 +4,9 @@
  * has to be restated wherever a page supplies its own block.
  */
 export const ogImage = {
-  url: "/og-image.png",
+  url: "/og-image.jpg",
   width: 1200,
   height: 630,
+  contentType: "image/jpeg",
   alt: "Frank Angelo Malubag — Software & AI Engineer",
 } as const;

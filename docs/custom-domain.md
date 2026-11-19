@@ -51,8 +51,9 @@ line is baked in.
 1. Vercel → Project Settings → Environment Variables → Production:
    `NEXT_PUBLIC_SITE_URL=https://fuiss.com`. It is inlined at **build time**, so
    setting it changes nothing until a rebuild.
-2. Regenerate `public/og-image.png`. The footer line is rasterised, so it still reads
-   `frankamalubag.vercel.app` until it is re-rendered from the template.
+2. The share card is art-directed on the footer's Monet painting, with `fuiss.com`
+   as a script signature. Its artwork is rasterised, so any change to the domain
+   or the art means re-rendering `public/og-image.jpg` from the template.
 3. Redeploy, then verify the **served** HTML rather than the source:
 
    ```sh

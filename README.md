@@ -73,7 +73,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 ├── public/
 │   ├── certificates/            # certificate artwork for the showcase
 │   ├── badges/                  # digital badges and passes
-│   └── og-image.png             # 1200×630 social-share card
+│   └── og-image.jpg              # 1200×630 social-share card
 └── README.md
 ```
 
@@ -113,7 +113,7 @@ The reveal adds `is-off` on mount and removes it once the name is *fully* on scr
 
 ## SEO & Social Preview
 
-The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL` (falling back to `https://localhost:3000` in development) and emits a `summary_large_image` Twitter card alongside the Open Graph tags, all pointing at `public/og-image.png` (1200×630). `app/lib/siteUrl.ts` is the single source for that origin; it upgrades any `http://` scheme to `https://` because X refuses insecure card images. `app/sitemap.ts` lists the static routes plus every blog post; `app/robots.ts` points crawlers at it. Copy `.env.example` to `.env.local` and set the real origin for production.
+The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL` (falling back to `https://localhost:3000` in development) and emits a `summary_large_image` Twitter card alongside the Open Graph tags, all pointing at `public/og-image.jpg` (1200×630). The card is art-directed on the footer's Monet painting (`public/footer-monet.webp`) under a left-to-right scrim, with the name in Bricolage Grotesque 800 and `fuiss.com` set as an Alex Brush signature over the water; it is a JPEG because a photographic background as PNG costs six times the bytes for no visible gain. `app/lib/siteUrl.ts` is the single source for that origin; it upgrades any `http://` scheme to `https://` because X refuses insecure card images. `app/sitemap.ts` lists the static routes plus every blog post; `app/robots.ts` points crawlers at it. Copy `.env.example` to `.env.local` and set the real origin for production.
 
 Every routable page declares `alternates.canonical` through the `canonical()` helper, and the blog post template sets its own `openGraph`/`twitter` block (`type: "article"`, `publishedTime`, tags) so a shared post carries its own title and excerpt rather than the site's. The root layout also emits a schema.org `Person` record whose `sameAs` links the site to the GitHub and LinkedIn profiles — that is what lets a search engine treat them as one entity.
 

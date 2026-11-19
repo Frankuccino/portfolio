@@ -71,7 +71,7 @@ export default async function BlogPost({
               dateModified: post.date,
               inLanguage: "en",
               keywords: post.tags.join(", "),
-              image: `${siteUrl}/og-image.png`,
+              image: `${siteUrl}/og-image.jpg`,
               author: {
                 "@type": "Person",
                 "@id": `${siteUrl}/#person`,
