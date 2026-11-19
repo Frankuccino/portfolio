@@ -27,7 +27,9 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   └── [slug]/page.tsx
 │   ├── next/
 │   │   ├── page.tsx
-│   │   └── [slug]/page.tsx         # one page per roadmap step
+│   │   └── [slug]/
+│   │       ├── page.tsx                 # one page per roadmap step
+│   │       └── [course]/page.tsx        # one page per course, holding its modules
 │   ├── reading/
 │   │   └── page.tsx
 │   ├── not-found.tsx                # 404 — "record not found"
@@ -145,7 +147,7 @@ Below the library, `ReadingPlan.tsx` renders the priority order for the AI engin
 
 `/next` is a forward-looking page: six steps in three phases. The foundation first (the Microsoft AI & ML Engineering Professional Certificate, then the DeepLearning.AI Machine Learning Specialization), then the platform and the applied layer (the AWS Cloud Solutions Architect and AWS Generative AI Developer Advanced Professional Certificates), then LangChain Academy and Stanford CS221. Content lives in `app/data/roadmap.ts`. Every step carries an `order` phase label, and the page closes with the shared `TrackClose` "where this fits" block.
 
-Each step also has its own page at `/next/[slug]` (`app/next/[slug]/page.tsx`, static through `generateStaticParams`, with per-page metadata and canonical). A step may carry a `courses` list, and each module in it links to the site blocks that already cover its ground. Those links are `ReinforcementRef`s — by id, never by URL — resolved through `app/lib/reinforcements.ts` into the target's own title and href, so renaming a reading stage or a post updates every link that points at it and an unknown id throws instead of 404ing. Skill groups and project case files carry `id` anchors for this, and the sitemap derives the six step URLs from `roadmapSteps` the way it does posts.
+Each step also has its own page at `/next/[slug]` (`app/next/[slug]/page.tsx`, static through `generateStaticParams`, with per-page metadata and canonical), and each course under it gets a page at `/next/[slug]/[course]` (`app/next/[slug]/[course]/page.tsx`). The course page is where the modules live: each module carries a one-line summary, an optional diagram (`public/roadmap/`), and links to the site blocks that already cover its ground. Those links are `ReinforcementRef`s — by id, never by URL — resolved through `app/lib/reinforcements.ts` into the target's own title and href, so renaming a reading stage or a post updates every link that points at it and an unknown id throws instead of 404ing. Skill groups and project case files carry `id` anchors for this, and the sitemap derives both the step and course URLs from `roadmapSteps` the way it does posts.
 
 ## Reading Plan
 

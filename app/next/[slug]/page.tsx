@@ -2,7 +2,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { roadmapSteps } from "../../data/roadmap";
-import { resolveReinforcements } from "../../lib/reinforcements";
 import { canonical } from "../../lib/siteUrl";
 import { ogImage } from "../../lib/ogImage";
 import TrackClose from "../../components/TrackClose";
@@ -102,53 +101,48 @@ export default async function RoadmapStepPage({
           </ul>
         </header>
 
-        {/* The syllabus: each module links to the work on this site that already
-            covers its ground, which is the part a certificate alone cannot show. */}
+        {/* Each course gets its own page, because the modules under it are the
+            part that links out to the work reinforcing them. */}
         {step.courses && step.courses.length > 0 ? (
-          <section className="mb-12 space-y-6">
+          <section className="mb-12 space-y-3">
             <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
               {"//"} Courses
             </h2>
-            {step.courses.map((course) => (
-              <div key={course.title} className="space-y-3">
-                <h3 className="text-sm font-semibold text-slate-100">
-                  {course.title}
-                </h3>
-                {course.modules.map((module) => (
-                  <div
-                    key={module.title}
-                    className="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md"
-                  >
-                    <p className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
-                      {module.title}
-                    </p>
-                    <p className="mt-2 text-sm text-slate-400 leading-relaxed">
-                      {module.summary}
-                    </p>
-                    {/* Resolved from ids, so a renamed stage or post updates
-                        these links instead of breaking them. */}
-                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
-                      {resolveReinforcements(module.reinforces).map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          className="text-[11px] font-medium text-slate-300 hover:text-white transition-colors"
-                        >
-                          <span className="text-slate-500">{item.kindLabel} · </span>
-                          {item.label}{" "}
-                          <span className="text-slate-400 transition-colors">→</span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
+            <div className="space-y-2">
+              {step.courses.map((course) => (
+                <Link
+                  key={course.slug}
+                  href={`/next/${step.id}/${course.slug}`}
+                  className="group block p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
+                >
+                  <span className="flex items-baseline justify-between gap-3">
+                    <span className="text-sm font-semibold text-slate-100 group-hover:text-white transition-colors">
+                      {course.title}
+                    </span>
+                    <span className="shrink-0 text-[11px] text-slate-400 tabular-nums">
+                      {course.modules.length}{" "}
+                      {course.modules.length === 1 ? "module" : "modules"}
+                    </span>
+                  </span>
+                  {course.summary ? (
+                    <span className="mt-1 block text-xs text-slate-400 leading-relaxed">
+                      {course.summary}
+                    </span>
+                  ) : null}
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
+                    Modules
+                    <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
+                      →
+                    </span>
+                  </span>
+                </Link>
+              ))}
+            </div>
           </section>
         ) : null}
 
         <TrackClose
-          note="The credential is the proof point; the capability behind it is what this page points at. The reading order is the depth underneath, and the certificates already earned are the evidence that the path is being walked."
+          note="The credential is the proof point; the capability behind it is what these pages point at. The reading order is the depth underneath, and the certificates already earned are the evidence that the path is being walked."
           links={[
             { label: "The full plan", href: "/next" },
             { label: "The reading plan", href: "/reading" },

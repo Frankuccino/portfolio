@@ -11,11 +11,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  const steps: MetadataRoute.Sitemap = roadmapSteps.map((step) => ({
-    url: `${siteUrl}/next/${step.id}`,
-    changeFrequency: "monthly",
-    priority: 0.5,
-  }));
+  const steps: MetadataRoute.Sitemap = roadmapSteps.flatMap((step) => [
+    {
+      url: `${siteUrl}/next/${step.id}`,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    ...(step.courses ?? []).map((course) => ({
+      url: `${siteUrl}/next/${step.id}/${course.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.4 as const,
+    })),
+  ]);
 
   return [
     {

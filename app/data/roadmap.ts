@@ -14,11 +14,28 @@ export type RoadmapModule = {
   title: string;
   /** One line on what the module actually covers, in the reader's terms. */
   summary: string;
+  /**
+   * Optional diagram of the module's ground. The summary stays: an image of
+   * text is neither readable by a screen reader nor indexable, so the figure
+   * illustrates rather than replaces it.
+   */
+  image?: {
+    src: string;
+    alt: string;
+    caption: string;
+    /** Intrinsic size, so the box is reserved before the file arrives. */
+    width: number;
+    height: number;
+  };
   reinforces: ReinforcementRef[];
 };
 
 export type RoadmapCourse = {
+  /** URL segment, so a course is addressable on its own page. */
+  slug: string;
   title: string;
+  /** Optional: what the course as a whole is for. */
+  summary?: string;
   modules: RoadmapModule[];
 };
 
@@ -58,12 +75,20 @@ export const roadmapSteps: RoadmapStep[] = [
     url: "https://www.coursera.org/professional-certificates/microsoft-ai-and-ml-engineering",
     courses: [
       {
+        slug: "course-1",
         title: "Course 1: Foundations of AI and Machine Learning",
         modules: [
           {
             title: "Module 1: Introduction to AI/ML Environments",
             summary:
-              "The Azure ML stack end to end: Data Factory orchestrating raw sources into Databricks, a Data Lake split into bronze, silver and gold layers with SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure ML SDK for model development, then AKS, App Service and Functions behind Monitor and Application Insights.",
+              "The Azure ML stack end to end: Event Hub and Data Factory ingesting and orchestrating raw sources (IoT, databases, external APIs, CRM and ERP) into Databricks, a Data Lake split into bronze, silver and gold layers with SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure ML SDK for model development, then AKS, App Service and Functions behind Monitor and Application Insights.",
+            image: {
+              src: "/roadmap/microsoft-course-1-module-1.png",
+              alt: "Diagram of the Azure AI/ML environment: Event Hub and Data Factory ingesting IoT, database, external API and CRM/ERP sources into Databricks over a Data Lake with bronze, silver and gold layers, SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure Machine Learning SDK for model development, and AKS, Azure Machine Learning Service, App Service and Functions behind Monitor and Application Insights.",
+              caption: "The environment Module 1 describes, end to end.",
+              width: 1137,
+              height: 771,
+            },
             reinforces: [
               { kind: "skillGroup", id: "ml-data" },
               { kind: "skillGroup", id: "architecture-cloud" },
