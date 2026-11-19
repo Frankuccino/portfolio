@@ -1,0 +1,190 @@
+<!doctype html>
+<!-- Throwaway template: rendered by the headless browser at 1200x630 and
+     captured to public/og-image.jpg. Deleted after the capture.
+     body[data-v] selects the domain treatment so several variants can be
+     captured from one file. -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Alex+Brush&family=Great+Vibes&family=Dancing+Script:wght@700&family=Caveat:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        position: relative;
+        background: #0b0f17;
+        color: #e6edf5;
+        font-family: "Geist", ui-sans-serif, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .art {
+        position: absolute; inset: 0;
+        background-image:
+          linear-gradient(
+            to right,
+            rgba(9, 12, 18, 0.95) 0%,
+            rgba(9, 12, 18, 0.9) 34%,
+            rgba(9, 12, 18, 0.66) 58%,
+            rgba(9, 12, 18, 0.26) 78%,
+            rgba(9, 12, 18, 0) 92%
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(9, 12, 18, 0.45) 0%,
+            rgba(9, 12, 18, 0) 26%,
+            rgba(9, 12, 18, 0) 66%,
+            rgba(9, 12, 18, 0.66) 100%
+          ),
+          url("footer-monet.webp");
+        background-position: center, center, center 62%;
+        background-size: cover, cover, cover;
+        background-repeat: no-repeat;
+      }
+      .wrap {
+        position: relative; z-index: 1;
+        height: 100%; display: flex; flex-direction: column; justify-content: center;
+        padding: 0 96px; max-width: 760px;
+      }
+      .eyebrow {
+        font-family: "Geist Mono", ui-monospace, monospace;
+        font-size: 18px; font-weight: 500; letter-spacing: 0.32em;
+        text-transform: uppercase; color: #9fc4d4;
+      }
+      h1 {
+        margin-top: 24px;
+        font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 800; font-size: 68px; line-height: 1; letter-spacing: -0.02em;
+        white-space: nowrap;
+        color: #f4f8fb;
+        text-shadow: 0 2px 34px rgba(5, 8, 12, 0.75);
+      }
+      .role {
+        margin-top: 24px; font-size: 26px; font-weight: 600; color: #dbe4ee;
+      }
+      .role span { color: #8fb9ca; font-family: "Geist Mono", ui-monospace, monospace; font-weight: 500; }
+      .pos {
+        margin-top: 16px; font-size: 22px; line-height: 1.45; color: #aab6c6; max-width: 590px;
+      }
+
+      /* --- the four treatments --- */
+      .domain { position: absolute; z-index: 1; color: #f4fafc; }
+
+      /* A: the current one — Alex Brush signature over the water */
+      [data-v="alex"] .domain {
+        right: 60px; bottom: 44px;
+        font-family: "Alex Brush", cursive;
+        font-size: 138px; line-height: 1;
+        padding: 26px 44px; border-radius: 50%;
+        background: radial-gradient(ellipse 58% 92% at 50% 50%,
+          rgba(8, 11, 16, 0.78) 0%, rgba(8, 11, 16, 0.5) 52%, rgba(8, 11, 16, 0) 78%);
+        text-shadow: 0 2px 18px rgba(4, 7, 10, 0.9);
+      }
+
+      /* B: Great Vibes — more formal, thicker, no local scrim */
+      [data-v="vibes"] .domain {
+        right: 74px; bottom: 74px;
+        font-family: "Great Vibes", cursive;
+        font-size: 152px; line-height: 1;
+        color: #f6fbfd;
+        text-shadow: 0 3px 26px rgba(4, 7, 10, 0.85), 0 0 60px rgba(95, 147, 168, 0.4);
+      }
+
+      /* C: Dancing Script bold — heavier strokes, survives thumbnails */
+      [data-v="dancing"] .domain {
+        right: 68px; bottom: 62px;
+        font-family: "Dancing Script", cursive;
+        font-weight: 700; font-size: 128px; line-height: 1;
+        color: #f6fbfd;
+        text-shadow: 0 3px 22px rgba(4, 7, 10, 0.85);
+      }
+
+      /* D: no script — the domain in the site's own mono, in a footer rule,
+         with the pronunciation beside it */
+      [data-v="mono"] .domain {
+        left: 96px; right: 96px; bottom: 52px;
+        font-family: "Geist Mono", ui-monospace, monospace;
+        font-weight: 500; font-size: 32px; letter-spacing: 0.02em;
+        color: #d5e5ee;
+        padding-top: 20px;
+        border-top: 1px solid rgba(159, 196, 212, 0.4);
+        display: flex; align-items: baseline; gap: 18px;
+      }
+      [data-v="mono"] .domain::before {
+        content: ""; width: 10px; height: 10px; border-radius: 50%;
+        background: #5f93a8; box-shadow: 0 0 12px #5f93a8;
+        align-self: center; flex: none;
+      }
+      [data-v="mono"] .ipa {
+        color: #7d93a6; font-size: 25px; font-weight: 400; letter-spacing: 0.04em;
+      }
+
+      /* credential tag — the one signal the card was missing. Sits in the
+         empty upper-right quadrant, aligned to the same 96px gutter as the
+         domain rule so the two edges of the card share a grid. */
+      .cert {
+        position: absolute; z-index: 1;
+        top: 64px; right: 96px;
+        display: flex; align-items: center; gap: 10px;
+        padding: 9px 14px; border-radius: 8px;
+        background: rgba(9, 12, 18, 0.5); border: 1px solid rgba(159, 196, 212, 0.32);
+        backdrop-filter: blur(6px);
+        font-family: "Geist Mono", ui-monospace, monospace;
+        font-size: 14px; font-weight: 500;
+        letter-spacing: 0.1em; text-transform: uppercase;
+        color: #cfe0ea;
+      }
+      .cert::before {
+        content: ""; width: 8px; height: 8px; border-radius: 50%;
+        background: #5f93a8; box-shadow: 0 0 10px #5f93a8; flex: none;
+      }
+
+      /* the handwritten claim: a note plus a drawn arrow that lands on the
+         domain. The path is deliberately not a clean arc — a straight
+         bezier reads as a chart callout, a wobble reads as a pen. */
+      .own {
+        position: absolute; z-index: 1;
+        left: 440px; bottom: 30px; width: 520px; height: 100px;
+        transform: rotate(-3deg);
+      }
+      .own-label {
+        position: absolute; right: 0; top: 22px;
+        font-family: "Caveat", cursive; font-weight: 700; font-size: 56px; line-height: 1;
+        color: #f3d3b8;
+        text-shadow: 0 2px 16px rgba(4, 7, 10, 0.7);
+        z-index: 2;
+      }
+      .own svg { position: absolute; inset: 0; overflow: visible; }
+      .own path {
+        fill: none; stroke: #f3d3b8; stroke-width: 5.5;
+        stroke-linecap: round; stroke-linejoin: round;
+        filter: drop-shadow(0 2px 10px rgba(4, 7, 10, 0.7));
+      }
+    </style>
+  </head>
+  <body data-v="mono">
+    <div class="art"></div>
+    <div class="wrap">
+      <div class="eyebrow">Software &amp; AI Engineer</div>
+      <h1>Frank Angelo Malubag</h1>
+      <div class="role"><span>/Frankuccino</span></div>
+      <p class="pos">
+        Building end-to-end fullstack systems — backend architecture, cloud
+        tooling, and applied AI engineering.
+      </p>
+    </div>
+    <div class="cert">DataCamp · Certified AI Engineer for Developers Associate</div>
+    <div class="domain">fuiss.com<span class="ipa">/fwiːs/</span></div>
+    <div class="own" aria-hidden="true">
+      <span class="own-label">I own this!</span>
+      <svg viewBox="0 0 520 100" preserveAspectRatio="none">
+        <path d="M 292 62 C 240 54, 180 64, 120 66 C 70 67, 30 68, 10 68" />
+        <path d="M 10 68 L 47 48 M 10 68 L 47 88" />
+      </svg>
+    </div>
+  </body>
+</html>
