@@ -183,7 +183,7 @@ export const projects: Project[] = [
     ],
     links: [
       { label: "Repository", href: "https://github.com/Frankuccino/platform-atlas" },
-      { label: "Live", href: "https://platformatlas.vercel.app/" },
+      { label: "Live", href: "https://atlas.fuiss.com/" },
     ],
     featured: true,
   },
