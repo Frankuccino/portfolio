@@ -36,7 +36,7 @@ export const roadmapSteps: RoadmapStep[] = [
     credentialType: "Specialization · 3 courses",
     commitment: "~2 months at 10 hrs/week",
     summary:
-      "The fundamentals underneath that breadth, taught by Andrew Ng: supervised learning — linear and logistic regression, neural networks, decision trees and tree ensembles — unsupervised learning for clustering, anomaly detection and recommender systems, and the development practices that make models generalise rather than memorise.",
+      "The fundamentals underneath that breadth, taught by Andrew Ng: supervised learning (linear and logistic regression, neural networks, decision trees and tree ensembles) and unsupervised learning for clustering, anomaly detection and recommender systems, and the development practices that make models generalise rather than memorise.",
     outcomes: [
       "Build supervised models for prediction and classification with NumPy and scikit-learn",
       "Train neural networks with TensorFlow for multi-class classification",
@@ -53,7 +53,7 @@ export const roadmapSteps: RoadmapStep[] = [
     credentialType: "Professional Certificate · 4 courses",
     commitment: "~2 months at 10 hrs/week",
     summary:
-      "The platform layer: the core AWS services for compute, storage, database, networking, monitoring and security, then designing architectural solutions against cost, performance and operational excellence — including building and operating a secure, scalable data lake. Prepares for the AWS Certified Solutions Architect – Associate exam.",
+      "The platform layer: the core AWS services for compute, storage, database, networking, monitoring and security, then designing architectural solutions against cost, performance and operational excellence, including building and operating a secure, scalable data lake. Prepares for the AWS Certified Solutions Architect – Associate exam.",
     outcomes: [
       "Choose and apply core AWS services for compute, storage, database, networking, monitoring, and security",
       "Design architectural solutions against cost, performance, and operational excellence",
@@ -87,7 +87,7 @@ export const roadmapSteps: RoadmapStep[] = [
     credentialType: "Self-paced courses",
     commitment: "Self-paced · free · enrolled",
     summary:
-      "The orchestration layer: agents across the full development lifecycle — build, test, deploy, monitor. LangChain and LangGraph for orchestration, LangSmith for observability and evaluation, and the LangChain Certified Agent Engineer exam as the capstone.",
+      "The orchestration layer: agents across the full development lifecycle: build, test, deploy, monitor. LangChain and LangGraph for orchestration, LangSmith for observability and evaluation, and the LangChain Certified Agent Engineer exam as the capstone.",
     outcomes: [
       "Build agents with LangChain and LangGraph",
       "Observe, evaluate, and debug with LangSmith",
@@ -99,12 +99,12 @@ export const roadmapSteps: RoadmapStep[] = [
   {
     id: "stanford-cs221",
     order: "Then",
-    title: "CS221: Artificial Intelligence — Principles and Techniques",
+    title: "CS221: Artificial Intelligence: Principles and Techniques",
     issuer: "Stanford University",
     credentialType: "Course · 4 units",
     commitment: "10 weeks · 10–20 hrs/week",
     summary:
-      "The mathematical foundations that make applied work durable: search, game playing, Markov decision processes, constraint satisfaction, graphical models, and logic — AI as the mathematics of good decisions under incomplete information.",
+      "The mathematical foundations that make applied work durable: search, game playing, Markov decision processes, constraint satisfaction, graphical models, and logic: AI as the mathematics of good decisions under incomplete information.",
     outcomes: [
       "Search, game playing, and Markov decision processes",
       "Constraint satisfaction and graphical models",

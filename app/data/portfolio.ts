@@ -44,7 +44,7 @@ export const skillGroups: SkillGroup[] = [
     icon: "openai",
     featured: true,
     summary:
-      "The applied layer. I design the architecture around a foundation model — context, guardrails, routing, caching — and build the retrieval, evaluation, and monitoring that let an LLM feature survive production. Model output is treated as untrusted input throughout.",
+      "The applied layer. I design the architecture around a foundation model (context, guardrails, routing, caching) and build the retrieval, evaluation, and monitoring that let an LLM feature survive production. Model output is treated as untrusted input throughout.",
     items: [
       "LLM Application Development",
       "Prompt Engineering",
@@ -90,7 +90,7 @@ export const skillGroups: SkillGroup[] = [
     note: "Interfaces that hold up.",
     icon: "react",
     summary:
-      "React with TypeScript, styled with Tailwind. I build interfaces that stay maintainable as the product grows — clear component boundaries, state colocated with its consumer, and accessibility treated as a default.",
+      "React with TypeScript, styled with Tailwind. I build interfaces that stay maintainable as the product grows: clear component boundaries, state colocated with its consumer, and accessibility treated as a default.",
     items: ["React", "Next.js", "HTML", "CSS", "TailwindCSS"],
   },
   {
@@ -135,7 +135,7 @@ export const skillGroups: SkillGroup[] = [
     note: "Modeling and analysis.",
     icon: "pytorch",
     summary:
-      "NumPy, Pandas, and PyTorch for analysis and modeling. Enough to read a paper, reproduce a result, and know when a model is the right tool — and when it is not.",
+      "NumPy, Pandas, and PyTorch for analysis and modeling. Enough to read a paper, reproduce a result, and know when a model is the right tool, and when it is not.",
     items: ["NumPy", "Pandas", "PyTorch"],
   },
   {
@@ -162,7 +162,7 @@ export const projects: Project[] = [
     domain: "systems",
     title: "Platform Atlas",
     role: "Software Engineer",
-    year: "2026 — Present",
+    year: "2026 – Present",
     stack: [
       "TypeScript",
       "React",
@@ -175,11 +175,11 @@ export const projects: Project[] = [
       "knip",
     ],
     summary:
-      "A personal map of the tools a company can be built on — 211 products across 39 categories and 7 domains — with a spaced-repetition loop over the catalog.",
+      "A personal map of the tools a company can be built on (211 products across 39 categories and 7 domains) with a spaced-repetition loop over the catalog.",
     highlights: [
       "Catalog lives in code and is checked by a validation script; study state sits in Neon Postgres behind httpOnly refresh-cookie auth with server-side sessions.",
       "Deterministic spaced-repetition scheduler: due calculation, per-product intervals, and skip behaviour.",
-      "Quality gates wired into the build — Vitest, Playwright e2e, knip for dead code, and type-coverage.",
+      "Quality gates wired into the build: Vitest, Playwright e2e, knip for dead code, and type-coverage.",
     ],
     links: [
       { label: "Repository", href: "https://github.com/Frankuccino/platform-atlas" },
@@ -192,7 +192,7 @@ export const projects: Project[] = [
     domain: "ai",
     title: "Northstar",
     role: "Software Engineer",
-    year: "2026 — Present",
+    year: "2026 – Present",
     stack: [
       "TypeScript",
       "React",
@@ -208,7 +208,7 @@ export const projects: Project[] = [
     summary:
       "AI-assisted Kanban task board. A ReAct-style agent loop with OpenAI SDK tool calling runs natural-language board operations, streaming live agent activity to the frontend over Server-Sent Events.",
     highlights: [
-      "Server-authoritative Kanban state machine treats AI tool calls as untrusted input — WIP limits and legal transitions are enforced server-side.",
+      "Server-authoritative Kanban state machine treats AI tool calls as untrusted input: WIP limits and legal transitions are enforced server-side.",
       "96-test Vitest + Supertest suite covering the AI chat flow with a deterministic stub provider.",
     ],
     links: [{ label: "Repository", href: "https://github.com/Frankuccino/northstar" }],
@@ -318,7 +318,7 @@ export const featuredCertificates: FeaturedCertificate[] = [
     issuer: "DataCamp",
     completed: "Nov 2026",
     description:
-      "Covers LLM application development, prompt engineering, RAG, and vector databases — the applied end of the AI engineering workflow.",
+      "Covers LLM application development, prompt engineering, RAG, and vector databases: the applied end of the AI engineering workflow.",
     images: [
       {
         src: "/certificates/aied-associate.jpg",
@@ -347,39 +347,39 @@ export const featuredCertificates: FeaturedCertificate[] = [
     issuer: "AWS Skills Centers",
     completed: "Mar 2026",
     description:
-      "A five-part AWS Skills Centers track — AI fundamentals, generative AI, prompts and foundation models, customization and responsible AI, and implementation — completed across March 2026.",
+      "A five-part AWS Skills Centers track (AI fundamentals, generative AI, prompts and foundation models, customization and responsible AI, and implementation) completed across March 2026.",
     images: [
       {
         src: "/certificates/aws-ai-practitioner-1.jpg",
-        label: "Part 1 — Introduction to AI",
+        label: "Part 1: Introduction to AI",
         shortLabel: "Part 1",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aws-ai-practitioner-2.jpg",
-        label: "Part 2 — Introduction to Generative AI",
+        label: "Part 2: Introduction to Generative AI",
         shortLabel: "Part 2",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aws-ai-practitioner-3.jpg",
-        label: "Part 3 — Prompts and Working with FMs",
+        label: "Part 3: Prompts and Working with FMs",
         shortLabel: "Part 3",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aws-ai-practitioner-4.jpg",
-        label: "Part 4 — FM Customization and Responsible AI",
+        label: "Part 4: FM Customization and Responsible AI",
         shortLabel: "Part 4",
         width: 1400,
         height: 806,
       },
       {
         src: "/certificates/aws-ai-practitioner-5.jpg",
-        label: "Part 5 — Implementing Generative AI",
+        label: "Part 5: Implementing Generative AI",
         shortLabel: "Part 5",
         width: 1400,
         height: 806,
@@ -397,7 +397,7 @@ export const featuredCertificates: FeaturedCertificate[] = [
     issuer: "AWS · Coursera",
     completed: "Dec 24, 2023",
     description:
-      "An online course authorized by Amazon Web Services and offered through Coursera — the AWS cloud fundamentals course, covering core services and the cloud's operating model.",
+      "An online course authorized by Amazon Web Services and offered through Coursera: the AWS cloud fundamentals course, covering core services and the cloud's operating model.",
     images: [
       {
         src: "/certificates/aws-cloud-technical-essentials.jpg",
@@ -419,7 +419,7 @@ export const featuredCertificates: FeaturedCertificate[] = [
     issuer: "KodeGo",
     completed: "Aug 14, 2023",
     description:
-      "A 4-month intensive on full-stack development with Node.js and MongoDB — where I designed, built, and delivered an HR management system to a municipality.",
+      "A 4-month intensive on full-stack development with Node.js and MongoDB, where I designed, built, and delivered an HR management system to a municipality.",
     images: [
       {
         src: "/certificates/kodego.jpg",
@@ -523,7 +523,7 @@ export const achievements: Certificate[] = [
     id: "nvidia-6g",
     title: "NVIDIA 6G Developer Program",
     issuer: "NVIDIA",
-    completed: "Mar 2026 — Present",
+    completed: "Mar 2026 – Present",
     hours: 0,
   },
 ];
