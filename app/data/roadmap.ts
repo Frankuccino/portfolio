@@ -1,3 +1,27 @@
+/**
+ * A pointer at a block elsewhere on the site that already covers a module's
+ * ground. By id, never by URL: the label and href are resolved from the
+ * target's own data at render time, so a rename propagates and a typo throws
+ * instead of 404ing.
+ */
+export type ReinforcementRef =
+  | { kind: "skillGroup"; id: string }
+  | { kind: "project"; id: string }
+  | { kind: "readingStage"; id: string }
+  | { kind: "post"; slug: string };
+
+export type RoadmapModule = {
+  title: string;
+  /** One line on what the module actually covers, in the reader's terms. */
+  summary: string;
+  reinforces: ReinforcementRef[];
+};
+
+export type RoadmapCourse = {
+  title: string;
+  modules: RoadmapModule[];
+};
+
 export type RoadmapStep = {
   id: string;
   order: string;
@@ -8,6 +32,11 @@ export type RoadmapStep = {
   summary: string;
   outcomes: string[];
   url?: string;
+  /**
+   * The syllabus, where it has been catalogued. Absent means "not yet
+   * written up", which renders no block rather than an empty one.
+   */
+  courses?: RoadmapCourse[];
 };
 
 export const roadmapSteps: RoadmapStep[] = [
@@ -27,6 +56,23 @@ export const roadmapSteps: RoadmapStep[] = [
       "Run the end-to-end ML lifecycle on Azure",
     ],
     url: "https://www.coursera.org/professional-certificates/microsoft-ai-and-ml-engineering",
+    courses: [
+      {
+        title: "Course 1: Foundations of AI and Machine Learning",
+        modules: [
+          {
+            title: "Module 1: Introduction to AI/ML Environments",
+            summary:
+              "The Azure ML stack end to end: Data Factory orchestrating raw sources into Databricks, a Data Lake split into bronze, silver and gold layers with SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure ML SDK for model development, then AKS, App Service and Functions behind Monitor and Application Insights.",
+            reinforces: [
+              { kind: "skillGroup", id: "ml-data" },
+              { kind: "skillGroup", id: "architecture-cloud" },
+              { kind: "readingStage", id: "core" },
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     id: "deeplearning-ai-ml-specialization",

@@ -41,7 +41,10 @@ function CaseFile({
   onToggle: () => void;
 }) {
   return (
-    <article className="border-b border-slate-800/70 last:border-b-0">
+    <article
+      id={project.id}
+      className="border-b border-slate-800/70 last:border-b-0 scroll-mt-28"
+    >
       {/* The file's face. Always shows enough to judge the project; the
           evidence behind it opens on demand. */}
       <button

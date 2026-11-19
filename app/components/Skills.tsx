@@ -19,7 +19,10 @@ function SpecRow({
   onToggle: () => void;
 }) {
   return (
-    <div className="border-b border-slate-800/70 last:border-b-0">
+    <div
+      id={group.id}
+      className="border-b border-slate-800/70 last:border-b-0 scroll-mt-28"
+    >
       <button
         type="button"
         onClick={onToggle}

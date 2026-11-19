@@ -1,6 +1,8 @@
 import type { IconName } from "tech-stack-icons";
 
 export type SkillGroup = {
+  /** Anchor id, so a roadmap module can deep-link to this group. */
+  id: string;
   title: string;
   note: string;
   icon: IconName;
@@ -39,6 +41,7 @@ export type Certificate = {
 
 export const skillGroups: SkillGroup[] = [
   {
+    id: "ai-engineering",
     title: "AI Engineering",
     note: "LLM systems, end to end.",
     icon: "openai",
@@ -56,6 +59,7 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
+    id: "llm-tools-agents",
     title: "LLM Tools & Agents",
     note: "Making models useful.",
     icon: "langchain",
@@ -78,6 +82,7 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
+    id: "languages",
     title: "Languages",
     note: "First tools I reach for.",
     icon: "typescript",
@@ -86,6 +91,7 @@ export const skillGroups: SkillGroup[] = [
     items: ["JavaScript", "TypeScript", "Go", "Rust", "Python", "SQL"],
   },
   {
+    id: "frontend",
     title: "Frontend",
     note: "Interfaces that hold up.",
     icon: "react",
@@ -94,6 +100,7 @@ export const skillGroups: SkillGroup[] = [
     items: ["React", "Next.js", "HTML", "CSS", "TailwindCSS"],
   },
   {
+    id: "backend",
     title: "Backend",
     note: "APIs and data layers.",
     icon: "expressjs",
@@ -110,6 +117,7 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
+    id: "architecture-cloud",
     title: "Architecture & Cloud",
     note: "Systems that ship and scale.",
     icon: "cloudflare",
@@ -131,6 +139,7 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
+    id: "ml-data",
     title: "ML & Data",
     note: "Modeling and analysis.",
     icon: "pytorch",
@@ -139,6 +148,7 @@ export const skillGroups: SkillGroup[] = [
     items: ["NumPy", "Pandas", "PyTorch"],
   },
   {
+    id: "engineering-practices",
     title: "Engineering Practices",
     note: "How I work.",
     icon: "git",

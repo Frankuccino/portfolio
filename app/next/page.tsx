@@ -53,26 +53,20 @@ export default function NextPage() {
             {roadmapSteps.map((step) => (
               <div key={step.id} className="relative pl-6">
                 <div className="absolute left-0 top-5 w-[15px] h-[15px] rounded-full border-2 border-[#3e6274] bg-[#0e0d16]" />
-                <article className="p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md">
+                <Link
+                  href={`/next/${step.id}`}
+                  aria-label={`Read more about ${step.title}`}
+                  className="group block p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
+                >
                   <div className="flex flex-wrap items-center gap-2 mb-2">
                     <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
                       {step.order}
                     </span>
+                    {/* The issuer's own page lives on the step page; a nested
+                        anchor inside this link would be invalid HTML. */}
                     <span className="text-[11px] text-slate-400">
                       {step.issuer}
-                      {step.url ? (
-                        <>
-                          {" · "}
-                          <a
-                            href={step.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#5f93a8] hover:text-slate-300 transition-colors"
-                          >
-                            {hostOf(step.url)} ↗
-                          </a>
-                        </>
-                      ) : null}
+                      {step.url ? ` · ${hostOf(step.url)}` : ""}
                     </span>
                   </div>
                   <h2 className="text-lg md:text-xl font-semibold text-white leading-snug">
@@ -92,7 +86,13 @@ export default function NextPage() {
                       </li>
                     ))}
                   </ul>
-                </article>
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
+                    Module breakdown
+                    <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
+                      →
+                    </span>
+                  </span>
+                </Link>
               </div>
             ))}
           </div>

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getPosts } from "./lib/posts";
+import { roadmapSteps } from "./data/roadmap";
 import { siteUrl } from "./lib/siteUrl";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -8,6 +9,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: post.date,
     changeFrequency: "monthly",
     priority: 0.6,
+  }));
+
+  const steps: MetadataRoute.Sitemap = roadmapSteps.map((step) => ({
+    url: `${siteUrl}/next/${step.id}`,
+    changeFrequency: "monthly",
+    priority: 0.5,
   }));
 
   return [
@@ -31,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    ...steps,
     ...posts,
   ];
 }
