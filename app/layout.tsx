@@ -79,7 +79,7 @@ const person = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Frank Angelo Malubag — Software & AI Engineer",
+  title: "Frank Angelo Malubag · Software & AI Engineer",
   description:
     "Backend-focused software engineer and DataCamp-certified AI Engineer Associate building full-stack systems, distributed backends, and applied LLM applications.",
   keywords: [
@@ -93,9 +93,9 @@ export const metadata: Metadata = {
     "LLM",
   ],
   openGraph: {
-    title: "Frank Angelo Malubag — Software & AI Engineer",
+    title: "Frank Angelo Malubag · Software & AI Engineer",
     description:
-      "Backend architecture, distributed systems, and applied LLM engineering.",
+      "Backend architecture, distributed systems, and applied AI engineering.",
     type: "website",
     url: siteUrl,
     siteName: "Frank Angelo Malubag",
@@ -103,9 +103,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Frank Angelo Malubag — Software & AI Engineer",
+    title: "Frank Angelo Malubag · Software & AI Engineer",
     description:
-      "Backend architecture, distributed systems, and applied LLM engineering.",
+      "Backend architecture, distributed systems, and applied AI engineering.",
     images: [ogImage.url],
   },
   ...(googleVerification

@@ -145,7 +145,7 @@ export default function Projects() {
         <SectionHeading
           index="03."
           title="Projects"
-          description="Production-style systems I have designed, built, and shipped — from AI-assisted tooling to municipal-scale internal software. Open a case file for its stack and evidence."
+          description="Production-style systems I have designed, built, and shipped, from AI-assisted tooling to municipal-scale internal software. Open a case file for its stack and evidence."
         />
 
         {/* The index: filter the files by the kind of system they are. */}

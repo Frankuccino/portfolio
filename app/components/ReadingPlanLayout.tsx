@@ -5,9 +5,9 @@ import { readingStages } from "../data/readingPlan";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** Stage labels carry a "Stage N — " prefix for the section heading; the rail
+/** Stage labels carry a "Stage N: " prefix for the section heading; the rail
  *  wants the shorter form. */
-const shortLabel = (label: string) => label.replace(/^Stage \d+ — /, "");
+const shortLabel = (label: string) => label.replace(/^Stage \d+: /, "");
 
 /** Where the "current" stage is probed: a line this far down the viewport. */
 const PROBE_RATIO = 0.35;

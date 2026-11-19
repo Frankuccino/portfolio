@@ -6,7 +6,7 @@ import { roadmapSteps } from "../data/roadmap";
 import BlogIndex from "../components/BlogIndex";
 
 export const metadata: Metadata = {
-  title: "Blog — Frank Angelo Malubag",
+  title: "Blog · Frank Angelo Malubag",
   description:
     "Notes on backend engineering, distributed systems, and applied AI engineering.",
   alternates: { canonical: canonical("/blog") },
@@ -33,7 +33,7 @@ export default function BlogArchive() {
             Writing on engineering.
           </h1>
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
-            Practical notes from building production systems — AI agents,
+            Practical notes from building production systems: AI agents,
             distributed backends, and the design decisions that hold up under
             load.
           </p>
@@ -45,7 +45,7 @@ export default function BlogArchive() {
           <BlogIndex posts={posts} showArchiveLink={false} />
         ) : (
           <p className="text-sm text-slate-400">
-            No posts yet — the first one is in the works.
+            No posts yet: the first one is in the works.
           </p>
         )}
 
@@ -64,7 +64,7 @@ export default function BlogArchive() {
             </span>
             <span className="block text-xs text-slate-400 mt-0.5">
               {roadmapSteps.length} steps, starting{" "}
-              {roadmapSteps[0].order.toLowerCase()} — the plan behind these
+              {roadmapSteps[0].order.toLowerCase()}: the plan behind these
               notes.
             </span>
           </span>

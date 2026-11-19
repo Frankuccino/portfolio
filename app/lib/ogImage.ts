@@ -8,5 +8,5 @@ export const ogImage = {
   width: 1200,
   height: 630,
   contentType: "image/jpeg",
-  alt: "Frank Angelo Malubag — Software & AI Engineer",
+  alt: "Frank Angelo Malubag · Software & AI Engineer",
 } as const;

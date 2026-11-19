@@ -16,8 +16,8 @@ import {
 } from "../data/readingPlan";
 
 export const metadata: Metadata = {
-  title: "Reading Plan — Frank Angelo Malubag",
-  description: `The priority order for my reading: six stages plus a domain elective, ${readingBookCount} books — the AI engineering stack and the forward-deployed foundations. Open any book for its chapter focus, hands-on work, and the closed-book stress test.`,
+  title: "Reading Plan · Frank Angelo Malubag",
+  description: `The priority order for my reading: six stages plus a domain elective, ${readingBookCount} books: the AI engineering stack and the forward-deployed foundations. Open any book for its chapter focus, hands-on work, and the closed-book stress test.`,
   alternates: { canonical: canonical("/reading") },
 };
 

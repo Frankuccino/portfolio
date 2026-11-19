@@ -53,8 +53,8 @@ export default function ReadingRationale() {
           {"//"} How to read them
         </h2>
         <p className="mt-3 max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
-          The protocol is built on the learning-science literature — retrieval
-          practice, spacing, interleaving, consolidation — not on reading harder.
+          The protocol is built on the learning-science literature (retrieval
+          practice, spacing, interleaving, consolidation), not on reading harder.
         </p>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -86,7 +86,7 @@ export default function ReadingRationale() {
           <ul className="mt-3 space-y-1.5">
             {readingGuardrails.map((rule) => (
               <li key={rule} className="flex gap-2 text-xs text-slate-400">
-                <span className="text-[#5f93a8]">—</span>
+                <span className="text-[#5f93a8]">·</span>
                 <span>{rule}</span>
               </li>
             ))}

@@ -13,7 +13,7 @@ export default function BlogSection() {
         <SectionHeading
           index="05."
           title="Blog"
-          description="Notes on backend engineering, distributed systems, and applied AI — written to be re-read, not just published."
+          description="Notes on backend engineering, distributed systems, and applied AI, written to be re-read, not just published."
         />
         <BlogIndex posts={posts} limit={4} />
       </div>

@@ -50,7 +50,7 @@ export default function Contact() {
         <SectionHeading
           index="06."
           title="Contact"
-          description="Open to backend, AI engineering, and full-stack roles — with an emphasis on applied AI and distributed systems."
+          description="Open to backend, AI engineering, and full-stack roles, with an emphasis on applied AI and distributed systems."
         />
 
         {/* The letter: one sheet with ruled rows, not three panels. */}
@@ -112,7 +112,7 @@ export default function Contact() {
 
           <div className="px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <p className="text-xs text-slate-400 leading-relaxed">
-              Based in Dumaguete City, Philippines — working remotely across
+              Based in Dumaguete City, Philippines, working remotely across
               time zones. Currently deepening expertise in distributed systems
               and applied AI engineering.
             </p>

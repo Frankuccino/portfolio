@@ -41,7 +41,7 @@ export default function FeaturedCertificateCard({
             <Image
               key={activeDoc.src}
               src={activeDoc.src}
-              alt={`${cert.title} — ${activeDoc.label}`}
+              alt={`${cert.title}: ${activeDoc.label}`}
               width={activeDoc.width}
               height={activeDoc.height}
               sizes="(max-width: 1024px) 100vw, 40vw"

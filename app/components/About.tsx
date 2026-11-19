@@ -23,7 +23,7 @@ export default function About() {
                 {"// Continuous Learning"}
               </p>
               <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-                I invest heavily in myself. This is my current library —{" "}
+                I invest heavily in myself. This is my current library: {" "}
                 <span className="text-slate-400">
                   the books I have read, reread, and keep within arm&apos;s reach.
                 </span>

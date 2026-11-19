@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!post) return {};
   const url = canonical(`/blog/${post.slug}`);
   return {
-    title: `${post.title} — Frank Angelo Malubag`,
+    title: `${post.title} · Frank Angelo Malubag`,
     description: post.excerpt,
     alternates: { canonical: url },
     openGraph: {

@@ -24,7 +24,7 @@ export default function NotFound() {
     <main className="flex min-h-screen items-center px-4 sm:px-6">
       <div className="mx-auto w-full max-w-3xl py-24">
         <p className="text-xs font-mono uppercase tracking-widest text-[#5f93a8]">
-          {"//"} 404 — record not found
+          {"//"} 404: record not found
         </p>
 
         <h1 className="mt-4 text-7xl md:text-9xl font-black tracking-tighter font-display leading-none text-slate-100">
@@ -32,7 +32,7 @@ export default function NotFound() {
         </h1>
 
         <p className="mt-6 max-w-xl text-sm md:text-base text-slate-400 leading-relaxed">
-          The record you asked for isn&apos;t in the index — it may have been
+          The record you asked for isn&apos;t in the index: it may have been
           renamed, moved, or never filed. The rest of the archive is intact.
         </p>
 

@@ -201,7 +201,7 @@ export default function VirtualLibrary() {
                     onFocus={() => setActiveId(book.id)}
                     aria-label={`${book.title}${
                       book.author ? ` by ${book.author}` : ""
-                    } — ${book.category}`}
+                    }: ${book.category}`}
                   >
                     {/* Spine — what the shelf shows. The cover art sits behind
                         a blur so the spine reads as a spine, not a crop. */}

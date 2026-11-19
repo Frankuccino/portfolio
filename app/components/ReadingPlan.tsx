@@ -27,7 +27,7 @@ function ReadingOrderHeader() {
       </div>
 
       <p className="mt-2 max-w-2xl text-sm text-slate-400 leading-relaxed">
-        Priority order for the AI engineering stack — six stages and a domain
+        Priority order for the AI engineering stack: six stages and a domain
         elective. Stages 1, 2, 3, 4 and 6 are read cover to cover; Stage 5 is a
         reference shelf, and the elective is opened when a fraud or risk problem
         appears. The full rationale, per-book chapter maps and the stress-test
@@ -111,7 +111,7 @@ function ReadingPlanBands() {
           ones. */}
       <div className="pt-5 border-t border-slate-800/60 flex flex-wrap items-center gap-3">
         <p className="text-xs text-slate-400 leading-relaxed max-w-md">
-          This is the summary — the reading page carries the rationale, a
+          This is the summary: the reading page carries the rationale, a
           chapter map for each book, and the closed-book stress test.
         </p>
         <Link

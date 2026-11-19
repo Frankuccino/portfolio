@@ -86,7 +86,7 @@ export default function Skills() {
         <SectionHeading
           index="02."
           title="Skills"
-          description="Applied AI engineering first, then the engineering foundation that ships it. Each group says what I can actually do with it — open a row for the tools."
+          description="Applied AI engineering first, then the engineering foundation that ships it. Each group says what I can actually do with it: open a row for the tools."
         />
 
         <div className="flex items-center justify-between mb-4">

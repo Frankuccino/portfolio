@@ -71,7 +71,7 @@ export default function Footer() {
             </p>
             <p className="mt-4 max-w-sm text-xs leading-relaxed text-slate-400">
               Working remotely across time zones on distributed systems and
-              applied AI engineering — backend, LLM applications, and the
+              applied AI engineering: backend, LLM applications, and the
               tooling around them.
             </p>
             <Link

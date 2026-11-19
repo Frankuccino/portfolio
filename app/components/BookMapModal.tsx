@@ -89,7 +89,7 @@ export default function BookMapModal({
       <div
         role="dialog"
         aria-modal="true"
-        aria-label={`${book.title} — reading map`}
+        aria-label={`${book.title}: reading map`}
         className="relative w-full max-w-2xl flex flex-col max-h-[88vh] rounded-2xl shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200 border overflow-hidden"
         style={{
           backgroundColor: "rgba(14, 13, 22, 0.95)",
