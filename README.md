@@ -167,12 +167,13 @@ The six home sections share one language — mono eyebrows, `// 0N.` indices, ha
 
 ## Analytics
 
-Four trackers run in production, mounted once in the root layout:
+Three trackers run in production, mounted once in the root layout:
 
 - **Vercel Web Analytics** (`@vercel/analytics/next`) — cookie-less and IP-anonymised, so no consent banner. Page views and referrers. Needs the project's Web Analytics toggle enabled in the dashboard, which is what provisions the `/_vercel/insights/*` routes.
 - **Vercel Speed Insights** (`@vercel/speed-insights/next`) — real-user Core Web Vitals from the same privacy posture. The free tier reports a subset of the vitals; Plus unlocks all of them and the breakdowns.
 - **GA4** (`gtag.js`, `G-4SB47FY02C`) — kept for the familiar UI. It sets cookies, so it is the one of the three that would need a consent banner for EU visitors.
-- **Impact Publisher Tag** (`utt.impactcdn.com`, campaign `P-A8276901-…`) — affiliate attribution, placed last in the root layout's `<head>`, the bottom-of-head position impact.com specifies. `transformLinks` rewrites direct links to joined brands (the DataCamp track link on `/next/datacamp-ai-engineer-developers`) into tracking links at runtime; `trackImpression` logs the page view. The campaign id is public tracking configuration, not a secret, so it is inlined in `impactPublisherTag` rather than env-gated. It requests a third-party script, so verify the transformed href after deploying — the CDN serves the campaign script only once the campaign is active.
+
+Verification is separate from tracking, and both tags are omitted until their token is set. Google Search Console reads `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` through the metadata API. Impact's tag is different: it carries the token in `value=`, which `metadata.other` cannot emit (it writes `content=`), so it is a real `<meta>` in the head and `types/impact-site-verification.d.ts` declares the attribute for React's prop types. The Impact affiliate publisher tag was removed in favour of site verification; it can go back once the domain is verified, and with it the runtime rewriting of the DataCamp track link.
 
 The two Vercel packages are no-ops outside production, so local development reports nothing. Speed Insights is a separate package from Web Analytics, not a subpath of it.
 
