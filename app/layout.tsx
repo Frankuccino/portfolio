@@ -42,6 +42,19 @@ const display = Bricolage_Grotesque({
 const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 
 /**
+ * Impact Publisher Tag (affiliate). Auto-transforms direct links to joined
+ * brands into tracking links, so the DataCamp course link on the roadmap step
+ * carries attribution. Must run before the DOM exists, or transformLinks sees
+ * no anchors to rewrite.
+ *
+ * The campaign id comes from the Impact dashboard; the id is public tracking
+ * configuration, not a secret, so it is safe to inline.
+ */
+const IMPACT_TAG_ID = "P-A8276901-9a0b-475f-bb4e-c5ad9fc273351";
+
+const impactPublisherTag = `(function(i,m,p,a,c,t){c.ire_o=p;c[p]=c[p]||function(){(c[p].a=c[p].a||[]).push(arguments)};t=a.createElement(m);var z=a.getElementsByTagName(m)[0];t.async=1;t.src=i;z.parentNode.insertBefore(t,z)})('https://utt.impactcdn.com/${IMPACT_TAG_ID}.js','script','impactStat',document,window);impactStat('transformLinks');impactStat('trackImpression');`;
+
+/**
  * Structured data tying this site to one person across the web. The `sameAs`
  * links are the point: they let a search engine connect the site, the GitHub
  * profile, and the LinkedIn profile as the same entity.
@@ -145,6 +158,14 @@ export default function RootLayout({
               gtag('config', 'G-4SB47FY02C');
             `,
           }}
+        />
+        {/* Impact Publisher Tag, last in the head: impact.com places it at the
+            bottom of the head so every link in the body is present when
+            transformLinks rewrites the direct brand links to tracking links. */}
+        <script
+          type="text/javascript"
+          id="impact-publisher-tag"
+          dangerouslySetInnerHTML={{ __html: impactPublisherTag }}
         />
       </head>
       <body className="min-h-full flex flex-col">
