@@ -56,7 +56,7 @@ const person = {
   jobTitle: "Software & AI Engineer",
   description:
     "Backend-focused software engineer and DataCamp-certified AI Engineer Associate building full-stack systems, distributed backends, and applied LLM applications.",
-  email: "mailto:frankamalubag@gmail.com",
+  email: "mailto:frank@fuiss.com",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Dumaguete City",

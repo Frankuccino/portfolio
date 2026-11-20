@@ -142,10 +142,10 @@ export default function Hero() {
           {/* Lower Left: Email & LinkedIn & GitHub */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base md:text-lg tracking-wide text-slate-300">
             <a
-              href="mailto:frankamalubag@gmail.com"
+              href="mailto:frank@fuiss.com"
               className="hover:text-white transition-colors font-medium break-all"
             >
-              frankamalubag@gmail.com
+              frank@fuiss.com
             </a>
             <span className="text-slate-700 hidden sm:inline">•</span>
             <a

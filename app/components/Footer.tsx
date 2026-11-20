@@ -16,8 +16,8 @@ const nav = [
 const channels = [
   {
     label: "Email",
-    value: "frankamalubag@gmail.com",
-    href: "mailto:frankamalubag@gmail.com",
+    value: "frank@fuiss.com",
+    href: "mailto:frank@fuiss.com",
   },
   {
     label: "LinkedIn",
@@ -75,7 +75,7 @@ export default function Footer() {
               tooling around them.
             </p>
             <Link
-              href="mailto:frankamalubag@gmail.com"
+              href="mailto:frank@fuiss.com"
               className="mt-5 inline-flex items-center gap-2 text-[11px] font-medium px-3 py-1.5 rounded-md border border-[#3e6274]/50 text-slate-200 hover:bg-[#3e6274]/20 hover:text-white transition-colors"
             >
               <span>Start a conversation</span>

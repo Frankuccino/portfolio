@@ -3,7 +3,7 @@
 import { useState } from "react";
 import SectionHeading from "./SectionHeading";
 
-const EMAIL = "frankamalubag@gmail.com";
+const EMAIL = "frank@fuiss.com";
 
 const channels = [
   {
