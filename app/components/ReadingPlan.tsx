@@ -4,6 +4,8 @@ import Link from "next/link";
 import {
   readingBookCount,
   readingCoreHours,
+  readingPapersCount,
+  readingPapersHours,
   readingTotalHours,
   readingStages,
 } from "../data/readingPlan";
@@ -23,6 +25,8 @@ function ReadingOrderHeader() {
         </h3>
         <span className="text-[11px] text-slate-400 tabular-nums">
           {readingBookCount} books · ~{readingTotalHours} h · core ~{readingCoreHours} h
+          {" · "}
+          {readingPapersCount} papers ~{readingPapersHours} h
         </span>
       </div>
 
@@ -31,14 +35,16 @@ function ReadingOrderHeader() {
         elective. Every stage is read cover to cover except the reference shelf,
         which is kept for on-demand lookup, and the elective, which is opened
         when a fraud or risk problem appears. The full rationale, per-book
-        chapter maps and the stress-test protocol live on the reading page.
+        chapter maps and the stress-test protocol live on the reading page; the{" "}
+        {readingPapersCount} research papers behind the LLM stages have a page
+        of their own.
       </p>
 
       {/* A CTA rather than the quiet inline link this replaced: the reading
           order is a summary of a full page, and the way into it should look
           like a way in. */}
       <Link
-        href="/reading"
+        href="/books"
         className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 text-sm font-medium select-none transition-all hover:border-[#3e6274]/50 hover:text-white"
       >
         <span>Open the reading plan</span>
@@ -111,11 +117,11 @@ function ReadingPlanBands() {
           ones. */}
       <div className="pt-5 border-t border-slate-800/60 flex flex-wrap items-center gap-3">
         <p className="text-xs text-slate-400 leading-relaxed max-w-md">
-          This is the summary: the reading page carries the rationale, a
-          chapter map for each book, and the closed-book stress test.
+          This is the summary: the book plan carries the rationale, a chapter map
+          for each book, and the closed-book stress test.
         </p>
         <Link
-          href="/reading"
+          href="/books"
           className="ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#3e6274]/60 bg-[#3e6274]/15 text-slate-100 text-sm font-medium select-none transition-all hover:bg-[#3e6274]/25 hover:border-[#3e6274]/80 hover:text-white"
         >
           <span>Interested in the process? Read the full rationale</span>

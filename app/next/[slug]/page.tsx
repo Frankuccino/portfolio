@@ -183,7 +183,7 @@ export default async function RoadmapStepPage({
           note="The credential is the proof point; the capability behind it is what these pages point at. The reading order is the depth underneath, and the certificates already earned are the evidence that the path is being walked."
           links={[
             { label: "The full plan", href: "/next" },
-            { label: "The reading plan", href: "/reading" },
+            { label: "The reading plan", href: "/books" },
             { label: "Certificates", href: "/#certificates" },
             { label: "Get in touch", href: "/#contact" },
           ]}

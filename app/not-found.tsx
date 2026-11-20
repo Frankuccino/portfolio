@@ -15,7 +15,7 @@ const destinations = [
   { label: "Certificates", href: "/#certificates" },
   { label: "Blog", href: "/blog" },
   { label: "What's next", href: "/next" },
-  { label: "Reading plan", href: "/reading" },
+  { label: "Reading", href: "/reading" },
   { label: "Contact", href: "/#contact" },
 ];
 

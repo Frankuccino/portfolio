@@ -64,6 +64,36 @@ export type ReadingStage = {
 };
 
 /**
+ * A primary source, read beside the stage it belongs to rather than as part of
+ * the book sequence. A paper is not a book: no cover, no page count, no chapter
+ * map, and the consolidation model does not apply, so it carries its own shape
+ * instead of borrowing the book's.
+ */
+export type ReadingPaper = {
+  /** Stable id, so a reference to it survives a title change. */
+  id: string;
+  title: string;
+  /** First author and et al., the way the paper cites itself. */
+  authors: string;
+  year: number;
+  /** arXiv id, rendered as the abstract and PDF links. */
+  arxiv: string;
+  /** The question it answered when it appeared. */
+  problem: string;
+  /** The one idea it introduced. */
+  move: string;
+  /** What it changes about how you build. */
+  forYourWork: string;
+  /**
+   * Estimated read time. A paper is read twice, once for the idea and once for
+   * the method, so this is not a page count and is not derived from one.
+   */
+  hours: number;
+  /** The stage this belongs beside, resolved to that stage's own title. */
+  pairsWith: { kind: "stage"; id: string };
+};
+
+/**
  * Priority order for the AI engineering stack, as written up in the vault note
  * `Readings/AI Engineering Reading Plan.md`. Stages 1 and 2 are read cover to
  * cover; stage 3 is a reference shelf.
@@ -1293,6 +1323,172 @@ export const readingCoreHours = readingStages
 
 export const readingTotalPages = readingStages.reduce(
   (total, stage) => total + stage.pages,
+  0,
+);
+
+/**
+ * The primary sources behind the LLM stages. Chronological, because the order
+ * is the argument: each paper answers a question the previous one left open.
+ * They sit alongside the sequence, not after it, and each names the stage it
+ * belongs beside rather than a position in the book order.
+ */
+export const readingPapers: ReadingPaper[] = [
+  {
+    id: "attention-is-all-you-need",
+    title: "Attention Is All You Need",
+    authors: "Vaswani et al.",
+    year: 2017,
+    arxiv: "1706.03762",
+    problem:
+      "Sequence transduction meant recurrence or convolution plus attention: slow to train, and distant positions could only be related through a long chain of steps.",
+    move:
+      "Drop recurrence and convolution entirely. Self-attention over the whole sequence at once, so every position attends to every other in a single step.",
+    forYourWork:
+      "The architecture under every model you call. Read it to see why context length costs quadratically, why position has to be injected rather than learned from order, and what the KV cache you serve actually is.",
+    hours: 3,
+    pairsWith: { kind: "stage", id: "core" },
+  },
+  {
+    id: "retrieval-augmented-generation",
+    title: "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    authors: "Lewis et al.",
+    year: 2020,
+    arxiv: "2005.11401",
+    problem:
+      "A pre-trained model keeps its knowledge in its parameters, so updating a fact means retraining, and the model still cannot show where an answer came from.",
+    move:
+      "Pair a parametric sequence-to-sequence model with a non-parametric vector index over Wikipedia, and train the retriever and the generator end to end.",
+    forYourWork:
+      "The paper behind the RAG you build. Retrieval and generation are one system rather than two, which is why the index is part of the model rather than a lookup in front of it.",
+    hours: 2.5,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "lora",
+    title: "LoRA: Low-Rank Adaptation of Large Language Models",
+    authors: "Hu et al.",
+    year: 2021,
+    arxiv: "2106.09685",
+    problem:
+      "Fine-tuning a large model updates every weight, which costs about the same memory and storage as the model itself.",
+    move:
+      "Freeze the pre-trained weights and inject trainable low-rank matrices into each layer, so the update is a pair of thin matrices rather than a full copy.",
+    forYourWork:
+      "Why adapters work and where they fail. Read it before choosing between a fine-tune and RAG, and before assuming a small rank is always enough.",
+    hours: 2.5,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "chain-of-thought",
+    title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+    authors: "Wei et al.",
+    year: 2022,
+    arxiv: "2201.11903",
+    problem:
+      "Prompting for an answer directly fails on multi-step reasoning, and the model cannot show its work.",
+    move:
+      "Put a few chain-of-thought demonstrations in the prompt, so the model generates intermediate reasoning steps before it commits to an answer.",
+    forYourWork:
+      "The mechanism behind structured-output and reasoning prompts. It also shows the limit: the steps are generated, not verified, so a confident wrong trace still reads as plausible.",
+    hours: 2.5,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "instructgpt",
+    title: "Training Language Models to Follow Instructions with Human Feedback",
+    authors: "Ouyang et al.",
+    year: 2022,
+    arxiv: "2203.02155",
+    problem:
+      "A model trained to predict text is not trained to follow instructions, and more capability makes misalignment worse rather than better.",
+    move:
+      "Supervised fine-tuning on demonstrations, then a reward model learned from human comparisons, then PPO against that reward.",
+    forYourWork:
+      "The RLHF pipeline every aligned model descends from. Long, but it is where label quality, reward hacking, and the real cost of preference data become concrete.",
+    hours: 4,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "react",
+    title: "ReAct: Synergizing Reasoning and Acting in Language Models",
+    authors: "Yao et al.",
+    year: 2022,
+    arxiv: "2210.03629",
+    problem:
+      "Reasoning and acting were studied separately: a model could think without grounding, or act without a plan it could revise.",
+    move:
+      "Interleave reasoning traces with tool actions, so the trace induces and updates the plan while each action gathers information back into it.",
+    forYourWork:
+      "The agent loop you already ship. Read it to see why the trace has to stay in the prompt, and why hallucination drops once the model can observe the result of its own call.",
+    hours: 2.5,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "toolformer",
+    title: "Toolformer: Language Models Can Teach Themselves to Use Tools",
+    authors: "Schick et al.",
+    year: 2023,
+    arxiv: "2302.04761",
+    problem:
+      "A model can be told to use a tool in a prompt, but it does not know which call to make, when to make it, or with what arguments.",
+    move:
+      "Let the model insert candidate API calls into ordinary text, execute them, and keep only the calls whose result lowers the loss on the tokens that follow.",
+    forYourWork:
+      "The self-supervised route to tool use, and the clearest statement of the tool-calling contract: a name, arguments, and a defined way for the result to re-enter the context.",
+    hours: 2.5,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "dpo",
+    title: "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+    authors: "Rafailov et al.",
+    year: 2023,
+    arxiv: "2305.18290",
+    problem:
+      "RLHF needs a separate reward model and an RL loop, and both are unstable and expensive to run.",
+    move:
+      "Reframe preference optimisation as a classification loss on the policy itself, removing the reward model and the sampling loop.",
+    forYourWork:
+      "The simpler alignment path now in most stacks. Read it to know what you gain in stability and what you may lose against a well-tuned reward model.",
+    hours: 3,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "lost-in-the-middle",
+    title: "Lost in the Middle: How Language Models Use Long Contexts",
+    authors: "Liu et al.",
+    year: 2023,
+    arxiv: "2307.03172",
+    problem:
+      "A long context was assumed to be a usable context, and no one had measured where in that context a model actually looks.",
+    move:
+      "Show that performance peaks when the answer sits at the start or the end of the context and drops sharply when it is buried in the middle, even with a longer window.",
+    forYourWork:
+      "The empirical basis for context engineering: put the instruction and the key fact at the edges, re-rank so the relevant chunk lands early, and treat a longer window as a cost rather than a free upgrade.",
+    hours: 2.5,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "pagedattention",
+    title: "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+    authors: "Kwon et al.",
+    year: 2023,
+    arxiv: "2309.06180",
+    problem:
+      "Serving wasted most of the GPU memory on KV cache fragmentation, so concurrency was bounded by memory rather than by compute.",
+    move:
+      "Treat the KV cache like virtual memory: fixed-size pages, a block table, and copy-on-write sharing of blocks across requests.",
+    forYourWork:
+      "Why serving throughput is a memory-management problem. Read it before tuning batch size or buying a larger GPU.",
+    hours: 3,
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+];
+
+export const readingPapersCount = readingPapers.length;
+
+export const readingPapersHours = readingPapers.reduce(
+  (total, paper) => total + paper.hours,
   0,
 );
 

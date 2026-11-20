@@ -3,7 +3,7 @@ import Link from "next/link";
 /**
  * The close of a study page: where it sits in the track.
  *
- * `/reading`, `/next` and the About reading order are three views of one
+ * `/books`, `/papers`, `/next` and the About reading order are views of one
  * system — the plan, the credentials on top of it, and the notes that come out
  * of it. Without this the reader reaches the end of a page and has to work out
  * the next step from the navbar, which is the one place they have already

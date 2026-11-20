@@ -157,7 +157,7 @@ export default function NextPage() {
         <TrackClose
           note="The credentials are proof points; the goal is the capability behind them, and the ability to help a team build AI systems that hold up in production. The reading order is the depth underneath, and the blog is where that depth shows up as work."
           links={[
-            { label: "The reading plan", href: "/reading" },
+            { label: "The reading plan", href: "/books" },
             { label: "Certificates", href: "/#certificates" },
             { label: "Blog", href: "/blog" },
             { label: "Get in touch", href: "/#contact" },

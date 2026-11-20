@@ -104,7 +104,7 @@ export default async function RoadmapCoursePage({
           links={[
             { label: "The certificate", href: `/next/${step.id}` },
             { label: "The full plan", href: "/next" },
-            { label: "The reading plan", href: "/reading" },
+            { label: "The reading plan", href: "/books" },
             { label: "Get in touch", href: "/#contact" },
           ]}
         />

@@ -31,9 +31,16 @@ export { pad, shortLabel };
 export default function ReadingPlanLayout({
   header,
   children,
+  rail = true,
 }: {
   header?: ReactNode;
   children: ReactNode;
+  /**
+   * The rail indexes the book-plan stages, so it only belongs where those
+   * sections exist: `/books` and the home summary. On the hub and the papers
+   * page it would list eight anchors that are not on the page.
+   */
+  rail?: boolean;
 }) {
   const [activeId, setActiveId] = useState<string>(readingStages[0]?.id ?? "");
 
@@ -68,68 +75,77 @@ export default function ReadingPlanLayout({
 
       {/* One centred block: the reading column on the left, the rail on the
           right. Every prose block and every card shares the column's left
-          edge, so nothing steps in or out. */}
-      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_232px] lg:gap-10">
-        <div className="min-w-0">{children}</div>
+          edge, so nothing steps in or out. Without the rail the column takes
+          the wrapper's full measure, the way /blog and /next do. */}
+      {rail ? (
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_232px] lg:gap-10">
+          <div className="min-w-0">{children}</div>
 
-        {/* The side note: it follows the reader down the page and always names
-            the block currently on screen. */}
-        <aside className="hidden lg:block">
-          <div className="sticky top-24 space-y-5">
-            <div className="flex items-baseline justify-between">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
-                {"// On this page"}
-              </p>
-              <span className="text-[10px] font-mono tabular-nums text-slate-600">
-                {activeIndex + 1} / {readingStages.length}
-              </span>
-            </div>
+          {/* The side note: it follows the reader down the page and always names
+              the block currently on screen. */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 space-y-5">
+              <div className="flex items-baseline justify-between">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
+                  {"// On this page"}
+                </p>
+                <span className="text-[10px] font-mono tabular-nums text-slate-600">
+                  {activeIndex + 1} / {readingStages.length}
+                </span>
+              </div>
 
-            <ol className="space-y-0.5">
-              {readingStages.map((entry, i) => {
-                const isActive = entry.id === activeId;
-                return (
-                  <li key={entry.id}>
-                    <a
-                      href={`#${entry.id}`}
-                      onClick={() => setActiveId(entry.id)}
-                      className={`flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-[11px] transition-colors ${
-                        isActive
-                          ? "bg-[#3e6274]/15 text-slate-100"
-                          : "text-slate-400 hover:bg-slate-800/40 hover:text-slate-300"
-                      }`}
-                    >
-                      <span
-                        className={`w-6 shrink-0 font-mono tabular-nums text-[10px] ${
-                          isActive ? "text-[#8fb0c2]" : "text-slate-600"
+              <ol className="space-y-0.5">
+                {readingStages.map((entry, i) => {
+                  const isActive = entry.id === activeId;
+                  return (
+                    <li key={entry.id}>
+                      <a
+                        href={`#${entry.id}`}
+                        onClick={() => setActiveId(entry.id)}
+                        className={`flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-[11px] transition-colors ${
+                          isActive
+                            ? "bg-[#3e6274]/15 text-slate-100"
+                            : "text-slate-400 hover:bg-slate-800/40 hover:text-slate-300"
                         }`}
                       >
-                        {entry.parallel ? "E" : pad(i + 1)}
-                      </span>
-                      <span className="min-w-0 truncate">{shortLabel(entry.label)}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ol>
+                        <span
+                          className={`w-6 shrink-0 font-mono tabular-nums text-[10px] ${
+                            isActive ? "text-[#8fb0c2]" : "text-slate-600"
+                          }`}
+                        >
+                          {entry.parallel ? "E" : pad(i + 1)}
+                        </span>
+                        <span className="min-w-0 truncate">
+                          {shortLabel(entry.label)}
+                        </span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ol>
 
-            <div className="border-t border-slate-800/60 pt-4">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
-                {active.parallel
-                  ? `Elective · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`
-                  : `Stage ${activeIndex + 1} · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`}
-              </p>
-              <p className="mt-2 text-xs leading-relaxed text-slate-300">
-                {active.objective}
-              </p>
-              <p className="mt-2 text-[11px] tabular-nums text-slate-400">
-                {active.pages.toLocaleString()} pp · ~{active.hours} h
-              </p>
-              <p className="mt-1 text-[11px] leading-snug text-slate-400">{active.note}</p>
+              <div className="border-t border-slate-800/60 pt-4">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
+                  {active.parallel
+                    ? `Elective · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`
+                    : `Stage ${activeIndex + 1} · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`}
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-slate-300">
+                  {active.objective}
+                </p>
+                <p className="mt-2 text-[11px] tabular-nums text-slate-400">
+                  {active.pages.toLocaleString()} pp · ~{active.hours} h
+                </p>
+                <p className="mt-1 text-[11px] leading-snug text-slate-400">
+                  {active.note}
+                </p>
+              </div>
             </div>
-          </div>
-        </aside>
-      </div>
+          </aside>
+        </div>
+      ) : (
+        children
+      )}
     </ActiveStageContext.Provider>
   );
 }
