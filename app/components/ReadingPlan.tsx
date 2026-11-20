@@ -27,11 +27,11 @@ function ReadingOrderHeader() {
       </div>
 
       <p className="mt-2 max-w-2xl text-sm text-slate-400 leading-relaxed">
-        Priority order for the AI engineering stack: six stages and a domain
-        elective. Stages 1, 2, 3, 4 and 6 are read cover to cover; Stage 5 is a
-        reference shelf, and the elective is opened when a fraud or risk problem
-        appears. The full rationale, per-book chapter maps and the stress-test
-        protocol live on the reading page.
+        Priority order for the AI engineering stack: seven stages and a domain
+        elective. Every stage is read cover to cover except the reference shelf,
+        which is kept for on-demand lookup, and the elective, which is opened
+        when a fraud or risk problem appears. The full rationale, per-book
+        chapter maps and the stress-test protocol live on the reading page.
       </p>
 
       {/* A CTA rather than the quiet inline link this replaced: the reading

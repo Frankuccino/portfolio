@@ -152,8 +152,33 @@ export default function BookMapModal({
           <SectionHeading index="01">Why this book</SectionHeading>
           <p className="text-sm text-slate-400 leading-relaxed">{book.why}</p>
 
+          {/* Only a book that assumes a vocabulary the reader may not have carries
+              one. It sits here rather than in the hands-on list because it is
+              consumed before the reading, not after it. */}
+          {book.warmup && book.warmup.length > 0 ? (
+            <div>
+              <SectionHeading index="02">Watch first</SectionHeading>
+              <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
+                Six short videos, about an hour in total, before Chapter 1. They
+                build the pictures that the chapters then put into code.
+              </p>
+              <ul className="mt-2 space-y-2">
+                {book.warmup.map((item) => (
+                  <li key={item.title}>
+                    <p className="text-xs font-mono leading-relaxed text-slate-300">
+                      {item.title}
+                    </p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-slate-400">
+                      {item.note}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
           <div>
-            <SectionHeading index="02">Timing</SectionHeading>
+            <SectionHeading index="03">Timing</SectionHeading>
             <div className="mt-2 rounded-lg border border-slate-800/60 bg-slate-950/50 p-3 space-y-1.5">
               <div className="flex items-baseline justify-between gap-3 text-xs">
                 <span className="text-slate-400">Reading</span>
@@ -207,7 +232,7 @@ export default function BookMapModal({
           </div>
 
           <div>
-            <SectionHeading index="03">Focus chapters</SectionHeading>
+            <SectionHeading index="04">Focus chapters</SectionHeading>
             {book.focusNote && (
               <p className="mt-1 text-[10px] text-slate-600">{book.focusNote}</p>
             )}
@@ -234,7 +259,7 @@ export default function BookMapModal({
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <SectionHeading index="04">Hands-on</SectionHeading>
+              <SectionHeading index="05">Hands-on</SectionHeading>
               <ul className="mt-2 space-y-1.5">
                 {book.handsOn.map((item) => (
                   <li key={item} className="flex gap-2 text-xs text-slate-400">
@@ -245,7 +270,7 @@ export default function BookMapModal({
               </ul>
             </div>
             <div>
-              <SectionHeading index="05">Stress test</SectionHeading>
+              <SectionHeading index="06">Stress test</SectionHeading>
               <ul className="mt-2 space-y-1.5">
                 {book.stressTest.map((item) => (
                   <li key={item} className="flex gap-2 text-xs text-slate-400">
@@ -258,7 +283,7 @@ export default function BookMapModal({
           </div>
 
           <div>
-            <SectionHeading index="06">Reinforcement prompt</SectionHeading>
+            <SectionHeading index="07">Reinforcement prompt</SectionHeading>
             <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
               Paste this into an LLM along with the notes you just took. It will
               question you, explain the gaps, and re-ask in different words.

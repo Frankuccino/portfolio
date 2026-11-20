@@ -41,6 +41,11 @@ export type ReadingBook = {
   googleBooksId?: string;
   /** Set when the focus list is the publisher's topic list, not chapter titles. */
   focusNote?: string;
+  /**
+   * Short material to consume before the book itself, for a book that assumes a
+   * vocabulary the reader may not have. Rendered ahead of the chapter map.
+   */
+  warmup?: { title: string; note: string }[];
 };
 
 export type ReadingStage = {
@@ -74,14 +79,87 @@ type ReadingStageDraft = Omit<ReadingStage, "pages" | "hours">;
 
 const readingStageList: ReadingStageDraft[] = [
   {
+    id: "statistics",
+    label: "Stage 1: Statistics Foundations",
+    objective:
+      "Read a distribution before you model one: location, spread, sampling, and what a measured difference actually means.",
+    note: "Watch the six warmup videos first, then read chapter by chapter.",
+    inCorePath: true,
+    books: [
+      {
+        order: 1,
+        title: "Practical Statistics for Data Scientists, 2nd Edition",
+        googleBooksId: "k2XcDwAAQBAJ",
+        author: "Peter Bruce, Andrew Bruce & Peter Gedeck",
+        pages: 368,
+        hours: 15,
+        tagline:
+          "50+ Essential Concepts Using R and Python: distributions, sampling, experiments, and the tests that separate signal from noise",
+        dailyCommitment: 45,
+        consolidationHours: 5.5,
+        reinforcementPrompt:
+          "You are a statistics examiner for my read of Practical Statistics for Data Scientists. Context I just learned: <paste your notes on exploratory data analysis, estimates of location and variability, boxplots and percentiles, data and sampling distributions, the bootstrap, confidence intervals, hypothesis tests and p-values, regression, classification, and clustering>. Question me one at a time: start with what a z-score measures and what it assumes, then why the median and IQR survive outliers that break the mean and standard deviation, then what the central limit theorem actually says, then the difference between a p-value and a confidence interval, then when a statistically significant result is still worthless. If I stall, explain and give a small worked example, then re-ask differently. End by having me walk through a full analysis of a dataset from memory.",
+        why: "The gap the AI & ML course exposed. Everything downstream assumes this vocabulary: evaluation metrics, drift, A/B tests, confidence intervals on a model's accuracy, outlier handling in training data. The course could use those ideas without building them, and that is the hole. Read it first so the rest of the stack has a floor under it.",
+        warmup: [
+          {
+            title: "StatQuest: Histograms, Clearly Explained",
+            note: "How raw data is grouped and visualized, so a normal curve and a skewed one stop looking the same.",
+          },
+          {
+            title: "The Main Ideas behind Probability Distributions",
+            note: "Why data forms shapes, and how probability connects to where values land.",
+          },
+          {
+            title: "The Normal Distribution, Clearly Explained!!!",
+            note: "The bell curve, and why standard deviations define how spread out the data is.",
+          },
+          {
+            title: "Statistics Fundamentals: The Mean, Variance and Standard Deviation",
+            note: "The exact ingredients inside the z-score formula, step by step.",
+          },
+          {
+            title: "Boxplots, Clearly Explained",
+            note: "Medians, quartiles, and the IQR: the main alternative to z-scores when the data is not a neat bell curve.",
+          },
+          {
+            title: "Quantiles and Percentiles, Clearly Explained",
+            note: "How data is sliced into ranks without relying on averages that extreme outliers pull around.",
+          },
+        ],
+        focus: [
+          { chapter: "1. Exploratory Data Analysis", why: "Location, variability, distribution, percentiles and boxplots, correlation. The chapter the z-score lives in.", priority: "focus" },
+          { chapter: "2. Data and Sampling Distributions", why: "Random sampling and bias, the central limit theorem, the bootstrap, confidence intervals, the normal distribution and QQ-plots.", priority: "focus" },
+          { chapter: "3. Statistical Experiments and Significance Testing", why: "Hypothesis tests, p-values, t-tests, ANOVA, chi-square, and power. How a measured difference becomes evidence.", priority: "focus" },
+          { chapter: "4. Regression and Prediction", why: "Simple and multiple regression, diagnostics, outliers, and the dangers of extrapolation.", priority: "focus" },
+          { chapter: "5. Classification", why: "Naive Bayes, logistic regression, evaluating classifiers, and the strategies for imbalanced data.", priority: "focus" },
+          { chapter: "6. Statistical Machine Learning", why: "KNN, tree models, bagging, random forests, and boosting. Overlaps the reference shelf.", priority: "skim" },
+          { chapter: "7. Unsupervised Learning", why: "PCA, k-means, hierarchical and model-based clustering. Overlaps the reference shelf.", priority: "skim" },
+        ],
+        handsOn: [
+          "Run the companion repository's Chapter 1 notebook alongside the reading, and change the numbers to see what moves.",
+          "Compute the mean, variance, standard deviation, and z-scores for a real dataset in numpy and pandas, from scratch and then with the library call.",
+          "Before each new chapter, look the unfamiliar term up on the StatQuest video index and watch the short clip first.",
+          "Repeat one chapter's analysis on a dataset you already have and name which chapter concept each step was.",
+        ],
+        stressTest: [
+          "What is a z-score, and what does it assume that an IQR does not?",
+          "Why does a sample mean have a sampling distribution, and what does the central limit theorem buy you?",
+          "What is the difference between a p-value and a confidence interval, and what does each one not tell you?",
+          "When is a difference statistically significant but practically meaningless?",
+          "How do you handle an outlier, and when should you not?",
+        ],
+      },
+    ],
+  },
+  {
     id: "core",
-    label: "Stage 1: AI & ML Engineering Core",
+    label: "Stage 2: AI & ML Engineering Core",
     objective: "Foundation models as components, and how to design around what they get wrong.",
     note: "Read fully, in order. The mental model.",
     inCorePath: true,
     books: [
       {
-        order: 1,
+        order: 2,
         title: "AI Engineering",
         coverId: 15091156,
         author: "Chip Huyen",
@@ -118,7 +196,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 2,
+        order: 3,
         title: "Designing Machine Learning Systems",
         coverId: 13314480,
         author: "Chip Huyen",
@@ -156,7 +234,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 3,
+        order: 4,
         title: "LLM Engineer's Handbook",
         googleBooksId: "_ijcEQAAQBAJ",
         author: "Paul Iusztin & Maxime Labonne",
@@ -198,13 +276,13 @@ const readingStageList: ReadingStageDraft[] = [
   },
   {
     id: "llm",
-    label: "Stage 2: LLM Applications & Operations",
+    label: "Stage 3: LLM Applications & Operations",
     objective: "Build LLM applications, then run them in production.",
-    note: "Read fully, after Stage 1.",
+    note: "Read fully, after Stage 2.",
     inCorePath: true,
     books: [
       {
-        order: 4,
+        order: 5,
         title: "LLMOps",
         googleBooksId: "SLZxEQAAQBAJ",
         author: "Abi Aryan",
@@ -216,11 +294,11 @@ const readingStageList: ReadingStageDraft[] = [
         reinforcementPrompt: "You are an LLMOps reviewer for my read of Abi Aryan's LLMOps. Context I just learned: <paste your notes on the four goals, LLM-based application monitoring, data engineering, API-first deployment, evaluation, and governance>. Question me one at a time: start with the four goals and which is hardest for LLMs, then why traditional MLOps metrics fail, then offline versus online evaluation, then what governance covers beyond monitoring. If I stall, explain and give a production example, then re-ask differently. End by having me write a rollback plan for a failing LLM feature from memory.",
         why: "The operations layer: what actually breaks when an LLM goes into production, and how to keep it running. Short, dense, and directly applicable.",
         focus: [
-          { chapter: "1. Introduction to Large Language Models", why: "Background. Skim if you have already read Stage 1.", priority: "skim" },
+          { chapter: "1. Introduction to Large Language Models", why: "Background. Skim if you have already read Stage 2.", priority: "skim" },
           { chapter: "2. Introduction to LLMOps", why: "The four goals (reliability, scalability, robustness, security) and the maturity model.", priority: "focus" },
           { chapter: "3. LLM-Based Applications", why: "Monitoring application performance and what you can actually control.", priority: "focus" },
           { chapter: "4. Data Engineering for LLMs", why: "The data path for production LLMs: collection, cleaning, and storage.", priority: "focus" },
-          { chapter: "5. Model Domain Adaptation for LLM-Based Applications", why: "Prompting, RAG, and fine-tuning as adaptation strategies. Skim after Stage 1.", priority: "skim" },
+          { chapter: "5. Model Domain Adaptation for LLM-Based Applications", why: "Prompting, RAG, and fine-tuning as adaptation strategies. Skim after Stage 2.", priority: "skim" },
           { chapter: "6. API-First LLM Deployment", why: "The deployment pattern that most teams start with, and its limits.", priority: "focus" },
           { chapter: "7. Evaluation for LLMs", why: "Offline evaluation, guardrails, and the evaluation pipeline.", priority: "focus" },
           { chapter: "8. Governance: Monitoring, Privacy, and Security", why: "The part most LLM apps skip: audits, privacy, and threat models.", priority: "focus" },
@@ -241,7 +319,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 5,
+        order: 6,
         title: "Mastering LangChain and LangGraph",
         googleBooksId: "VCcQEgAAQBAJ",
         author: "Ankur Kulshreshtha",
@@ -251,9 +329,9 @@ const readingStageList: ReadingStageDraft[] = [
         dailyCommitment: 60,
         consolidationHours: 9,
         reinforcementPrompt: "You are a senior agent engineer for my read of Kulshreshtha's Mastering LangChain and LangGraph. Context I just learned: <paste your notes on LLM fundamentals, LangChain, chat models, structured outputs, prompt templates, document loaders, text splitters, embeddings and vector stores, retrievers, LangGraph, tools and MCP, checkpointers, memory, and human-in-the-loop>. Question me one at a time: start with how RAG is assembled from loaders through retrievers, then why LangGraph is a graph and not a chain, then what MCP buys you, then when you need checkpointers and memory. If I stall, explain and give a code-level example, then re-ask differently. End by having me design an agent with tools, memory, and a human approval step from memory.",
-        why: "The applied build for the stack you already ship. Where the Stage 1 books explain why RAG and agents work, this one is the working implementation: loaders, splitters, embeddings, retrievers, LangGraph nodes, tools, MCP, checkpointers, memory, and human-in-the-loop.",
+        why: "The applied build for the stack you already ship. Where the Stage 2 books explain why RAG and agents work, this one is the working implementation: loaders, splitters, embeddings, retrievers, LangGraph nodes, tools, MCP, checkpointers, memory, and human-in-the-loop.",
         focus: [
-          { chapter: "1. Overview of LLMs, RAG, and Agents", why: "The conceptual map: models, RAG, and agents. Read it as the bridge from Stage 1.", priority: "focus" },
+          { chapter: "1. Overview of LLMs, RAG, and Agents", why: "The conceptual map: models, RAG, and agents. Read it as the bridge from Stage 2.", priority: "focus" },
           { chapter: "2. Introduction to LangChain", why: "The framework's evolution, the package ecosystem, and how to choose a solution.", priority: "focus" },
           { chapter: "3. Chat Models", why: "Message types, roles, and the chat model methods.", priority: "focus" },
           { chapter: "4. Generating Structured Outputs", why: "Structured output from an LLM: the prerequisite for tool calling.", priority: "focus" },
@@ -286,7 +364,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 6,
+        order: 7,
         title: "Building Live Voice Agents",
         googleBooksId: "K0cnEgAAQBAJ",
         author: "Heiko Hotz & Sokratis Kartakis",
@@ -334,7 +412,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 7,
+        order: 8,
         title: "Data Engineering for Multimodal AI",
         googleBooksId: "Mun9EQAAQBAJ",
         author: "Vasundra Srinivasan",
@@ -378,13 +456,13 @@ const readingStageList: ReadingStageDraft[] = [
   },
   {
     id: "architecture",
-    label: "Stage 3: Architecture & Data Platforms",
+    label: "Stage 4: Architecture & Data Platforms",
     objective: "The shapes that outlive a framework: how a system is structured, split, and documented.",
-    note: "Read fully, after Stage 2.",
+    note: "Read fully, after Stage 3.",
     inCorePath: true,
     books: [
       {
-        order: 8,
+        order: 9,
         title: "Architecting AI Software Systems",
         googleBooksId: "XT2MEQAAQBAJ",
         author: "Richard D. Avila & Imran Ahmad",
@@ -419,7 +497,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 9,
+        order: 10,
         title: "Architecture Patterns with Python",
         coverId: 12423995,
         author: "Harry J.W. Percival & Bob Gregory",
@@ -459,7 +537,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 10,
+        order: 11,
         title: "Data Engineering Design Patterns",
         googleBooksId: "zX4UEgAAQBAJ",
         author: "Bartosz Konieczny",
@@ -496,7 +574,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 11,
+        order: 12,
         title: "The C4 Model: Visualizing Software Architecture",
         googleBooksId: "MDHlEQAAQBAJ",
         author: "Simon Brown",
@@ -533,13 +611,13 @@ const readingStageList: ReadingStageDraft[] = [
   },
   {
     id: "craft",
-    label: "Stage 4: Craft & Quality",
+    label: "Stage 5: Craft & Quality",
     objective: "Better code and better verification, opened when a problem asks for it.",
-    note: "Read fully, after Stage 3.",
+    note: "Read fully, after Stage 4.",
     inCorePath: true,
     books: [
       {
-        order: 12,
+        order: 13,
         title: "A Philosophy of Software Design",
         author: "John K. Ousterhout",
         pages: 196,
@@ -588,7 +666,7 @@ const readingStageList: ReadingStageDraft[] = [
         coverId: 10352230,
       },
       {
-        order: 13,
+        order: 14,
         title: "Robust Python",
         coverId: 12932198,
         author: "Patrick Viafore",
@@ -639,7 +717,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 14,
+        order: 15,
         title: "High Performance Python",
         coverId: 13456121,
         author: "Micha Gorelick & Ian Ozsvald",
@@ -678,7 +756,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 15,
+        order: 16,
         title: "Full Stack Testing",
         googleBooksId: "dX9zEAAAQBAJ",
         author: "Gayathri Mohan",
@@ -720,13 +798,13 @@ const readingStageList: ReadingStageDraft[] = [
   },
   {
     id: "reference",
-    label: "Stage 5: Reference",
+    label: "Stage 6: Reference",
     objective: "The algorithms, kept on the shelf for when you need the derivation rather than the recipe.",
     note: "Reference shelf. Read on demand.",
     inCorePath: false,
     books: [
       {
-        order: 16,
+        order: 17,
         title: "Hands-On Machine Learning",
         coverId: 13141163,
         author: "Aurélien Géron",
@@ -775,13 +853,13 @@ const readingStageList: ReadingStageDraft[] = [
   },
   {
     id: "forward",
-    label: "Stage 6: Forward Deployed: People",
+    label: "Stage 7: Forward Deployed: People",
     objective: "Know what the technology is for, find out what people actually need, and keep executing when the problem is ambiguous.",
     note: "Read fully. The human side of the stack.",
     inCorePath: true,
     books: [
       {
-        order: 17,
+        order: 18,
         title: "Augmenting Human Intellect: A Conceptual Framework",
         kind: "report",
         author: "Douglas C. Engelbart",
@@ -813,7 +891,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 18,
+        order: 19,
         title: "Supersizing the Mind: Embodiment, Action, and Cognitive Extension",
         coverId: 5541811,
         author: "Andy Clark",
@@ -852,7 +930,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 19,
+        order: 20,
         title: "The Design of Everyday Things",
         googleBooksId: "qBfRDQAAQBAJ",
         author: "Don Norman",
@@ -886,7 +964,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 20,
+        order: 21,
         title: "Articulating Design Decisions",
         author: "Tom Greever",
         pages: 275,
@@ -928,7 +1006,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 21,
+        order: 22,
         title: "Interviewing Users: How to Uncover Compelling Insights",
         coverId: 8778372,
         author: "Steve Portigal",
@@ -965,7 +1043,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 22,
+        order: 23,
         title: "The Looming Tower: Al-Qaeda and the Road to 9/11",
         coverId: 8172445,
         author: "Lawrence Wright",
@@ -1000,7 +1078,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 23,
+        order: 24,
         title: "Getting Things Done: The Art of Stress-Free Productivity",
         googleBooksId: "WXcHwzaUd4MC",
         author: "David Allen",
@@ -1042,7 +1120,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 24,
+        order: 25,
         title: "Principles: Life and Work",
         coverId: 8315355,
         author: "Ray Dalio",
@@ -1072,7 +1150,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 25,
+        order: 26,
         title: "Impro: Improvisation and the Theatre",
         coverId: 261287,
         author: "Keith Johnstone",
@@ -1104,7 +1182,7 @@ const readingStageList: ReadingStageDraft[] = [
         ],
       },
       {
-        order: 26,
+        order: 27,
         title: "The Decision Intelligence Handbook",
         googleBooksId: "goLGEAAAQBAJ",
         author: "L. Y. Pratt & N. E. Malcolm",
@@ -1151,7 +1229,7 @@ const readingStageList: ReadingStageDraft[] = [
     parallel: true,
     books: [
       {
-        order: 27,
+        order: 28,
         title: "The Fraud Fighter's AI Playbook: Strategies for the GenAI Era",
         googleBooksId: "ZCwFEgAAQBAJ",
         author: "Gilit Saporta, Chen Zamir & Shoshana Maraney",
@@ -1256,18 +1334,22 @@ export type StageStressTest = {
 export const stageStressTests: StageStressTest[] = [
   {
     stage: "Stage 1",
-    body: "Design an ML system end to end on paper (data, features, model, deployment, monitoring) then build the evaluation harness for it.",
+    body: "Take a raw dataset and produce the exploratory analysis, the sampling distribution, the confidence interval, and the hypothesis test, in numpy and pandas, without a library call that hides the step.",
   },
   {
     stage: "Stage 2",
-    body: "Ship a model behind an API with monitoring, offline evaluation, and a rollback path. The stage is done when it survives a week of traffic.",
+    body: "Design an ML system end to end on paper (data, features, model, deployment, monitoring) then build the evaluation harness for it.",
   },
   {
     stage: "Stage 3",
-    body: "Refactor one Python service to the patterns in the book, and profile one hot path until the bottleneck moves.",
+    body: "Ship a model behind an API with monitoring, offline evaluation, and a rollback path. The stage is done when it survives a week of traffic.",
   },
   {
     stage: "Stage 4",
+    body: "Refactor one Python service to the patterns in the book, and profile one hot path until the bottleneck moves.",
+  },
+  {
+    stage: "Stage 5",
     body: "Spend a week embedded with one user of a system you built: interview them, watch them work, and ship one change that removes a real obstacle. Then write down what you believed before and what the evidence changed.",
   },
 ];

@@ -116,8 +116,8 @@ export default function ReadingPlanLayout({
             <div className="border-t border-slate-800/60 pt-4">
               <p className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
                 {active.parallel
-                  ? `Elective · ${active.books.length} book`
-                  : `Stage ${activeIndex + 1} · ${active.books.length} books`}
+                  ? `Elective · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`
+                  : `Stage ${activeIndex + 1} · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`}
               </p>
               <p className="mt-2 text-xs leading-relaxed text-slate-300">
                 {active.objective}
