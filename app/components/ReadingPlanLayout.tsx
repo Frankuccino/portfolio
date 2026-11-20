@@ -45,21 +45,50 @@ export default function ReadingPlanLayout({
   const [activeId, setActiveId] = useState<string>(readingStages[0]?.id ?? "");
 
   useEffect(() => {
-    const locate = () => {
-      const probe = window.innerHeight * PROBE_RATIO;
-      let current = readingStages[0]?.id ?? "";
-      for (const entry of readingStages) {
+    // Measure the section offsets once, then read only `scrollY` in the scroll
+    // handler. Reading `getBoundingClientRect()` for every section on every
+    // scroll event is what produced the forced synchronous layouts: each read
+    // can flush pending style and layout work before it returns.
+    let tops: number[] = readingStages.map(() => Infinity);
+
+    const measure = () => {
+      tops = readingStages.map((entry) => {
         const el = document.getElementById(entry.id);
-        if (el && el.getBoundingClientRect().top <= probe) current = entry.id;
+        return el ? el.getBoundingClientRect().top + window.scrollY : Infinity;
+      });
+    };
+
+    const locate = () => {
+      const probe = window.scrollY + window.innerHeight * PROBE_RATIO;
+      let current = readingStages[0]?.id ?? "";
+      for (let i = 0; i < tops.length; i += 1) {
+        if (tops[i] <= probe) current = readingStages[i].id;
       }
       setActiveId(current);
     };
+
+    const onResize = () => {
+      measure();
+      locate();
+    };
+
+    measure();
     locate();
+
+    // Section heights move when the covers finish loading, so re-measure when a
+    // section resizes rather than trusting the mount-time offsets.
+    const observer = new ResizeObserver(onResize);
+    readingStages.forEach((entry) => {
+      const el = document.getElementById(entry.id);
+      if (el) observer.observe(el);
+    });
+
     window.addEventListener("scroll", locate, { passive: true });
-    window.addEventListener("resize", locate);
+    window.addEventListener("resize", onResize);
     return () => {
       window.removeEventListener("scroll", locate);
-      window.removeEventListener("resize", locate);
+      window.removeEventListener("resize", onResize);
+      observer.disconnect();
     };
   }, []);
 
@@ -81,8 +110,10 @@ export default function ReadingPlanLayout({
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_232px] lg:gap-10">
           <div className="min-w-0">{children}</div>
 
-          {/* The side note: it follows the reader down the page and always names
-              the block currently on screen. */}
+          {/* The rail: the block in view is named once, above the list it
+              belongs to. The objective, the page and hour cost, and the reading
+              note stay in the stage block itself, because repeating them here
+              put the same sentences in the page twice. */}
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-5">
               <div className="flex items-baseline justify-between">
@@ -93,6 +124,11 @@ export default function ReadingPlanLayout({
                   {activeIndex + 1} / {readingStages.length}
                 </span>
               </div>
+              <p className="mt-1.5 text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
+                {active.parallel
+                  ? `Elective · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`
+                  : `Stage ${activeIndex + 1} of ${readingStages.length} · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`}
+              </p>
 
               <ol className="space-y-0.5">
                 {readingStages.map((entry, i) => {
@@ -123,23 +159,6 @@ export default function ReadingPlanLayout({
                   );
                 })}
               </ol>
-
-              <div className="border-t border-slate-800/60 pt-4">
-                <p className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
-                  {active.parallel
-                    ? `Elective · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`
-                    : `Stage ${activeIndex + 1} · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`}
-                </p>
-                <p className="mt-2 text-xs leading-relaxed text-slate-300">
-                  {active.objective}
-                </p>
-                <p className="mt-2 text-[11px] tabular-nums text-slate-400">
-                  {active.pages.toLocaleString()} pp · ~{active.hours} h
-                </p>
-                <p className="mt-1 text-[11px] leading-snug text-slate-400">
-                  {active.note}
-                </p>
-              </div>
             </div>
           </aside>
         </div>

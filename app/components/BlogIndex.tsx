@@ -70,6 +70,10 @@ export default function BlogIndex({
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
+            // The whole row is the target, so the raw anchor text runs to a few
+            // hundred characters. The accessible name is the title; the date,
+            // reading time and excerpt stay visible for everyone else.
+            aria-label={post.title}
             className="group flex items-baseline gap-3 sm:gap-5 px-2 sm:px-3 py-4 border-b border-slate-800/70 last:border-b-0 hover:bg-slate-900/30 transition-colors"
           >
             <span className="shrink-0 w-20 text-[11px] font-mono tabular-nums text-slate-400">

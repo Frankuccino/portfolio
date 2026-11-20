@@ -40,6 +40,9 @@ export default function HeroFocusDeck({ cards }: HeroFocusDeckProps) {
 
       <Link
         href={currentCard.href}
+        // Same reason as the blog rows: the card is the target, and its raw
+        // text is a paragraph. The accessible name is the category and the CTA.
+        aria-label={`${currentCard.category}: ${currentCard.cta}`}
         className="group relative block px-4 py-3.5 pt-4 rounded-xl bg-slate-950/40 border border-slate-800/50 backdrop-blur-md shadow-lg space-y-1.5 overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.1)] hover:border-[#3e6274]/50"
       >
         {/* Header with Category and Dot */}

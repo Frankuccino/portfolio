@@ -62,8 +62,7 @@ const person = {
   url: siteUrl,
   image: `${siteUrl}/og-image.jpg`,
   jobTitle: "Software & AI Engineer",
-  description:
-    "Backend-focused software engineer and DataCamp-certified AI Engineer Associate building full-stack systems, distributed backends, and applied LLM applications.",
+  description: "Backend engineer and DataCamp-certified AI Engineer Associate.",
   email: "mailto:frank@fuiss.com",
   address: {
     "@type": "PostalAddress",
@@ -89,7 +88,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Frank Angelo Malubag · Software & AI Engineer",
   description:
-    "Backend-focused software engineer and DataCamp-certified AI Engineer Associate building full-stack systems, distributed backends, and applied LLM applications.",
+    "Backend-focused software engineer and DataCamp-certified AI Engineer Associate building distributed backends and applied LLM applications.",
   keywords: [
     "Frank Angelo Malubag",
     "Software Engineer",
