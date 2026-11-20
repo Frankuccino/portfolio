@@ -6,6 +6,7 @@ import { canonical } from "../../../../lib/siteUrl";
 import { ogImage } from "../../../../lib/ogImage";
 import TrackClose from "../../../../components/TrackClose";
 import RoadmapFigure from "../../../../components/RoadmapFigure";
+import { Markdown } from "../../../../lib/markdown";
 
 export function generateStaticParams() {
   return roadmapSteps.flatMap((step) =>
@@ -62,7 +63,7 @@ export default async function RoadmapModulePage({
 
   return (
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
-      <div className="mx-auto max-w-6xl">
+      <article className="mx-auto max-w-6xl">
         <Link
           href={`/next/${step.id}/${course.slug}`}
           className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
@@ -77,40 +78,50 @@ export default async function RoadmapModulePage({
           <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
             {mod.title}
           </h1>
-          <p className="text-sm md:text-base text-slate-400 leading-relaxed max-w-2xl">
+          <p className="text-sm md:text-base text-slate-400 leading-relaxed">
             {mod.summary}
           </p>
         </header>
 
         {/* The picture the breakdown refers to, so the page stands alone. */}
-        {mod.image ? <RoadmapFigure image={mod.image} /> : null}
+        {mod.image ? (
+          <div className="my-6">
+            <RoadmapFigure image={mod.image} />
+          </div>
+        ) : null}
 
-        {/* The breakdown: every component the diagram lists, and what it is
-            actually for. Grouped the way the diagram groups them. */}
-        <section className="mt-10 mb-12 space-y-8">
+        {/* The breakdown, set like an article's lists: a heading per group from
+            the diagram, then the components in it and what each is for. */}
+        <section className="mt-8 mb-12">
           {mod.breakdown.map((group) => (
-            <div key={group.group} className="space-y-3">
-              <h2 className="text-xs font-mono uppercase tracking-widest text-[#5f93a8]">
+            <div key={group.group} className="mt-6 first:mt-0">
+              <h2 className="text-xl font-semibold text-slate-100 mb-2">
                 {group.group}
               </h2>
-              <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="list-disc list-inside space-y-1.5 my-3 text-sm text-slate-300 leading-relaxed marker:text-[#5f93a8]">
                 {group.items.map((item) => (
-                  <li
-                    key={item.name}
-                    className="p-3 rounded-lg bg-slate-900/40 border border-slate-800/60"
-                  >
-                    <p className="text-sm font-semibold text-slate-100">
+                  <li key={item.name}>
+                    <strong className="text-slate-100 font-semibold">
                       {item.name}
-                    </p>
-                    <p className="mt-1 text-sm text-slate-400 leading-relaxed">
-                      {item.role}
-                    </p>
+                    </strong>
+                    : {item.role}
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </section>
+
+        {/* The module's own material, condensed, below the breakdown: what the
+            module means rather than what it contains. */}
+        {mod.notes.length > 0 ? (
+          <section className="mt-10 mb-12">
+            <h2 className="text-xl font-semibold text-slate-100 mb-3">
+              Module notes
+            </h2>
+            <Markdown content={mod.notes.join("\n\n")} />
+          </section>
+        ) : null}
 
         <TrackClose
           note="This is the breakdown of the diagram above: what each component is, and why it sits where it does in the pipeline. The course page carries the picture; the certificate page carries the plan it belongs to."
@@ -121,7 +132,7 @@ export default async function RoadmapModulePage({
             { label: "Get in touch", href: "/#contact" },
           ]}
         />
-      </div>
+      </article>
     </main>
   );
 }

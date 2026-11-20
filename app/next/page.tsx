@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export default function NextPage() {
   return (
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         <Link
           href="/"
           className="text-xs text-slate-400 hover:text-slate-300 transition-colors"

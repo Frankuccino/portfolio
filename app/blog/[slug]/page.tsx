@@ -54,7 +54,7 @@ export default async function BlogPost({
 
   return (
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
-      <article className="mx-auto max-w-3xl">
+      <article className="mx-auto max-w-6xl">
         {/* Article entity, attached to the Person entity declared site-wide so
             the posts are attributable to the same author. */}
         <script
