@@ -46,6 +46,10 @@ const hostOf = (url: string) => {
   }
 };
 
+/** "1 module" / "10 modules", or a label the data overrides, like "courses". */
+const plural = (count: number, label: string) =>
+  count === 1 ? label.replace(/s$/, "") : label;
+
 export default async function RoadmapStepPage({
   params,
 }: {
@@ -66,14 +70,17 @@ export default async function RoadmapStepPage({
         </Link>
 
         <header className="mt-6 mb-10 space-y-3">
-          <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-            {"//"} What&apos;s Next · {step.order}
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
+              {"//"} What&apos;s Next · {step.finished ? "Finished" : step.order}
+            </p>
+          </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
             {step.title}
           </h1>
           <p className="text-[11px] text-slate-400 font-mono">
             {step.issuer} · {step.credentialType} · {step.commitment}
+            {step.completed ? ` · Completed ${step.completed}` : ""}
             {step.url ? (
               <>
                 {" · "}
@@ -88,6 +95,11 @@ export default async function RoadmapStepPage({
               </>
             ) : null}
           </p>
+          {step.credentialId ? (
+            <p className="text-[11px] text-slate-400 font-mono">
+              Credential ID · <span className="tabular-nums">{step.credentialId}</span>
+            </p>
+          ) : null}
           <p className="text-sm md:text-base text-slate-400 leading-relaxed max-w-2xl">
             {step.summary}
           </p>
@@ -106,7 +118,7 @@ export default async function RoadmapStepPage({
         {step.courses && step.courses.length > 0 ? (
           <section className="mb-12 space-y-3">
             <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
-              {"//"} Courses
+              {"//"} {step.coursesLabel ?? "Courses"}
             </h2>
             <div className="space-y-2">
               {step.courses.map((course) => (
@@ -121,7 +133,7 @@ export default async function RoadmapStepPage({
                     </span>
                     <span className="shrink-0 text-[11px] text-slate-400 tabular-nums">
                       {course.modules.length}{" "}
-                      {course.modules.length === 1 ? "module" : "modules"}
+                      {plural(course.modules.length, course.moduleLabel ?? "modules")}
                     </span>
                   </span>
                   {course.summary ? (
@@ -130,12 +142,38 @@ export default async function RoadmapStepPage({
                     </span>
                   ) : null}
                   <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
-                    Modules
+                    {(course.moduleLabel ?? "modules")[0].toUpperCase() +
+                      (course.moduleLabel ?? "modules").slice(1)}
                     <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
                       →
                     </span>
                   </span>
                 </Link>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* How the credential is actually assessed. The syllabus above is what
+            was learned; this is what had to be passed. */}
+        {step.process && step.process.length > 0 ? (
+          <section className="mb-12 space-y-3">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+              {"//"} Certification Process
+            </h2>
+            <div className="space-y-2">
+              {step.process.map((stage) => (
+                <div
+                  key={stage.name}
+                  className="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60"
+                >
+                  <p className="text-sm font-semibold text-slate-100">
+                    {stage.name}
+                  </p>
+                  <p className="mt-1 text-xs text-slate-400 leading-relaxed">
+                    {stage.detail}
+                  </p>
+                </div>
               ))}
             </div>
           </section>

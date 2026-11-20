@@ -84,7 +84,9 @@ export default async function RoadmapCoursePage({
             the hook for it stay together. */}
         <section className="mb-12 space-y-3">
           <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
-            {"//"} Modules
+            {"//"}{" "}
+            {(course.moduleLabel ?? "modules")[0].toUpperCase() +
+              (course.moduleLabel ?? "modules").slice(1)}
           </h2>
           <div className="space-y-3">
             {course.modules.map((module) => (

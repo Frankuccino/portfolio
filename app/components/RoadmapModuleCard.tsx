@@ -16,7 +16,7 @@ export default function RoadmapModuleCard({
   module: RoadmapModule;
   href: string;
 }) {
-  const count = module.breakdown.reduce(
+  const count = module.breakdown?.reduce(
     (total, group) => total + group.items.length,
     0,
   );
@@ -31,14 +31,20 @@ export default function RoadmapModuleCard({
           {module.title}
         </span>
         <span className="shrink-0 text-[11px] text-slate-400 tabular-nums">
-          {count} components
+          {module.completed
+            ? `Completed ${module.completed}${
+                module.hours
+                  ? ` · ${module.hours} ${module.hours === 1 ? "hr" : "hrs"}`
+                  : ""
+              }`
+            : `${count} components`}
         </span>
       </span>
       <span className="mt-1 block text-xs text-slate-400 leading-relaxed">
         {module.summary}
       </span>
       <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
-        Full breakdown
+        {module.breakdown ? "Full breakdown" : "Full notes"}
         <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
           →
         </span>

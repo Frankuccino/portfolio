@@ -40,9 +40,9 @@ export default function NextPage() {
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering, the kind that lets me design production systems and set
-            technical direction, not just implement against an API. Six steps, in three
-            phases: the foundation, the platform and the applied layer, then the
-            mathematics that makes it durable.
+            technical direction, not just implement against an API. Seven steps: one
+            already finished, then six in three phases, the foundation, the platform
+            and the applied layer, then the mathematics that makes it durable.
           </p>
         </header>
 
@@ -59,9 +59,15 @@ export default function NextPage() {
                   className="group block p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
                 >
                   <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
-                      {step.order}
-                    </span>
+                    {step.finished ? (
+                      <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-emerald-400/15 border border-emerald-400/40 text-emerald-300">
+                        Finished
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
+                        {step.order}
+                      </span>
+                    )}
                     {/* The issuer's own page lives on the step page; a nested
                         anchor inside this link would be invalid HTML. */}
                     <span className="text-[11px] text-slate-400">
@@ -105,11 +111,13 @@ export default function NextPage() {
           </h2>
           <div className="space-y-3">
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-              The Microsoft certificate comes first because it is the breadth: AI &amp;
-              ML infrastructure, data pipelines, algorithms, and the ML lifecycle. The
-              DeepLearning.AI specialization then goes deeper on the fundamentals:
-              supervised and unsupervised learning, and the practices that make models
-              generalise rather than memorise.
+              The DataCamp associate sits first because it is already finished: ten
+              courses in the applied layer, completed in November 2026. The plan that
+              follows is the depth underneath it. The Microsoft certificate comes next
+              because it is the breadth: AI &amp; ML infrastructure, data pipelines,
+              algorithms, and the ML lifecycle. The DeepLearning.AI specialization then
+              goes deeper on the fundamentals: supervised and unsupervised learning,
+              and the practices that make models generalise rather than memorise.
             </p>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
               The AWS Solutions Architect certificate is the platform: the services

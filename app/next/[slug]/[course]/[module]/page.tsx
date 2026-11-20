@@ -78,6 +78,14 @@ export default async function RoadmapModulePage({
           <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
             {mod.title}
           </h1>
+          {mod.completed ? (
+            <p className="text-[11px] text-slate-400 font-mono">
+              Completed {mod.completed}
+              {mod.hours
+                ? ` · ${mod.hours} ${mod.hours === 1 ? "hr" : "hrs"}`
+                : ""}
+            </p>
+          ) : null}
           <p className="text-sm md:text-base text-slate-400 leading-relaxed">
             {mod.summary}
           </p>
@@ -92,39 +100,45 @@ export default async function RoadmapModulePage({
 
         {/* The breakdown, set like an article's lists: a heading per group from
             the diagram, then the components in it and what each is for. */}
-        <section className="mt-8 mb-12">
-          {mod.breakdown.map((group) => (
-            <div key={group.group} className="mt-6 first:mt-0">
-              <h2 className="text-xl font-semibold text-slate-100 mb-2">
-                {group.group}
-              </h2>
-              <ul className="list-disc list-inside space-y-1.5 my-3 text-sm text-slate-300 leading-relaxed marker:text-[#5f93a8]">
-                {group.items.map((item) => (
-                  <li key={item.name}>
-                    <strong className="text-slate-100 font-semibold">
-                      {item.name}
-                    </strong>
-                    : {item.role}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </section>
+        {mod.breakdown && mod.breakdown.length > 0 ? (
+          <section className="mt-8 mb-12">
+            {mod.breakdown.map((group) => (
+              <div key={group.group} className="mt-6 first:mt-0">
+                <h2 className="text-xl font-semibold text-slate-100 mb-2">
+                  {group.group}
+                </h2>
+                <ul className="list-disc list-inside space-y-2 my-3 text-sm text-slate-300 leading-relaxed marker:text-[#5f93a8]">
+                  {group.items.map((item) => (
+                    <li key={item.name}>
+                      <strong className="text-slate-100 font-semibold">
+                        {item.name}
+                      </strong>
+                      : {item.role}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </section>
+        ) : null}
 
         {/* The module's own material, condensed, below the breakdown: what the
             module means rather than what it contains. */}
-        {mod.notes.length > 0 ? (
+        {mod.notes && mod.notes.length > 0 ? (
           <section className="mt-10 mb-12">
-            <h2 className="text-xl font-semibold text-slate-100 mb-3">
-              Module notes
+            <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400 mb-3">
+              {"//"} Module notes
             </h2>
             <Markdown content={mod.notes.join("\n\n")} />
           </section>
         ) : null}
 
         <TrackClose
-          note="This is the breakdown of the diagram above: what each component is, and why it sits where it does in the pipeline. The course page carries the picture; the certificate page carries the plan it belongs to."
+          note={
+            mod.image
+              ? "This is the breakdown of the diagram above: what each component is, and why it sits where it does in the pipeline. The course page carries the picture; the certificate page carries the plan it belongs to."
+              : "The concepts above are the ones this module turns on, and the notes below explain each in turn. The course page carries the whole track, and the certificate page carries the plan it belongs to."
+          }
           links={[
             { label: "The course", href: `/next/${step.id}/${course.slug}` },
             { label: "The certificate", href: `/next/${step.id}` },
