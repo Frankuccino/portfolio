@@ -1,10 +1,10 @@
 import Link from "next/link";
-import StackIcon from "tech-stack-icons";
+import TechIcon, { type TechIconName } from "./TechIcon";
 import HeroFocusDeck from "./HeroFocusDeck";
 
 type TechItem =
   | { divider: true }
-  | { divider?: false; name: string; label: string };
+  | { divider?: false; name: TechIconName; label: string };
 
 const techStack: TechItem[] = [
   { name: "react", label: "React" },
@@ -130,7 +130,7 @@ export default function Hero() {
                 key={idx}
                 className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/80 border border-slate-800 text-[11px] md:text-xs font-medium text-slate-300 backdrop-blur-sm"
               >
-                <StackIcon name={tech.name} className="w-3.5 h-3.5" />
+                <TechIcon name={tech.name} className="w-3.5 h-3.5" />
                 <span>{tech.label}</span>
               </div>
             );

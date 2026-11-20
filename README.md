@@ -63,6 +63,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   ├── Footer.tsx
 │   │   ├── SectionHeading.tsx
 │   │   ├── HeroFocusDeck.tsx
+│   │   ├── TechIcon.tsx                # 16 vendored brand SVGs, was an 8.7 MB icon barrel
 │   │   └── HeroFocusCard.tsx
 │   ├── data/
 │   │   ├── portfolio.ts

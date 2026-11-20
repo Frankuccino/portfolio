@@ -1,11 +1,11 @@
-import type { IconName } from "tech-stack-icons";
+import type { TechIconName } from "../components/TechIcon";
 
 export type SkillGroup = {
   /** Anchor id, so a roadmap module can deep-link to this group. */
   id: string;
   title: string;
   note: string;
-  icon: IconName;
+  icon: TechIconName;
   /** What this group means in practice — shown instead of the one-line note */
   summary: string;
   /** Featured groups render as large panels above the supporting grid */

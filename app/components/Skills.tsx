@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import StackIcon from "tech-stack-icons";
+import TechIcon from "./TechIcon";
 import SectionHeading from "./SectionHeading";
 import { skillGroups, type SkillGroup } from "../data/portfolio";
 
@@ -34,7 +34,7 @@ function SpecRow({
           {pad(index + 1)}
         </span>
         <span className="shrink-0 flex items-center gap-2 sm:w-44">
-          <StackIcon name={group.icon} className="w-4 h-4" />
+          <TechIcon name={group.icon} className="w-4 h-4" />
           <span className="text-sm font-semibold text-slate-100 group-hover:text-white transition-colors">
             {group.title}
           </span>
