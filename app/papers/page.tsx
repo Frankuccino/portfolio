@@ -8,7 +8,7 @@ import { readingPapersCount, readingPapersHours } from "../data/readingPlan";
 
 export const metadata: Metadata = {
   title: "Research Papers · Frank Angelo Malubag",
-  description: `Ten primary sources behind the LLM stages: the Transformer, RAG, LoRA, RLHF, chain-of-thought, ReAct, tool use, DPO, long context and PagedAttention. Each with the problem it answered, the move it made, and what it changes for the work.`,
+  description: `Fifteen primary sources behind the LLM stages, in four reading stages: the Transformer, chain-of-thought, retrieval, agents and tool use, fine-tuning and alignment, reasoning models, and the serving and hardware papers. Each with the problem it answered, the move it made, and what it changes for the work.`,
   alternates: { canonical: canonical("/papers") },
 };
 
@@ -34,9 +34,9 @@ export default function ReadingPapersPage() {
               The derivations behind the stack.
             </h1>
             <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
-              Ten papers, chronological, because the order is the argument: each
-              answers a question the previous one left open. Read beside the stage
-              they belong to, not after the whole plan.
+              Fifteen papers in four stages, because the order is the argument:
+              each answers a question the previous one left open. Read beside the
+              stage they belong to, not after the whole plan.
             </p>
             <p className="text-[11px] text-slate-400 tabular-nums">
               {readingPapersCount} papers · ~{readingPapersHours} h · counted
@@ -47,7 +47,7 @@ export default function ReadingPapersPage() {
           <ReadingPapers />
 
           <TrackClose
-            note="The books are the argument; these are the derivations. Read a paper when the stage it belongs to makes the claim checkable, rather than saving all ten for the end. The certificates are the credential layer on top, and the blog is where the reading turns into build notes."
+            note="The books are the argument; these are the derivations. Read a paper when the stage it belongs to makes the claim checkable, rather than saving the whole set for the end. The certificates are the credential layer on top, and the blog is where the reading turns into build notes."
             links={[
               { label: "The book plan", href: "/books" },
               { label: "The reading hub", href: "/reading" },

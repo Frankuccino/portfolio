@@ -76,22 +76,81 @@ export type ReadingPaper = {
   /** First author and et al., the way the paper cites itself. */
   authors: string;
   year: number;
-  /** arXiv id, rendered as the abstract and PDF links. */
-  arxiv: string;
+  /** arXiv id, or null for a specification, which links to its own document. */
+  arxiv: string | null;
+  /** Canonical document for a source that is not on arXiv. */
+  source?: { label: string; href: string };
   /** The question it answered when it appeared. */
   problem: string;
   /** The one idea it introduced. */
   move: string;
   /** What it changes about how you build. */
   forYourWork: string;
+  /** One plain sentence on what the paper is, for a first read. */
+  plain: string;
   /**
    * Estimated read time. A paper is read twice, once for the idea and once for
    * the method, so this is not a page count and is not derived from one.
    */
   hours: number;
-  /** The stage this belongs beside, resolved to that stage's own title. */
+  /** Category id, from `paperCategories`. What the paper is about. */
+  category: string;
+  /** Stage id, from `paperStages`. When you read it. */
+  stage: string;
+  /** The book stage this sits beside, resolved to that stage's own title. */
   pairsWith: { kind: "stage"; id: string };
 };
+
+/**
+ * The technical domains the papers fall into. A paper belongs to exactly one.
+ *
+ * The category is a property of the paper, while the stage is a decision about
+ * the reader: the same category can be read in different stages, and two papers
+ * in one stage can come from different categories.
+ */
+export const paperCategories = [
+  { id: "architecture", label: "Core Architecture & Hardware Speed" },
+  { id: "retrieval", label: "Memory, Context & Retrieval" },
+  { id: "alignment", label: "Fine-Tuning & Alignment" },
+  { id: "reasoning", label: "Prompting & Reasoning" },
+  { id: "agents", label: "Agents & Tool Use" },
+  { id: "serving", label: "Production Serving & Inference" },
+] as const;
+
+/**
+ * The order the papers are read in, as a four-stage sequence.
+ *
+ * Deliberately not chronological. Each stage answers the question the previous
+ * one raised, and the systems papers come last because they only pay off once
+ * you know why the models are slow and memory-hungry. The array order of
+ * `readingPapers` is the order within a stage.
+ */
+export const paperStages = [
+  {
+    id: "core-prompting",
+    label: "Core Architecture & Prompting",
+    note: "Start here. Understand how the base engine works and how to steer it with text alone.",
+  },
+  {
+    id: "retrieval-agents",
+    label: "Retrieval & Agents",
+    note: "Building applications: connect the model to external data and to tools.",
+  },
+  {
+    id: "fine-tuning-alignment",
+    label: "Fine-Tuning & Alignment",
+    note: "Customising models: change the weights, then change the behaviour.",
+  },
+  {
+    id: "hardware-inference",
+    label: "Hardware & Inference Optimization",
+    note: "Save for last. Dense systems papers, read once you know why serving is slow.",
+  },
+] as const;
+
+export function paperCategory(id: string) {
+  return paperCategories.find((category) => category.id === id);
+}
 
 /**
  * Priority order for the AI engineering stack, as written up in the vault note
@@ -1367,14 +1426,20 @@ export const readingTotalPages = readingStages.reduce(
 );
 
 /**
- * The primary sources behind the LLM stages. Chronological, because the order
- * is the argument: each paper answers a question the previous one left open.
- * They sit alongside the sequence, not after it, and each names the stage it
- * belongs beside rather than a position in the book order.
+ * The primary sources behind the LLM stages, in reading order.
+ *
+ * The order is the argument and it is deliberately not chronological: each
+ * stage answers a question the previous one raised, and the systems papers come
+ * last because they only pay off once you know why the models are slow and
+ * memory-hungry. Each paper also names the domain it belongs to, which is a
+ * property of the paper rather than a position in this sequence, and the book
+ * stage it sits beside.
  */
+
 export const readingPapers: ReadingPaper[] = [
   {
     id: "attention-is-all-you-need",
+    plain: "The 2017 paper that dropped recurrence and convolution for self-attention, producing the Transformer that every model you call is built from.",
     title: "Attention Is All You Need",
     authors: "Vaswani et al.",
     year: 2017,
@@ -1386,40 +1451,13 @@ export const readingPapers: ReadingPaper[] = [
     forYourWork:
       "The architecture under every model you call. Read it to see why context length costs quadratically, why position has to be injected rather than learned from order, and what the KV cache you serve actually is.",
     hours: 3,
+    category: "architecture",
+    stage: "core-prompting",
     pairsWith: { kind: "stage", id: "core" },
   },
   {
-    id: "retrieval-augmented-generation",
-    title: "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
-    authors: "Lewis et al.",
-    year: 2020,
-    arxiv: "2005.11401",
-    problem:
-      "A pre-trained model keeps its knowledge in its parameters, so updating a fact means retraining, and the model still cannot show where an answer came from.",
-    move:
-      "Pair a parametric sequence-to-sequence model with a non-parametric vector index over Wikipedia, and train the retriever and the generator end to end.",
-    forYourWork:
-      "The paper behind the RAG you build. Retrieval and generation are one system rather than two, which is why the index is part of the model rather than a lookup in front of it.",
-    hours: 2.5,
-    pairsWith: { kind: "stage", id: "llm" },
-  },
-  {
-    id: "lora",
-    title: "LoRA: Low-Rank Adaptation of Large Language Models",
-    authors: "Hu et al.",
-    year: 2021,
-    arxiv: "2106.09685",
-    problem:
-      "Fine-tuning a large model updates every weight, which costs about the same memory and storage as the model itself.",
-    move:
-      "Freeze the pre-trained weights and inject trainable low-rank matrices into each layer, so the update is a pair of thin matrices rather than a full copy.",
-    forYourWork:
-      "Why adapters work and where they fail. Read it before choosing between a fine-tune and RAG, and before assuming a small rank is always enough.",
-    hours: 2.5,
-    pairsWith: { kind: "stage", id: "llm" },
-  },
-  {
     id: "chain-of-thought",
+    plain: "Shows that a few worked examples in the prompt make a model markedly better at multi-step problems, because it writes the steps down before it answers.",
     title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
     authors: "Wei et al.",
     year: 2022,
@@ -1431,70 +1469,13 @@ export const readingPapers: ReadingPaper[] = [
     forYourWork:
       "The mechanism behind structured-output and reasoning prompts. It also shows the limit: the steps are generated, not verified, so a confident wrong trace still reads as plausible.",
     hours: 2.5,
-    pairsWith: { kind: "stage", id: "llm" },
-  },
-  {
-    id: "instructgpt",
-    title: "Training Language Models to Follow Instructions with Human Feedback",
-    authors: "Ouyang et al.",
-    year: 2022,
-    arxiv: "2203.02155",
-    problem:
-      "A model trained to predict text is not trained to follow instructions, and more capability makes misalignment worse rather than better.",
-    move:
-      "Supervised fine-tuning on demonstrations, then a reward model learned from human comparisons, then PPO against that reward.",
-    forYourWork:
-      "The RLHF pipeline every aligned model descends from. Long, but it is where label quality, reward hacking, and the real cost of preference data become concrete.",
-    hours: 4,
-    pairsWith: { kind: "stage", id: "llm" },
-  },
-  {
-    id: "react",
-    title: "ReAct: Synergizing Reasoning and Acting in Language Models",
-    authors: "Yao et al.",
-    year: 2022,
-    arxiv: "2210.03629",
-    problem:
-      "Reasoning and acting were studied separately: a model could think without grounding, or act without a plan it could revise.",
-    move:
-      "Interleave reasoning traces with tool actions, so the trace induces and updates the plan while each action gathers information back into it.",
-    forYourWork:
-      "The agent loop you already ship. Read it to see why the trace has to stay in the prompt, and why hallucination drops once the model can observe the result of its own call.",
-    hours: 2.5,
-    pairsWith: { kind: "stage", id: "llm" },
-  },
-  {
-    id: "toolformer",
-    title: "Toolformer: Language Models Can Teach Themselves to Use Tools",
-    authors: "Schick et al.",
-    year: 2023,
-    arxiv: "2302.04761",
-    problem:
-      "A model can be told to use a tool in a prompt, but it does not know which call to make, when to make it, or with what arguments.",
-    move:
-      "Let the model insert candidate API calls into ordinary text, execute them, and keep only the calls whose result lowers the loss on the tokens that follow.",
-    forYourWork:
-      "The self-supervised route to tool use, and the clearest statement of the tool-calling contract: a name, arguments, and a defined way for the result to re-enter the context.",
-    hours: 2.5,
-    pairsWith: { kind: "stage", id: "llm" },
-  },
-  {
-    id: "dpo",
-    title: "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
-    authors: "Rafailov et al.",
-    year: 2023,
-    arxiv: "2305.18290",
-    problem:
-      "RLHF needs a separate reward model and an RL loop, and both are unstable and expensive to run.",
-    move:
-      "Reframe preference optimisation as a classification loss on the policy itself, removing the reward model and the sampling loop.",
-    forYourWork:
-      "The simpler alignment path now in most stacks. Read it to know what you gain in stability and what you may lose against a well-tuned reward model.",
-    hours: 3,
+    category: "reasoning",
+    stage: "core-prompting",
     pairsWith: { kind: "stage", id: "llm" },
   },
   {
     id: "lost-in-the-middle",
+    plain: "Measures where in a long prompt a model actually looks. The answer is the beginning and the end, and performance falls off sharply in the middle.",
     title: "Lost in the Middle: How Language Models Use Long Contexts",
     authors: "Liu et al.",
     year: 2023,
@@ -1506,10 +1487,197 @@ export const readingPapers: ReadingPaper[] = [
     forYourWork:
       "The empirical basis for context engineering: put the instruction and the key fact at the edges, re-rank so the relevant chunk lands early, and treat a longer window as a cost rather than a free upgrade.",
     hours: 2.5,
+    category: "retrieval",
+    stage: "core-prompting",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "retrieval-augmented-generation",
+    plain: "Pairs a language model with a searchable index, so it can answer from documents it was never trained on and show where the answer came from.",
+    title: "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    authors: "Lewis et al.",
+    year: 2020,
+    arxiv: "2005.11401",
+    problem:
+      "A pre-trained model keeps its knowledge in its parameters, so updating a fact means retraining, and the model still cannot show where an answer came from.",
+    move:
+      "Pair a parametric sequence-to-sequence model with a non-parametric vector index over Wikipedia, and train the retriever and the generator end to end.",
+    forYourWork:
+      "The paper behind the RAG you build. Retrieval and generation are one system rather than two, which is why the index is part of the model rather than a lookup in front of it.",
+    hours: 2.5,
+    category: "retrieval",
+    stage: "retrieval-agents",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "react",
+    plain: "The pattern behind most agent loops: reason, call a tool, read the result, reason again.",
+    title: "ReAct: Synergizing Reasoning and Acting in Language Models",
+    authors: "Yao et al.",
+    year: 2022,
+    arxiv: "2210.03629",
+    problem:
+      "Reasoning and acting were studied separately: a model could think without grounding, or act without a plan it could revise.",
+    move:
+      "Interleave reasoning traces with tool actions, so the trace induces and updates the plan while each action gathers information back into it.",
+    forYourWork:
+      "The agent loop you already ship. Read it to see why the trace has to stay in the prompt, and why hallucination drops once the model can observe the result of its own call.",
+    hours: 2.5,
+    category: "agents",
+    stage: "retrieval-agents",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "toolformer",
+    plain: "Shows a model teaching itself where to insert API calls, rather than being handed every call in a prompt.",
+    title: "Toolformer: Language Models Can Teach Themselves to Use Tools",
+    authors: "Schick et al.",
+    year: 2023,
+    arxiv: "2302.04761",
+    problem:
+      "A model can be told to use a tool in a prompt, but it does not know which call to make, when to make it, or with what arguments.",
+    move:
+      "Let the model insert candidate API calls into ordinary text, execute them, and keep only the calls whose result lowers the loss on the tokens that follow.",
+    forYourWork:
+      "The self-supervised route to tool use, and the clearest statement of the tool-calling contract: a name, arguments, and a defined way for the result to re-enter the context.",
+    hours: 2.5,
+    category: "agents",
+    stage: "retrieval-agents",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "model-context-protocol",
+    plain: "Not a paper but the open specification for connecting agents to tools and data, so a tool is written once and works in any client that speaks the protocol.",
+    title: "Model Context Protocol Specification",
+    authors: "Anthropic",
+    year: 2024,
+    arxiv: null,
+    source: {
+      label: "Specification",
+      href: "https://modelcontextprotocol.io/specification/2024-11-05",
+    },
+    problem:
+      "Every product that connects a model to tools builds its own interface, so a tool written for one agent does not work in another, and every integration is bespoke.",
+    move:
+      "Define an open JSON-RPC protocol with a client and a server role, a capability-negotiated lifecycle, and three primitives: resources, prompts and tools.",
+    forYourWork:
+      "The contract your own tool registry already half-implements. Read the architecture overview rather than the whole schema, to see how a server advertises capabilities and how a client discovers them.",
+    hours: 1.5,
+    category: "agents",
+    stage: "retrieval-agents",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "graphrag",
+    plain: "Adds a knowledge graph and community summaries to retrieval, so a system can answer questions about a whole corpus rather than one passage.",
+    title: "From Local to Global: A Graph RAG Approach to Query-Focused Summarization",
+    authors: "Edge et al.",
+    year: 2024,
+    arxiv: "2404.16130",
+    problem:
+      "Vector RAG answers a question about a particular passage, and fails on global questions about a whole corpus, because that is a summarisation task rather than a retrieval one.",
+    move:
+      "Build an entity knowledge graph with an LLM, partition it into a hierarchy of communities, pregenerate a summary for each, and answer by map-reduce over the community summaries.",
+    forYourWork:
+      "What to do when one vector index cannot answer a dataset-wide question, and what it costs: the graph is built at index time, so the index stops being only embeddings.",
+    hours: 2.5,
+    category: "retrieval",
+    stage: "retrieval-agents",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "instructgpt",
+    plain: "The paper behind chat models: fine-tune on demonstrations, learn a reward from human comparisons, then optimise against it.",
+    title: "Training Language Models to Follow Instructions with Human Feedback",
+    authors: "Ouyang et al.",
+    year: 2022,
+    arxiv: "2203.02155",
+    problem:
+      "A model trained to predict text is not trained to follow instructions, and more capability makes misalignment worse rather than better.",
+    move:
+      "Supervised fine-tuning on demonstrations, then a reward model learned from human comparisons, then PPO against that reward.",
+    forYourWork:
+      "The RLHF pipeline every aligned model descends from. Long, but it is where label quality, reward hacking, and the real cost of preference data become concrete.",
+    hours: 4,
+    category: "alignment",
+    stage: "fine-tuning-alignment",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "lora",
+    plain: "Freezes the model and trains a pair of small matrices per layer, so fine-tuning costs a fraction of the memory a full update needs.",
+    title: "LoRA: Low-Rank Adaptation of Large Language Models",
+    authors: "Hu et al.",
+    year: 2021,
+    arxiv: "2106.09685",
+    problem:
+      "Fine-tuning a large model updates every weight, which costs about the same memory and storage as the model itself.",
+    move:
+      "Freeze the pre-trained weights and inject trainable low-rank matrices into each layer, so the update is a pair of thin matrices rather than a full copy.",
+    forYourWork:
+      "Why adapters work and where they fail. Read it before choosing between a fine-tune and RAG, and before assuming a small rank is always enough.",
+    hours: 2.5,
+    category: "alignment",
+    stage: "fine-tuning-alignment",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "qlora",
+    plain: "LoRA with 4-bit weights, which is what makes fine-tuning a very large model possible on a single GPU.",
+    title: "QLoRA: Efficient Finetuning of Quantized LLMs",
+    authors: "Dettmers et al.",
+    year: 2023,
+    arxiv: "2305.14314",
+    problem:
+      "LoRA cut the trainable parameters, but the frozen base model still had to sit in memory at full precision, so a 65B model needed hundreds of gigabytes.",
+    move:
+      "Quantize the frozen base to 4-bit NormalFloat, keep the adapters in 16-bit, and page the optimizer state out, so gradients flow through quantized weights into low-rank adapters.",
+    forYourWork:
+      "What makes a 65B fine-tune fit on one 48GB GPU with no measured quality loss, and which of the three memory tricks carries the most weight. Read it after LoRA, because it is LoRA plus quantization.",
+    hours: 2.5,
+    category: "alignment",
+    stage: "fine-tuning-alignment",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "dpo",
+    plain: "A simpler route to alignment that trains on preference pairs directly, with no separate reward model and no reinforcement learning loop.",
+    title: "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+    authors: "Rafailov et al.",
+    year: 2023,
+    arxiv: "2305.18290",
+    problem:
+      "RLHF needs a separate reward model and an RL loop, and both are unstable and expensive to run.",
+    move:
+      "Reframe preference optimisation as a classification loss on the policy itself, removing the reward model and the sampling loop.",
+    forYourWork:
+      "The simpler alignment path now in most stacks. Read it to know what you gain in stability and what you may lose against a well-tuned reward model.",
+    hours: 3,
+    category: "alignment",
+    stage: "fine-tuning-alignment",
+    pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "deepseek-r1",
+    plain: "Shows reasoning behaviour emerging from reinforcement learning on verifiable rewards alone, with no human-written reasoning examples.",
+    title: "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+    authors: "DeepSeek-AI",
+    year: 2025,
+    arxiv: "2501.12948",
+    problem:
+      "Chain-of-thought reasoning depended on human-written demonstrations, and it was not clear a model could learn to reason without them.",
+    move:
+      "Train with group relative policy optimization against verifiable rewards alone, with no supervised reasoning traces, and let self-reflection, verification and backtracking emerge; then distil the behaviour into smaller models.",
+    forYourWork:
+      "The evidence that reasoning can be incentivised rather than taught, and why a verifiable reward is the load-bearing part. Long, and the ablations matter more than the headline.",
+    hours: 4,
+    category: "reasoning",
+    stage: "fine-tuning-alignment",
     pairsWith: { kind: "stage", id: "llm" },
   },
   {
     id: "pagedattention",
+    plain: "The paper behind vLLM. It treats the KV cache like virtual memory, so a server can run far more requests at the same time.",
     title: "Efficient Memory Management for Large Language Model Serving with PagedAttention",
     authors: "Kwon et al.",
     year: 2023,
@@ -1521,7 +1689,27 @@ export const readingPapers: ReadingPaper[] = [
     forYourWork:
       "Why serving throughput is a memory-management problem. Read it before tuning batch size or buying a larger GPU.",
     hours: 3,
+    category: "serving",
+    stage: "hardware-inference",
     pairsWith: { kind: "stage", id: "llm" },
+  },
+  {
+    id: "flashattention",
+    plain: "Rewrites attention so less data moves between the GPU's memory levels, giving exact attention that is faster and far lighter on memory.",
+    title: "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+    authors: "Dao et al.",
+    year: 2022,
+    arxiv: "2205.14135",
+    problem:
+      "Self-attention is quadratic in sequence length and dominated by memory traffic: the full score matrix is written to and read back from high-bandwidth memory, so long sequences are bound by bandwidth rather than by compute.",
+    move:
+      "Make attention IO-aware. Tile the query, key and value blocks, compute attention block by block in on-chip SRAM with an online softmax, and never materialise the full score matrix in HBM.",
+    forYourWork:
+      "Why long-context training and serving are memory problems rather than arithmetic ones, and why the fix is algorithmic. Read it before reaching for a larger GPU.",
+    hours: 3.5,
+    category: "architecture",
+    stage: "hardware-inference",
+    pairsWith: { kind: "stage", id: "core" },
   },
 ];
 

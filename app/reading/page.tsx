@@ -93,7 +93,7 @@ export default function ReadingPage() {
               </h2>
               <p className="mt-1 text-xs leading-relaxed text-slate-400">
                 {readingPapersCount} research papers behind the LLM stages, in
-                chronological order: the problem each answered, the move it made,
+                four reading stages: the problem each answered, the move it made,
                 and what it changes for the work.
               </p>
               <p className="mt-3 text-[11px] tabular-nums text-slate-400">
