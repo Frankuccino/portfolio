@@ -1,13 +1,13 @@
 ---
 title: "My Site Sent 2.3 MB of JavaScript to Show Fourteen Logos"
 date: 2026-11-21
-excerpt: "A performance audit on my own portfolio turned up a forced-reflow warning, a meta description four pixels over budget, and one icon package shipping 690 logos for the sixteen I use. Here is what I changed and what it measured."
+excerpt: "A performance audit on my own portfolio turned up a forced-reflow warning, a meta description four pixels over budget, and one icon package shipping 690 logos for the sixteen I use. Here is what I changed, what it measured, and the optimization that made it worse."
 tags: [Performance, Next.js, Frontend, Web]
 ---
 
 I ran a performance and SEO audit on this site and got a list of findings that looked unrelated. Total Blocking Time of 1.69 s with four forced reflows. Six images that could be served smaller. A meta description 1004 pixels against a 1000 pixel budget. Two duplicated blocks of text. Anchor text a few hundred characters long.
 
-Three of those were real and cheap to fix. The blocking time sent me looking for the actual bottleneck, and the answer was not in the audit. It was in the bundle.
+Three of those were real and cheap to fix. The blocking time sent me looking for the actual bottleneck, and the answer was not in the audit. It was in the bundle. And after the bundle was fixed, I went after the last 80 ms and made the number worse, which is the more useful half of the story.
 
 ## The findings, and which ones held up
 
@@ -78,14 +78,43 @@ The LCP row is the one to read twice, and it is not a regression from the work. 
 
 The forced-reflow insight is gone from the after run. The before run reported 304 ms of unattributed reflow time, and the cause was the scroll-spy reading layout on every scroll event. That reading is now cached, and the insight no longer fires.
 
-Total Blocking Time at 280 ms is still above the 200 ms that counts as good, because TBT is the lab stand-in for Interaction to Next Paint. The remaining gap is not the bundle. The after run's JavaScript execution time is 1.0 s, of which 747 ms is unattributed and 531 ms sits in a single chunk, while Google Tag Manager is 235 ms of main-thread CPU. Note that Lighthouse already awards full credit for TBT, so the last 80 ms is about the field metric rather than the lab score.
+At 280 ms the site was still above the 200 ms that counts as good, because TBT is the lab stand-in for Interaction to Next Paint. The remaining gap did not look like the bundle. The after run's JavaScript execution time was 1.0 s, of which 747 ms was unattributed and 531 ms sat in a single chunk, while Google Tag Manager was 235 ms of main-thread CPU. So I went after the unattributed part.
 
 The exact byte counts, measured the same way on both builds, are 2,321,379 to 341,364 bytes of initial JavaScript and 9.85 MB to 1.27 MB across the whole build. The badge artwork went from a 400 KB PNG to a 26.5 KB AVIF, the meta description from 158 characters to 138, the Stage 1 objective from two occurrences to one, and the anchor names over 60 characters from five to one.
+
+## Then I tried to close the last 80 ms, and it got worse
+
+The four ledger sections were client components, so their markup, their data and their handlers all hydrated on every visit to the home page, including the sections far below the fold. That is the unattributed work, and the theory was that hydration was the cost.
+
+I rewrote Skills, Projects, Certificates and Contact as server components and left six small client islands for the interactions: two filters, a document switcher, an expand-all control, a certificate viewer, and the copy-email button. The islands act on markup already in the document, toggling `hidden` and `open` rather than re-rendering it, and the rows became native `<details>` disclosures so expanding them needs no JavaScript at all. The section data left the initial client bundle, and initial JavaScript fell from 341,841 to 319,070 bytes.
+
+It measured worse. The [second run](https://www.debugbear.com/test/website-speed/WU80mudt/overview) gave a TBT of 459 ms and a Lighthouse score of 88, against 280 ms and 93.
+
+| Signal | Before | After | Change |
+| --- | --- | --- | --- |
+| Total Blocking Time | 280 ms | 459 ms | +64% |
+| Lighthouse performance | 93 | 88 | -5 |
+| Main-thread work | 2.8 s | 3.2 s | +14% |
+| Script evaluation | 942 ms | 1049 ms | +11% |
+| Style and layout | 406 ms | 520 ms | +28% |
+| Long tasks in the FCP to TTI window | 2 | 6 | +4 |
+
+The reason is that TBT counts tasks, not bytes. Splitting the code into more and smaller chunks means more separate script evaluations, and every script evaluation is its own task. Two long tasks inside the window became six, and they sum exactly: 85 + 179 + 1 + 109 + 75 + 10 = 459. The server-rendered rows also put a larger DOM on the page, which is where the extra style and layout time went.
+
+So the premise was half right. Hydration was a cost, and removing it did remove work. But the remainder came back as tasks, and the net on the metric I was chasing was negative. I reverted the rewrite.
+
+Two honest caveats. This is one run against one run, and TBT moves between runs, so the size of the delta is not certain even though the direction matches the mechanism. And the deployed bundle is not byte-identical to my local build: Vercel's build split the chunks differently, which is a reminder that what gets measured is a build, not a commit.
+
+## What is actually left
+
+Google Tag Manager accounts for 109 + 75 = 184 ms of the 459 ms, across two tasks, and it was 235 ms of main-thread CPU in the earlier run too. That is a fixed floor, and 200 ms is not reachable while it runs inside the FCP to TTI window. Moving it out of the window, by loading it after the load event, is the remaining lever, and it is a product decision rather than an engineering one: the analytics, or the last 80 ms.
 
 ## The audit's advice was not the cause
 
 The audit told me to avoid repeatedly reading layout properties and to use modern image formats. Both were true, both were worth doing, and neither was the blocking time. The forced reflows were four reads on a scroll handler. The images were already being optimised. The thing that actually dominated the first paint was a dependency nobody thought to audit, because nothing on the page looked slow. Fourteen small logos in a row.
 
-That is the general lesson I took from this. **An audit reports symptoms, and the symptom it names is usually the cheapest one to fix, not the most expensive one to carry.** The findings list is a place to start, not a diagnosis. The diagnosis comes from measuring what the browser actually fetched, in order, with the network throttled the way a phone sees it. Once I did that, the answer was a single line in a chunk listing.
+That is the first lesson: **an audit reports symptoms, and the symptom it names is usually the cheapest one to fix, not the most expensive one to carry.** The findings list is a place to start, not a diagnosis. The diagnosis comes from measuring what the browser actually fetched, in order, with the network throttled the way a phone sees it.
 
-> Nothing on the page looked slow. That is exactly why it was worth measuring.
+The second lesson cost me a deploy. **Bytes are easy to count and feel like progress, and TBT does not count them.** It counts tasks on the main thread between the first paint and the page becoming interactive. A change can ship fewer bytes and more work, and the way to tell is not the bundle analyser but the long-task list. I had that list in the same report the whole time, and I read the byte counts first.
+
+> Nothing on the page looked slow. That is exactly why it was worth measuring. And the number I wanted to move was not the number that moved.
