@@ -1,7 +1,7 @@
 ---
 title: "My Site Sent 2.3 MB of JavaScript to Show Fourteen Logos"
 date: 2026-11-21
-excerpt: "A performance audit on my own portfolio turned up a forced-reflow warning, a meta description four pixels over budget, and one icon package shipping 690 logos for the sixteen I use. Here is what I changed, what it measured, and the optimization that made it worse."
+excerpt: "A performance audit on my own portfolio turned up a forced-reflow warning, a meta description four pixels over budget, and one icon package shipping 690 logos for the sixteen I use. Here is what I changed, what it measured, and the two optimizations that did not work."
 tags: [Performance, Next.js, Frontend, Web]
 ---
 
@@ -103,11 +103,17 @@ The reason is that TBT counts tasks, not bytes. Splitting the code into more and
 
 So the premise was half right. Hydration was a cost, and removing it did remove work. But the remainder came back as tasks, and the net on the metric I was chasing was negative. I reverted the rewrite.
 
-Two honest caveats. This is one run against one run, and TBT moves between runs, so the size of the delta is not certain even though the direction matches the mechanism. And the deployed bundle is not byte-identical to my local build: Vercel's build split the chunks differently, which is a reminder that what gets measured is a build, not a commit.
+Two honest caveats. This is one run against one run, and TBT moves between runs, so the size of the delta is not certain even though the direction matches the mechanism. The same build later measured 399 ms, which means the 280 ms baseline above was a favourable run and the delta is inside the noise. And the deployed bundle is not byte-identical to my local build: Vercel's build split the chunks differently, which is a reminder that what gets measured is a build, not a commit.
 
 ## What is actually left
 
-Google Tag Manager accounts for 109 + 75 = 184 ms of the 459 ms, across two tasks, and it was 235 ms of main-thread CPU in the earlier run too. That is a fixed floor, and 200 ms is not reachable while it runs inside the FCP to TTI window. Moving it out of the window, by loading it after the load event, is the remaining lever, and it is a product decision rather than an engineering one: the analytics, or the last 80 ms.
+The obvious suspect was Google Tag Manager, and I tried it. It accounts for 109 + 75 = 184 ms of the 459 ms in that run, so I moved it to load after the window instead of during it. It did not help: TBT went from 399 to 419 ms, and Time to Interactive went from 3.2 s to 4.5 s.
+
+The reason is worth knowing, because it generalises. `load` on this page waits for 297 KB of cover images from archive.org, so the tag ended up running at about 4.2 s, inside the quiet window that TTI is measured from. Moving the work later moved TTI. It did not move the work out of the way, because on a page whose load event is image-bound there is no "later" that is still during the visit.
+
+So the tag is not the lever, and I reverted that change. What the traces actually show is that the consistent contributor is first-party: a 224 KB app chunk carrying the reading plan, skills, projects and certificates accounts for about 160 ms, and the framework chunk about 80 ms. Google Tag Manager contributes between 77 and 181 ms depending on where its tasks land, which is also why this metric moves so much between runs of identical code.
+
+That leaves an unglamorous conclusion. The way to a 200 ms TBT on this page is less client JavaScript, not differently placed client JavaScript. And the way to know whether you got there is several runs, because one run cannot resolve a 60 ms change when the same code measures 280 ms and 399 ms.
 
 ## The audit's advice was not the cause
 
