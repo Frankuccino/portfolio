@@ -120,7 +120,7 @@ export default function ReadingPlanLayout({
                 <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
                   {"// On this page"}
                 </p>
-                <span className="text-[10px] font-mono tabular-nums text-slate-600">
+                <span className="text-[10px] font-mono tabular-nums text-slate-400">
                   {activeIndex + 1} / {readingStages.length}
                 </span>
               </div>
@@ -146,7 +146,7 @@ export default function ReadingPlanLayout({
                       >
                         <span
                           className={`w-6 shrink-0 font-mono tabular-nums text-[10px] ${
-                            isActive ? "text-[#8fb0c2]" : "text-slate-600"
+                            isActive ? "text-[#8fb0c2]" : "text-slate-400"
                           }`}
                         >
                           {entry.parallel ? "E" : pad(i + 1)}

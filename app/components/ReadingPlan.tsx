@@ -93,7 +93,7 @@ function ReadingPlanBands() {
               <ul className="mt-3 grid gap-x-6 gap-y-2.5 sm:grid-cols-2 lg:grid-cols-3">
                 {stage.books.map((book) => (
                   <li key={book.order} className="flex items-baseline gap-2.5">
-                    <span className="w-4 shrink-0 text-[10px] font-mono tabular-nums text-slate-600">
+                    <span className="w-4 shrink-0 text-[10px] font-mono tabular-nums text-slate-400">
                       {String(book.order).padStart(2, "0")}
                     </span>
                     <div className="min-w-0 flex-1">

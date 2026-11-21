@@ -68,7 +68,7 @@ export default function BlogArchive() {
               notes.
             </span>
           </span>
-          <span className="shrink-0 text-xs font-mono text-slate-500 group-hover:text-slate-300 transition-colors">
+          <span className="shrink-0 text-xs font-mono text-slate-400 group-hover:text-slate-300 transition-colors">
             Open →
           </span>
         </Link>

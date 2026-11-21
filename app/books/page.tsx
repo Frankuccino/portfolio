@@ -60,7 +60,7 @@ export default function ReadingPage() {
 
           <ReadingPlanExplorer />
 
-          <p className="mt-2 text-[10px] text-slate-600">
+          <p className="mt-2 text-[10px] text-slate-400">
             Cover art hotlinked from{" "}
             <a
               href="https://openlibrary.org/dev/docs/api/covers"

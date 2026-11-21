@@ -8,7 +8,7 @@ import { readingPapersCount, readingPapersHours } from "../data/readingPlan";
 
 export const metadata: Metadata = {
   title: "Research Papers · Frank Angelo Malubag",
-  description: `Fifteen primary sources behind the LLM stages, in four reading stages: the Transformer, chain-of-thought, retrieval, agents and tool use, fine-tuning and alignment, reasoning models, and the serving and hardware papers. Each with the problem it answered, the move it made, and what it changes for the work.`,
+  description: `Fifteen primary sources behind the LLM stages, in four reading stages: the problem each answered, the move it made, and what it changes for the work, with a plain-terms pass and a glossary.`,
   alternates: { canonical: canonical("/papers") },
 };
 
@@ -36,7 +36,8 @@ export default function ReadingPapersPage() {
             <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
               Fifteen papers in four stages, because the order is the argument:
               each answers a question the previous one left open. Read beside the
-              stage they belong to, not after the whole plan.
+              stage they belong to, not after the whole plan. A plain-terms pass
+              and a glossary sit below the detail.
             </p>
             <p className="text-[11px] text-slate-400 tabular-nums">
               {readingPapersCount} papers · ~{readingPapersHours} h · counted

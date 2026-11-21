@@ -252,7 +252,7 @@ export default function VirtualLibrary() {
         )}
       </div>
 
-      <p className="mt-5 text-[10px] text-slate-600">
+      <p className="mt-5 text-[10px] text-slate-400">
         Cover art via the{" "}
         <a
           href="https://openlibrary.org/"

@@ -4,6 +4,7 @@ import {
   paperCategory,
   paperStages,
 } from "../data/readingPlan";
+import { glossaryGroups, glossaryTerms } from "../data/glossary";
 
 /**
  * Resolve a typed stage reference to the stage's own title and a link to it.
@@ -48,7 +49,7 @@ export default function ReadingPapers() {
           return (
             <div key={stage.id}>
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-slate-800/70 pb-2">
-                <span className="text-[10px] font-mono tabular-nums text-slate-500">
+                <span className="text-[10px] font-mono tabular-nums text-slate-400">
                   {String(stageIndex + 1).padStart(2, "0")}
                 </span>
                 <h2 className="text-base font-semibold text-slate-100">
@@ -71,7 +72,7 @@ export default function ReadingPapers() {
                   return (
                     <li key={paper.id}>
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span className="text-[10px] font-mono tabular-nums text-slate-600">
+                        <span className="text-[10px] font-mono tabular-nums text-slate-400">
                           {String(index + 1).padStart(2, "0")}
                         </span>
                         <h3 className="text-sm font-semibold text-slate-100">
@@ -137,7 +138,7 @@ export default function ReadingPapers() {
                         ))}
                       </div>
 
-                      <p className="mt-2 text-[11px] text-slate-500">
+                      <p className="mt-2 text-[11px] text-slate-400">
                         {bookStage ? (
                           <>
                             Pairs with{" "}
@@ -177,7 +178,7 @@ export default function ReadingPapers() {
             );
             return (
               <div key={stage.id}>
-                <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
                   {String(stageIndex + 1).padStart(2, "0")} {stage.label}
                 </p>
                 <ul className="mt-2 space-y-2">
@@ -189,11 +190,50 @@ export default function ReadingPapers() {
                       <span className="font-medium text-slate-200">
                         {paper.title}
                       </span>
-                      <span className="text-slate-600"> · </span>
+                      <span className="text-slate-400"> · </span>
                       {paper.plain}
                     </li>
                   ))}
                 </ul>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* The vocabulary the papers assume. Grouped, one sentence each, after the
+          detail so it never interrupts a reader who already knows the term. */}
+      <div className="mt-14 border-t border-slate-800/70 pt-8">
+        <h2 className="text-base font-semibold text-slate-100">Glossary</h2>
+        <p className="mt-1 mb-6 max-w-3xl text-xs leading-relaxed text-slate-400">
+          The terms the papers assume, in plain words. Grouped by what they are
+          about, one sentence each.
+        </p>
+
+        <div className="space-y-7">
+          {glossaryGroups.map((group) => {
+            const terms = glossaryTerms.filter(
+              (entry) => entry.group === group.id,
+            );
+            if (terms.length === 0) return null;
+
+            return (
+              <div key={group.id}>
+                <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
+                  {group.label}
+                </p>
+                <dl className="mt-2 space-y-2">
+                  {terms.map((entry) => (
+                    <div key={entry.term} className="text-xs leading-relaxed">
+                      <dt className="inline font-medium text-slate-200">
+                        {entry.term}.
+                      </dt>{" "}
+                      <dd className="inline text-slate-400">
+                        {entry.definition}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
             );
           })}

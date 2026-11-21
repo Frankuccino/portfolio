@@ -239,7 +239,7 @@ export default function ReadingPlanExplorer() {
                     <BookCoverThumb book={item} />
                     <div className="min-w-0 flex-1 flex flex-col">
                       <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-mono tabular-nums text-slate-600">
+                          <span className="text-[10px] font-mono tabular-nums text-slate-400">
                             {pad(item.order)}
                           </span>
                           <div className="flex items-center gap-1.5">

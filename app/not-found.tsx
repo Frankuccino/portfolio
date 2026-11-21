@@ -46,7 +46,7 @@ export default function NotFound() {
               <span className="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
                 {item.label}
               </span>
-              <span className="ml-auto text-xs font-mono text-slate-600 group-hover:text-slate-400 transition-colors">
+              <span className="ml-auto text-xs font-mono text-slate-400 group-hover:text-slate-300 transition-colors">
                 →
               </span>
             </Link>

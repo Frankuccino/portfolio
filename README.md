@@ -69,6 +69,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   ├── portfolio.ts
 │   │   ├── books.ts
 │   │   ├── readingPlan.ts
+│   │   ├── glossary.ts                 # plain-word definitions for /papers
 │   │   └── roadmap.ts
 │   └── lib/
 │       ├── posts.ts

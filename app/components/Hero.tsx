@@ -84,7 +84,7 @@ export default function Hero() {
 
         {/* Title - Scaled Larger */}
         <p className="text-xl sm:text-2xl md:text-3xl font-medium tracking-wide text-slate-300 pb-4">
-          /Frankuccino <span className="text-slate-600 mx-2">•</span> Software
+          /Frankuccino <span className="text-slate-400 mx-2">•</span> Software
           Engineer | AI Engineer
         </p>
 
@@ -111,7 +111,7 @@ export default function Hero() {
           >
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
             What&apos;s Next
-            <span className="text-slate-600">·</span>
+            <span className="text-slate-400">·</span>
             <span className="text-slate-400 group-hover:text-slate-200 transition-colors">
               Microsoft AI &amp; ML Eng Cert → Stanford CS221
             </span>

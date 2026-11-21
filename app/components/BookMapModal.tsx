@@ -14,7 +14,7 @@ import PromptBlock from "./PromptBlock";
 const priorityStyles: Record<string, string> = {
   focus: "text-slate-100 border-[#3e6274]/70 bg-[#3e6274]/25",
   skim: "text-slate-400 border-slate-700/60 bg-slate-800/30",
-  reference: "text-slate-600 border-slate-800/60 bg-transparent",
+  reference: "text-slate-400 border-slate-800/60 bg-transparent",
 };
 
 /**
@@ -234,7 +234,7 @@ export default function BookMapModal({
           <div>
             <SectionHeading index="04">Focus chapters</SectionHeading>
             {book.focusNote && (
-              <p className="mt-1 text-[10px] text-slate-600">{book.focusNote}</p>
+              <p className="mt-1 text-[10px] text-slate-400">{book.focusNote}</p>
             )}
             <ul className="mt-2 space-y-2.5">
               {book.focus.map((item) => (
@@ -274,7 +274,7 @@ export default function BookMapModal({
               <ul className="mt-2 space-y-1.5">
                 {book.stressTest.map((item) => (
                   <li key={item} className="flex gap-2 text-xs text-slate-400">
-                    <span className="text-slate-600 shrink-0">?</span>
+                    <span className="text-slate-400 shrink-0">?</span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}

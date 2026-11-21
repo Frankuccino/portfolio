@@ -21,7 +21,7 @@ export default function RoadmapFigure({ image }: { image: RoadmapImage }) {
         className="w-full h-auto rounded-lg border border-slate-800/60 bg-black/40"
       />
       <figcaption className="mt-1.5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
-        <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
           {image.caption}
         </span>
         <span className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
