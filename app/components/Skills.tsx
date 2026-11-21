@@ -27,7 +27,7 @@ function SpecRow({
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        aria-controls={`spec-${group.title}`}
+        aria-controls={`spec-${group.id}`}
         className="group w-full text-left flex items-baseline gap-3 sm:gap-5 px-2 sm:px-3 py-4 cursor-pointer"
       >
         <span className="text-[11px] font-mono tabular-nums text-slate-400 shrink-0 w-6">
@@ -55,7 +55,7 @@ function SpecRow({
 
       {open ? (
         <div
-          id={`spec-${group.title}`}
+          id={`spec-${group.id}`}
           className="px-2 sm:px-3 pb-5 sm:pl-16"
         >
           <div className="flex flex-wrap gap-1.5">
