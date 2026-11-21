@@ -8,7 +8,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 
 - **Framework:** Next.js (App Router)
 - **Styling:** Tailwind CSS
-- **Visual Shaders:** `@paper-design/shaders-react` (`GrainGradient`)
+- **Visual Shaders:** `@paper-design/shaders-react` (`GrainGradient`), mounted by `ShaderBackground` after the first paint. It is the largest chunk on the page and purely decorative, so a static import put 83 KB of parse and compile in front of the first paint. Work before the first paint delays LCP and is invisible to TBT, which only counts tasks between FCP and TTI.
 - **Typography:** Geist and Geist Mono, wired into Tailwind's `--font-sans` / `--font-mono` tokens (`@theme` in `app/globals.css`), plus Bricolage Grotesque 800 as `--font-display`. The display face is applied by **class** (`.font-display`), not by tag: most `h2`s on the site are small mono eyebrow labels, so a tag rule would have set them in a display grotesque. The footer wordmark is glyph geometry, not live text.
 - **Blog:** Markdown posts in `content/posts/`, rendered by a dependency-free React markdown engine (`app/lib/markdown.tsx`).
 

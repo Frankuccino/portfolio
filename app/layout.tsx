@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { GrainGradient } from "@paper-design/shaders-react";
+import ShaderBackground from "./components/ShaderBackground";
 import Navbar from "./components/Navbar";
 import ScrollProgress from "./components/ScrollProgress";
 import Footer from "./components/Footer";
@@ -147,7 +147,7 @@ export default function RootLayout({
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-        <GrainGradient
+        <ShaderBackground
           className="fixed inset-0 w-full h-full object-cover pointer-events-none -z-10"
           colors={["#3e6274"]}
           colorBack="#0e0d16"
