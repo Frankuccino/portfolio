@@ -1,59 +1,78 @@
-import Image from "next/image";
-import type { FeaturedCertificate } from "../data/portfolio";
-import DocSwitcher from "./DocSwitcher";
+"use client";
 
-/**
- * A featured credential.
- *
- * Server-rendered. The documents are stacked in one frame and the switcher is
- * an island that toggles `hidden`; the viewer island opens the visible document
- * from the `data-lightbox-*` attributes.
- */
+import Image from "next/image";
+import { useState } from "react";
+import type { FeaturedCertificate } from "../data/portfolio";
+import type { LightboxImage } from "./CertificateCard";
+
+type FeaturedCertificateCardProps = {
+  cert: FeaturedCertificate;
+  onOpen: (image: LightboxImage) => void;
+};
+
 export default function FeaturedCertificateCard({
   cert,
-  id,
-}: {
-  cert: FeaturedCertificate;
-  id: string;
-}) {
+  onOpen,
+}: FeaturedCertificateCardProps) {
+  const [docIndex, setDocIndex] = useState(0);
+  const activeDoc = cert.images[docIndex] ?? cert.images[0];
+
+  const openLightbox = () =>
+    onOpen({
+      src: activeDoc.src,
+      title: cert.title,
+      subtitle: `${cert.issuer} · ${cert.completed}`,
+      width: activeDoc.width,
+      height: activeDoc.height,
+    });
+
   return (
-    <div
-      data-issuer={cert.issuer}
-      className="mb-3 rounded-xl border border-[#3e6274]/50 bg-gradient-to-br from-[#3e6274]/15 via-slate-900/40 to-slate-900/40 backdrop-blur-md p-4 sm:p-5"
-    >
+    <div className="mb-3 rounded-xl border border-[#3e6274]/50 bg-gradient-to-br from-[#3e6274]/15 via-slate-900/40 to-slate-900/40 backdrop-blur-md p-4 sm:p-5">
       <div className="flex flex-col lg:flex-row gap-5">
         <div className="lg:w-2/5 shrink-0 flex flex-col gap-2">
           {/* The certificate itself, with nothing drawn over it. Clicking opens
               the lightbox; the document switcher sits under the frame. */}
-          <div
-            id={`docs-${id}`}
-            className="group relative aspect-[1400/806] overflow-hidden rounded-lg border border-slate-700 cursor-pointer"
+          <button
+            type="button"
+            onClick={openLightbox}
+            className="group relative aspect-[1400/806] overflow-hidden rounded-lg border border-slate-700 cursor-pointer text-left"
+            aria-label={`View the ${activeDoc.label.toLowerCase()} for ${cert.title}`}
           >
-            {cert.images.map((doc, index) => (
-              <Image
-                key={doc.src}
-                data-doc
-                src={doc.src}
-                alt={`${cert.title}: ${doc.label}`}
-                width={doc.width}
-                height={doc.height}
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                hidden={index > 0}
-                data-lightbox-src={doc.src}
-                data-lightbox-title={cert.title}
-                data-lightbox-subtitle={`${cert.issuer} · ${cert.completed}`}
-                data-lightbox-width={doc.width}
-                data-lightbox-height={doc.height}
-                className="absolute inset-0 block h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-              />
-            ))}
+            <Image
+              key={activeDoc.src}
+              src={activeDoc.src}
+              alt={`${cert.title}: ${activeDoc.label}`}
+              width={activeDoc.width}
+              height={activeDoc.height}
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="absolute inset-0 block h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            />
             <span className="absolute bottom-2 right-2 text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded-md bg-slate-950/85 border border-slate-700 text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Click to view
             </span>
-          </div>
+          </button>
 
+          {/* Document switcher — one line under the image, only when a
+              credential has more than one document. */}
           {cert.images.length > 1 ? (
-            <DocSwitcher id={`docs-${id}`} docs={cert.images} />
+            <div className="flex flex-wrap gap-1.5">
+              {cert.images.map((doc, index) => (
+                <button
+                  key={doc.src}
+                  type="button"
+                  onClick={() => setDocIndex(index)}
+                  aria-pressed={index === docIndex}
+                  title={doc.label}
+                  className={`text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded-md border transition-colors cursor-pointer ${
+                    index === docIndex
+                      ? "bg-[#3e6274]/25 border-[#3e6274]/50 text-slate-100"
+                      : "bg-slate-950/50 border-slate-800 text-slate-400 hover:text-slate-300"
+                  }`}
+                >
+                  {doc.shortLabel ?? doc.label}
+                </button>
+              ))}
+            </div>
           ) : null}
         </div>
 

@@ -51,13 +51,8 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   ├── Certificates.tsx
 │   │   ├── FeaturedCertificateCard.tsx
 │   │   ├── CertificateCard.tsx
+│   │   ├── CertificateLightbox.tsx
 │   │   ├── BadgeCard.tsx
-│   │   ├── ProjectFilter.tsx          # island: toggles hidden on server rows
-│   │   ├── IssuerFilter.tsx           # island: toggles hidden on server rows
-│   │   ├── DocSwitcher.tsx            # island: toggles hidden on stacked docs
-│   │   ├── ExpandAllSkills.tsx        # island: sets open on the rows
-│   │   ├── CertificateViewer.tsx      # island: dialog + cursor zoom, delegated
-│   │   ├── CopyEmail.tsx              # island: the contact sheet's only JS
 │   │   ├── BlogSection.tsx
 │   │   ├── BlogIndex.tsx
 │   │   ├── ScrollProgress.tsx

@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 import type { Certificate } from "../data/portfolio";
 
 type CertificateWithImage = Certificate & { image: string };
@@ -14,25 +18,44 @@ export type LightboxImage = {
 const CERT_WIDTH = 1400;
 const CERT_HEIGHT = 806;
 
-/**
- * A course certificate plate.
- *
- * Server-rendered markup. The viewer island reads the `data-lightbox-*`
- * attributes to open the document and `data-preview-src` for the hover zoom, so
- * the card itself ships no JavaScript.
- */
-export default function CertificateCard({
-  cert,
-}: {
+const PREVIEW_WIDTH = 480;
+const PREVIEW_HEIGHT = Math.round(PREVIEW_WIDTH * (CERT_HEIGHT / CERT_WIDTH));
+const MARGIN = 16;
+
+type CertificateCardProps = {
   cert: CertificateWithImage;
-}) {
+  onOpen: (image: LightboxImage) => void;
+};
+
+export default function CertificateCard({ cert, onOpen }: CertificateCardProps) {
+  const [preview, setPreview] = useState<{ x: number; y: number } | null>(null);
+
+  const trackCursor = (event: React.MouseEvent<HTMLElement>) => {
+    let x = event.clientX + MARGIN;
+    let y = event.clientY + MARGIN;
+
+    if (x + PREVIEW_WIDTH > window.innerWidth - MARGIN) {
+      x = event.clientX - PREVIEW_WIDTH - MARGIN;
+    }
+    if (y + PREVIEW_HEIGHT > window.innerHeight - MARGIN) {
+      y = event.clientY - PREVIEW_HEIGHT - MARGIN;
+    }
+
+    setPreview({ x: Math.max(MARGIN, x), y: Math.max(MARGIN, y) });
+  };
+
   return (
     <article
-      data-issuer={cert.issuer}
-      data-preview-src={cert.image}
-      data-lightbox-src={cert.image}
-      data-lightbox-title={cert.title}
-      data-lightbox-subtitle={`${cert.issuer} · ${cert.completed}`}
+      onMouseEnter={trackCursor}
+      onMouseMove={trackCursor}
+      onMouseLeave={() => setPreview(null)}
+      onClick={() =>
+        onOpen({
+          src: cert.image,
+          title: cert.title,
+          subtitle: `${cert.issuer} · ${cert.completed}`,
+        })
+      }
       className="group relative rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md overflow-hidden cursor-pointer transition-all hover:border-[#3e6274]/50 hover:shadow-[0_0_24px_rgba(62,98,116,0.18)]"
     >
       {/* Fixed frame, so a certificate of any source aspect keeps the grid
@@ -66,6 +89,24 @@ export default function CertificateCard({
           </p>
         ) : null}
       </div>
+
+      {preview &&
+        createPortal(
+          <div
+            className="fixed z-50 pointer-events-none rounded-lg overflow-hidden border border-slate-700 shadow-2xl bg-slate-900"
+            style={{ left: preview.x, top: preview.y, width: PREVIEW_WIDTH }}
+          >
+            <Image
+              src={cert.image}
+              alt=""
+              width={CERT_WIDTH}
+              height={CERT_HEIGHT}
+              sizes="480px"
+              className="block w-full h-auto"
+            />
+          </div>,
+          document.body,
+        )}
     </article>
   );
 }

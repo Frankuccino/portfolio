@@ -1,5 +1,7 @@
+"use client";
+
+import { useState } from "react";
 import SectionHeading from "./SectionHeading";
-import CopyEmail from "./CopyEmail";
 
 const EMAIL = "frank@fuiss.com";
 
@@ -18,14 +20,21 @@ const channels = [
   },
 ];
 
-/**
- * The contact sheet.
- *
- * This is a server component: the only interactive piece is the copy button,
- * which is its own client island (`CopyEmail`). Everything else here is markup
- * and needs no hydration.
- */
 export default function Contact() {
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // A refused clipboard should not break the page — the address is right
+      // there to select and copy by hand.
+      setCopied(false);
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -57,7 +66,16 @@ export default function Contact() {
               >
                 {EMAIL}
               </a>
-              <CopyEmail />
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-1.5 rounded-md border border-slate-700 text-slate-300 hover:text-white hover:border-[#3e6274]/60 transition-colors cursor-pointer"
+              >
+                {copied ? "Copied ✓" : "Copy"}
+              </button>
+              <span role="status" className="sr-only">
+                {copied ? "Email address copied" : ""}
+              </span>
             </div>
             <p className="text-[11px] text-slate-400 mt-1.5">
               Fastest way to reach me
