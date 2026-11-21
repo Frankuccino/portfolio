@@ -10,9 +10,11 @@
 }
 
 :root {
-  --background: #090e0b;
+  /* The base must match the shader's `colorBack`, or the page flashes a
+     different colour for the frames before the gradient mounts. */
+  --background: #0e0d16;
   --foreground: #e2e8f0;
-  --accent: #10b981;
+  --accent: #5f93a8;
 }
 
 html {
