@@ -105,15 +105,35 @@ So the premise was half right. Hydration was a cost, and removing it did remove 
 
 Two honest caveats. This is one run against one run, and TBT moves between runs, so the size of the delta is not certain even though the direction matches the mechanism. The same build later measured 399 ms, which means the 280 ms baseline above was a favourable run and the delta is inside the noise. And the deployed bundle is not byte-identical to my local build: Vercel's build split the chunks differently, which is a reminder that what gets measured is a build, not a commit.
 
-## What is actually left
+## The last 130 ms
 
-The obvious suspect was Google Tag Manager, and I tried it. It accounts for 109 + 75 = 184 ms of the 459 ms in that run, so I moved it to load after the window instead of during it. It did not help: TBT went from 399 to 419 ms, and Time to Interactive went from 3.2 s to 4.5 s.
+The obvious suspect was Google Tag Manager, and I tried it twice.
 
-The reason is worth knowing, because it generalises. `load` on this page waits for 297 KB of cover images from archive.org, so the tag ended up running at about 4.2 s, inside the quiet window that TTI is measured from. Moving the work later moved TTI. It did not move the work out of the way, because on a page whose load event is image-bound there is no "later" that is still during the visit.
+First I moved it out of the window by loading it after `load` instead of during hydration. It did not help: TBT went from 399 to [419 ms](https://www.debugbear.com/test/website-speed/wfFDyZXC/overview), and Time to Interactive went from 3.2 s to 4.5 s. The reason generalises. `load` on this page waits for 297 KB of cover images from archive.org, so the tag ended up running at about 4.2 s, inside the quiet window that TTI is measured from. On a page whose load event is image-bound, there is no "later" that is still during the visit.
 
-So moving it is not the lever, and I reverted that change. Removing it is the only version that keeps it out of the window, and that is what happened next: 179 KB gone, and between 77 and 181 ms of blocking time with it. That part is not measured yet. What the traces actually show is that the consistent contributor is first-party: a 224 KB app chunk carrying the reading plan, skills, projects and certificates accounts for between 146 and 179 ms, and the framework chunk between 64 and 80 ms. Google Tag Manager contributed between 77 and 181 ms depending on where its tasks landed, which is also why this metric moves so much between runs of identical code.
+Then I removed it, which is the only version that keeps it out of the window. Vercel Web Analytics already covers page views and referrers and sets no cookies, so GA4 was the redundant tracker. The [357 ms run](https://www.debugbear.com/test/website-speed/Yc8RPlge/overview) became [215 ms](https://www.debugbear.com/test/website-speed/xzJd0tPG/overview).
 
-That leaves an unglamorous conclusion. The way to a 200 ms TBT on this page is less client JavaScript, not differently placed client JavaScript. And the way to know whether you got there is several runs, because one run cannot resolve a 60 ms change when the same code measures 280 ms and 399 ms.
+| Signal | Before | After | Change |
+| --- | --- | --- | --- |
+| Total Blocking Time | 357 ms | 215 ms | -39% |
+| Lighthouse performance | 92 | 96 | +4 |
+| Page weight | 1.49 MB | 1.31 MB | -12% |
+| JavaScript execution time | 1.1 s | 0.7 s | -36% |
+
+Then I took framer motion out of the hero focus card. It was the app chunk's only third-party import, and the chunk halved from 74 KB to 35 KB. TBT did not move: 215 ms, then 243 ms, both inside the noise. The task in that chunk is React hydrating the components, and halving the bytes does not halve the hydration. I kept the change for the weight and the dependency, not for the metric.
+
+The [next run](https://www.debugbear.com/test/website-speed/zjj5315n/overview) landed at 78 ms and a 100 lab score, with the app chunk at 63 ms and the framework at 15 ms.
+
+| Signal | Before the work | After |
+| --- | --- | --- |
+| Total Blocking Time | 1690 ms | 78 ms |
+| Lighthouse performance | 73 | 100 |
+| Page weight | 3.37 MB | 1.27 MB |
+| JavaScript | 2.39 MB | 312 KB |
+| Main-thread work | 3.2 s | 1.6 s |
+| Cumulative Layout Shift | 0 | 0 |
+
+**The number to trust is the range, not the reading.** Across the eight runs, one build has measured 215, 243, 357, 399, 419 and 459 ms. The 78 ms is the best of them and it may be the luckiest. What the runs agree on is the size of the real changes: 1410 ms from the icon barrel, 142 ms from GA4, and nothing measurable from relocating or shrinking code that still hydrates. Confirm a 20 ms claim with three runs. Do not confirm it with one.
 
 ## The audit's advice was not the cause
 
