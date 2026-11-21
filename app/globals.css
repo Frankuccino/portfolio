@@ -422,3 +422,28 @@ html body :focus-visible {
     text-decoration: underline;
   }
 }
+
+/* Native disclosure rows. The platform marker is hidden and the +/− indicator
+   is drawn from the `open` state, so the ruled rows keep their marker while
+   needing no JavaScript to expand. */
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.row-marker::before {
+  content: "+";
+}
+
+details[open] > summary .row-marker::before {
+  content: "\2212";
+}
+
+/* Filter islands hide rows with the native `hidden` attribute; this keeps it
+   authoritative even where a display utility is in play. */
+[hidden] {
+  display: none !important;
+}
