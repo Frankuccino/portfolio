@@ -136,14 +136,21 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }}
         />
-        {/* Google tag (gtag.js) */}
+        {/* Google tag (gtag.js). Loaded with `lazyOnload` rather than the default
+            `afterInteractive`, because the default injects it during hydration,
+            which is inside the FCP to TTI window that Total Blocking Time
+            measures: the tag cost 181 ms of a 399 ms TBT. Waiting for the load
+            event moves that work outside the window. The trade-off is that a
+            visit which leaves before the page finishes loading is not counted.
+            The inline config runs whenever it runs: it only queues into
+            dataLayer, and gtag.js replays the queue once it arrives. */}
         <Script
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           src="https://www.googletagmanager.com/gtag/js?id=G-4SB47FY02C"
         />
         <Script
           id="google-analytics"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
