@@ -350,6 +350,28 @@ section[id] {
   .name-border {
     transition: none;
   }
+
+  .focus-swap {
+    animation: none;
+  }
+}
+
+/* The hero focus card swaps its description on a shuffle: a 150 ms fade and
+   rise, drawn from the key state so it restarts on every change. */
+@keyframes focus-swap {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.focus-swap {
+  animation: focus-swap 150ms ease-in-out;
 }
 
 

@@ -62,7 +62,7 @@ Welcome to the repository for my personal developer portfolio, built with **Next
 │   │   ├── Contact.tsx
 │   │   ├── Footer.tsx
 │   │   ├── SectionHeading.tsx
-│   │   ├── HeroFocusDeck.tsx
+│   │   ├── HeroFocusDeck.tsx            # CSS keyframe swap, was framer motion
 │   │   ├── TechIcon.tsx                # 16 vendored brand SVGs, was an 8.7 MB icon barrel
 │   │   └── HeroFocusCard.tsx
 │   ├── data/

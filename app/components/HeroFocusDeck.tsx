@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
 
 interface FocusCardData {
   id: string;
@@ -58,20 +57,16 @@ export default function HeroFocusDeck({ cards }: HeroFocusDeckProps) {
           </div>
         </div>
 
-        {/* Animated Description Swap */}
+        {/* Description swap. The key forces a remount, which restarts the CSS
+            animation on every shuffle. This was framer motion: a 150 ms fade
+            and rise needs no library and no client JavaScript. */}
         <div className="min-h-48px flex items-center">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={currentCard.id}
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 6 }}
-              transition={{ duration: 0.15, ease: "easeInOut" }}
-              className="text-xs text-slate-300 leading-relaxed font-normal"
-            >
-              {currentCard.description}
-            </motion.p>
-          </AnimatePresence>
+          <p
+            key={currentCard.id}
+            className="focus-swap text-xs text-slate-300 leading-relaxed font-normal"
+          >
+            {currentCard.description}
+          </p>
         </div>
 
         {/* Click target */}
