@@ -50,13 +50,13 @@ export default function BlogArchive() {
         )}
 
         {/* The index points forward: the plan behind the notes. Derived from
-            the roadmap data so it cannot drift from /next. */}
+            the roadmap data so it cannot drift from /plan. */}
         <Link
-          href="/next"
+          href="/plan"
           className="group mt-6 flex items-baseline gap-3 px-3 py-3 rounded-lg border border-slate-800/70 hover:border-[#3e6274]/50 hover:bg-slate-900/30 transition-colors"
         >
           <span className="shrink-0 text-[11px] font-mono uppercase tracking-widest text-[#5f93a8]">
-            /next
+            /plan
           </span>
           <span className="flex-1 min-w-0">
             <span className="block text-sm font-semibold text-slate-100 group-hover:text-white transition-colors">

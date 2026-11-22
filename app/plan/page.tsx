@@ -13,13 +13,13 @@ const hostOf = (url: string) => {
 };
 
 export const metadata: Metadata = {
-  title: "What's Next · Frank Angelo Malubag",
+  title: "The Plan · Frank Angelo Malubag",
   description:
-    "Where I'm headed: AI & ML breadth with Microsoft and DeepLearning.AI, then the AWS Solutions Architect and AWS Generative AI Developer Advanced certificates, then LangChain Academy and Stanford CS221, building the depth to lead in AI engineering.",
-  alternates: { canonical: canonical("/next") },
+    "Where I'm headed: AI & ML breadth with Microsoft, the Machine Learning Specialization with DeepLearning.AI, then MLOps with Duke University, and finally LangChain Academy and Stanford CS221. Building the depth to lead in AI engineering.",
+  alternates: { canonical: canonical("/plan") },
 };
 
-export default function NextPage() {
+export default function PlanPage() {
   return (
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
       <div className="mx-auto max-w-6xl">
@@ -32,7 +32,7 @@ export default function NextPage() {
 
         <header className="mt-6 mb-12 space-y-3">
           <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-            {"//"} What&apos;s Next
+            {"//"} The Plan
           </p>
           <h1 className="text-3xl md:text-5xl font-black tracking-tight font-display text-slate-100 leading-tight">
             Where I&apos;m headed.
@@ -40,9 +40,10 @@ export default function NextPage() {
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering, the kind that lets me design production systems and set
-            technical direction, not just implement against an API. Seven steps: one
-            already finished, then six in three phases, the foundation, the platform
-            and the applied layer, then the mathematics that makes it durable.
+            technical direction, not just implement against an API. Six steps: one
+            already finished, then five in three phases, the breadth, the fundamentals
+            and the operations, then the tooling and the mathematics that makes it
+            durable.
           </p>
         </header>
 
@@ -54,7 +55,7 @@ export default function NextPage() {
               <div key={step.id} className="relative pl-6">
                 <div className="absolute left-0 top-5 w-[15px] h-[15px] rounded-full border-2 border-[#3e6274] bg-[#0e0d16]" />
                 <Link
-                  href={`/next/${step.id}`}
+                  href={`/plan/${step.id}`}
                   aria-label={`Read more about ${step.title}`}
                   className="group block p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
                 >
@@ -120,18 +121,19 @@ export default function NextPage() {
               and the practices that make models generalise rather than memorise.
             </p>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-              The AWS Solutions Architect certificate is the platform: the services
-              everything else is built on, and how to design against cost, performance
-              and operational excellence. The AWS Generative AI Developer Advanced
-              certificate builds the applied layer on that platform: foundation models
-              through Bedrock, agentic patterns, responsible AI, and evaluation.
+              The Duke MLOps specialization is the operations layer, and it comes
+              after the fundamentals on purpose: Python and automation for MLOps,
+              the DevOps and DataOps practices behind a production pipeline, the
+              Amazon SageMaker and Azure ML platforms, and MLflow with Hugging Face
+              for tracking, model management and deployment. A pipeline only means
+              something once there is a model worth putting through it.
             </p>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
               LangChain Academy is the orchestration tooling that ties models into
               working software, and CS221 supplies the mathematics underneath all of it.
-              Breadth, then fundamentals, then platform and applied work, then the
-              tooling and the theory, because the applied layer is tool-specific and
-              will age, while the breadth and the mathematics compound.
+              Breadth, then fundamentals, then operations, then the tooling and the
+              theory, because the tooling is specific and will age, while the breadth
+              and the mathematics compound.
             </p>
           </div>
         </section>

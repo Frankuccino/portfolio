@@ -7,8 +7,8 @@ const nav = [
   { label: "Skills", href: "/#skills" },
   { label: "Projects", href: "/#projects" },
   { label: "Certificates", href: "/#certificates" },
-  { label: "Next", href: "/next" },
-  { label: "Reading", href: "/reading" },
+  { label: "Plan", href: "/plan" },
+  { label: "Foundation", href: "/foundation" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/#contact" },
 ];

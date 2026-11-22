@@ -20,15 +20,15 @@ export default function ReadingPapersPage() {
             document at two levels rather than as unrelated surfaces. */}
         <ReadingPlanLayout rail={false}>
           <Link
-            href="/reading"
+            href="/foundation"
             className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
           >
-            ← Back to reading
+            ← Back to the foundation
           </Link>
 
           <header className="mt-6 mb-10 space-y-3">
             <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-              {"//"} Reading Plan · Research Papers
+              {"//"} Foundation · Research Papers
             </p>
             <h1 className="text-3xl md:text-5xl font-black tracking-tight font-display text-slate-100 leading-tight">
               The derivations behind the stack.
@@ -51,7 +51,7 @@ export default function ReadingPapersPage() {
             note="The books are the argument; these are the derivations. Read a paper when the stage it belongs to makes the claim checkable, rather than saving the whole set for the end. The certificates are the credential layer on top, and the blog is where the reading turns into build notes."
             links={[
               { label: "The book plan", href: "/books" },
-              { label: "The reading hub", href: "/reading" },
+              { label: "The foundation hub", href: "/foundation" },
               { label: "Certificates", href: "/#certificates" },
               { label: "Blog", href: "/blog" },
             ]}

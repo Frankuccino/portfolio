@@ -18,9 +18,9 @@ export async function generateMetadata({
   const { slug } = await params;
   const step = roadmapSteps.find((item) => item.id === slug);
   if (!step) return {};
-  const url = canonical(`/next/${step.id}`);
+  const url = canonical(`/plan/${step.id}`);
   return {
-    title: `${step.title} · What's Next`,
+    title: `${step.title} · The Plan`,
     description: step.summary,
     alternates: { canonical: url },
     openGraph: {
@@ -63,7 +63,7 @@ export default async function RoadmapStepPage({
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
       <div className="mx-auto max-w-6xl">
         <Link
-          href="/next"
+          href="/plan"
           className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
         >
           ← Back to the plan
@@ -72,7 +72,7 @@ export default async function RoadmapStepPage({
         <header className="mt-6 mb-10 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-              {"//"} What&apos;s Next · {step.finished ? "Finished" : step.order}
+              {"//"} The Plan · {step.finished ? "Finished" : step.order}
             </p>
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
@@ -124,7 +124,7 @@ export default async function RoadmapStepPage({
               {step.courses.map((course) => (
                 <Link
                   key={course.slug}
-                  href={`/next/${step.id}/${course.slug}`}
+                  href={`/plan/${step.id}/${course.slug}`}
                   className="group block p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
                 >
                   <span className="flex items-baseline justify-between gap-3">
@@ -182,7 +182,7 @@ export default async function RoadmapStepPage({
         <TrackClose
           note="The credential is the proof point; the capability behind it is what these pages point at. The reading order is the depth underneath, and the certificates already earned are the evidence that the path is being walked."
           links={[
-            { label: "The full plan", href: "/next" },
+            { label: "The full plan", href: "/plan" },
             { label: "The reading plan", href: "/books" },
             { label: "Certificates", href: "/#certificates" },
             { label: "Get in touch", href: "/#contact" },

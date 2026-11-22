@@ -25,7 +25,7 @@ export async function generateMetadata({
   const step = roadmapSteps.find((item) => item.id === slug);
   const course = step?.courses?.find((item) => item.slug === courseSlug);
   if (!step || !course) return {};
-  const url = canonical(`/next/${step.id}/${course.slug}`);
+  const url = canonical(`/plan/${step.id}/${course.slug}`);
   const description = course.summary ?? step.summary;
   return {
     title: `${course.title} · ${step.title}`,
@@ -60,7 +60,7 @@ export default async function RoadmapCoursePage({
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
       <div className="mx-auto max-w-6xl">
         <Link
-          href={`/next/${step.id}`}
+          href={`/plan/${step.id}`}
           className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
         >
           ← Back to {step.title}
@@ -68,7 +68,7 @@ export default async function RoadmapCoursePage({
 
         <header className="mt-6 mb-8 space-y-3">
           <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-            {"//"} What&apos;s Next · {step.order} · {step.title}
+            {"//"} The Plan · {step.order} · {step.title}
           </p>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
             {course.title}
@@ -93,7 +93,7 @@ export default async function RoadmapCoursePage({
               <RoadmapModuleCard
                 key={module.slug}
                 module={module}
-                href={`/next/${step.id}/${course.slug}/${module.slug}`}
+                href={`/plan/${step.id}/${course.slug}/${module.slug}`}
               />
             ))}
           </div>
@@ -102,8 +102,8 @@ export default async function RoadmapCoursePage({
         <TrackClose
           note="Each module above carries the diagram of the environment it describes, and links to the page that explains what every component in it is for. The certificate page carries the plan they belong to."
           links={[
-            { label: "The certificate", href: `/next/${step.id}` },
-            { label: "The full plan", href: "/next" },
+            { label: "The certificate", href: `/plan/${step.id}` },
+            { label: "The full plan", href: "/plan" },
             { label: "The reading plan", href: "/books" },
             { label: "Get in touch", href: "/#contact" },
           ]}

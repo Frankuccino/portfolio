@@ -30,15 +30,15 @@ export default function ReadingPage() {
             past the centred block. */}
         <ReadingPlanLayout>
           <Link
-            href="/reading"
+            href="/foundation"
             className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
           >
-            ← Back to reading
+            ← Back to the foundation
           </Link>
 
           <header className="mt-6 mb-10 space-y-3">
             <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-              {"//"} Reading Plan
+              {"//"} Foundation · Books
             </p>
             <h1 className="text-3xl md:text-5xl font-black tracking-tight font-display text-slate-100 leading-tight">
               The order, the focus, and the practice.
@@ -135,7 +135,7 @@ export default function ReadingPage() {
           <TrackClose
             note="This is the long form. The summary lives in the About reading order, the certificates are the credential layer sitting on top of it, and the blog is where the reading turns into build notes."
             links={[
-              { label: "The reading hub", href: "/reading" },
+              { label: "The foundation hub", href: "/foundation" },
               { label: "Research papers", href: "/papers" },
               { label: "Certificates", href: "/#certificates" },
               { label: "Blog", href: "/blog" },

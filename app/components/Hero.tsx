@@ -106,11 +106,11 @@ export default function Hero() {
           </Link>
 
           <Link
-            href="/next"
+            href="/plan"
             className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-900/80 border border-slate-800 text-xs md:text-sm text-slate-300 hover:text-white hover:border-[#3e6274]/50 transition-colors"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
-            What&apos;s Next
+            The Plan
             <span className="text-slate-400">·</span>
             <span className="text-slate-400 group-hover:text-slate-200 transition-colors">
               Microsoft AI &amp; ML Eng Cert → Stanford CS221

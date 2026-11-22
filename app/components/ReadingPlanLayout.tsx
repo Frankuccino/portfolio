@@ -105,7 +105,7 @@ export default function ReadingPlanLayout({
       {/* One centred block: the reading column on the left, the rail on the
           right. Every prose block and every card shares the column's left
           edge, so nothing steps in or out. Without the rail the column takes
-          the wrapper's full measure, the way /blog and /next do. */}
+          the wrapper's full measure, the way /blog and /plan do. */}
       {rail ? (
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_232px] lg:gap-10">
           <div className="min-w-0">{children}</div>

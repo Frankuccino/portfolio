@@ -14,9 +14,9 @@ import {
 } from "../data/readingPlan";
 
 export const metadata: Metadata = {
-  title: "Reading · Frank Angelo Malubag",
-  description: `Two reading tracks: ${readingBookCount} books in seven stages plus a domain elective, and ${readingPapersCount} research papers as the primary sources behind the LLM stages.`,
-  alternates: { canonical: canonical("/reading") },
+  title: "Foundation · Frank Angelo Malubag",
+  description: `Two tracks: ${readingBookCount} books in seven stages plus a domain elective, and ${readingPapersCount} research papers as the primary sources behind the LLM stages.`,
+  alternates: { canonical: canonical("/foundation") },
 };
 
 /**
@@ -40,15 +40,15 @@ export default function ReadingPage() {
 
           <header className="mt-6 mb-10 space-y-3">
             <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-              {"//"} Reading
+              {"//"} Foundation
             </p>
             <h1 className="text-3xl md:text-5xl font-black tracking-tight font-display text-slate-100 leading-tight">
               The books and the papers behind them.
             </h1>
             <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
-              Reading is the long half of the plan, and it runs on two tracks.
-              The books are read in order; the papers are the primary sources
-              that derive them, read beside the stage they belong to.
+              The foundation is the long half of the plan, and it runs on two
+              tracks. The books are read in order; the papers are the primary
+              sources that derive them, read beside the stage they belong to.
             </p>
           </header>
 
@@ -106,13 +106,14 @@ export default function ReadingPage() {
                 </span>
               </span>
             </Link>
+
           </div>
 
           <TrackClose
             note="Both tracks serve the same plan: the certificates are the credential layer on top, and the blog is where the reading turns into build notes."
             links={[
               { label: "Certificates", href: "/#certificates" },
-              { label: "What's next", href: "/next" },
+              { label: "The plan", href: "/plan" },
               { label: "Blog", href: "/blog" },
             ]}
           />

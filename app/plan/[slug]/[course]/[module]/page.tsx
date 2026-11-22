@@ -30,7 +30,7 @@ export async function generateMetadata({
   const course = step?.courses?.find((item) => item.slug === courseSlug);
   const mod = course?.modules.find((item) => item.slug === moduleSlug);
   if (!step || !course || !mod) return {};
-  const url = canonical(`/next/${step.id}/${course.slug}/${mod.slug}`);
+  const url = canonical(`/plan/${step.id}/${course.slug}/${mod.slug}`);
   return {
     title: `${mod.title} · ${course.title}`,
     description: mod.summary,
@@ -65,7 +65,7 @@ export default async function RoadmapModulePage({
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
       <article className="mx-auto max-w-6xl">
         <Link
-          href={`/next/${step.id}/${course.slug}`}
+          href={`/plan/${step.id}/${course.slug}`}
           className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
         >
           ← Back to {course.title}
@@ -73,7 +73,7 @@ export default async function RoadmapModulePage({
 
         <header className="mt-6 mb-6 space-y-3">
           <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-            {"//"} What&apos;s Next · {step.order} · {course.title}
+            {"//"} The Plan · {step.order} · {course.title}
           </p>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
             {mod.title}
@@ -140,9 +140,9 @@ export default async function RoadmapModulePage({
               : "The concepts above are the ones this module turns on, and the notes below explain each in turn. The course page carries the whole track, and the certificate page carries the plan it belongs to."
           }
           links={[
-            { label: "The course", href: `/next/${step.id}/${course.slug}` },
-            { label: "The certificate", href: `/next/${step.id}` },
-            { label: "The full plan", href: "/next" },
+            { label: "The course", href: `/plan/${step.id}/${course.slug}` },
+            { label: "The certificate", href: `/plan/${step.id}` },
+            { label: "The full plan", href: "/plan" },
             { label: "Get in touch", href: "/#contact" },
           ]}
         />

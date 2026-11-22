@@ -14,8 +14,8 @@ const destinations = [
   { label: "Projects", href: "/#projects" },
   { label: "Certificates", href: "/#certificates" },
   { label: "Blog", href: "/blog" },
-  { label: "What's next", href: "/next" },
-  { label: "Reading", href: "/reading" },
+  { label: "The plan", href: "/plan" },
+  { label: "Foundation", href: "/foundation" },
   { label: "Contact", href: "/#contact" },
 ];
 
