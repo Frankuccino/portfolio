@@ -12,10 +12,15 @@ import {
   readingTotalCommitmentHours,
   readingTotalHours,
 } from "../data/readingPlan";
+import {
+  researchBooks,
+  latexObjectives,
+  researchPhases,
+} from "../data/researchWriting";
 
 export const metadata: Metadata = {
   title: "Foundation · Frank Angelo Malubag",
-  description: `Two tracks: ${readingBookCount} books in seven stages plus a domain elective, and ${readingPapersCount} research papers as the primary sources behind the LLM stages.`,
+  description: `Three tracks: ${readingBookCount} books in seven stages plus a domain elective, ${readingPapersCount} research papers as the primary sources behind the LLM stages, and a research writing track for the argument itself.`,
   alternates: { canonical: canonical("/foundation") },
 };
 
@@ -43,16 +48,17 @@ export default function ReadingPage() {
               {"//"} Foundation
             </p>
             <h1 className="text-3xl md:text-5xl font-black tracking-tight font-display text-slate-100 leading-tight">
-              The books and the papers behind them.
+              The books, the papers, and the writing.
             </h1>
             <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
-              The foundation is the long half of the plan, and it runs on two
+              The foundation is the long half of the plan, and it runs on three
               tracks. The books are read in order; the papers are the primary
-              sources that derive them, read beside the stage they belong to.
+              sources that derive them, read beside the stage they belong to;
+              and the writing track is where the argument gets built.
             </p>
           </header>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Link
               href="/books"
               className="group flex flex-col p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
@@ -107,6 +113,32 @@ export default function ReadingPage() {
               </span>
             </Link>
 
+            <Link
+              href="/research-writing"
+              className="group flex flex-col p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
+            >
+              <p className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
+                Writing
+              </p>
+              <h2 className="mt-2 text-lg font-semibold text-slate-100">
+                Research writing
+              </h2>
+              <p className="mt-1 text-xs leading-relaxed text-slate-400">
+                Two books on research argument and mathematical writing, LaTeX
+                learned by producing a paper, and five phases that end with
+                something written.
+              </p>
+              <p className="mt-3 text-[11px] tabular-nums text-slate-400">
+                {researchBooks.length} books · {latexObjectives.length} LaTeX
+                objectives · {researchPhases.length} phases
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
+                Open the writing track
+                <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
+                  →
+                </span>
+              </span>
+            </Link>
           </div>
 
           <TrackClose
