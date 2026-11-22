@@ -15,7 +15,7 @@ const hostOf = (url: string) => {
 export const metadata: Metadata = {
   title: "The Plan · Frank Angelo Malubag",
   description:
-    "Where I'm headed: AI & ML breadth with Microsoft, the Machine Learning Specialization with DeepLearning.AI, then MLOps with Duke University, and finally LangChain Academy and Stanford CS221. Building the depth to lead in AI engineering.",
+    "Where I'm headed: AI & ML breadth with Microsoft, then the operations layer with the Duke University MLOps specialization, and finally LangChain Academy and Stanford CS221. Building the depth to lead in AI engineering.",
   alternates: { canonical: canonical("/plan") },
 };
 
@@ -40,10 +40,9 @@ export default function PlanPage() {
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering, the kind that lets me design production systems and set
-            technical direction, not just implement against an API. Six steps: one
-            already finished, then five in three phases, the breadth, the fundamentals
-            and the operations, then the tooling and the mathematics that makes it
-            durable.
+            technical direction, not just implement against an API. Five steps: one
+            already finished, then four in three phases, the breadth, the operations,
+            then the tooling and the mathematics that makes it durable.
           </p>
         </header>
 
@@ -116,24 +115,27 @@ export default function PlanPage() {
               courses in the applied layer, completed in November 2026. The plan that
               follows is the depth underneath it. The Microsoft certificate comes next
               because it is the breadth: AI &amp; ML infrastructure, data pipelines,
-              algorithms, and the ML lifecycle. The DeepLearning.AI specialization then
-              goes deeper on the fundamentals: supervised and unsupervised learning,
-              and the practices that make models generalise rather than memorise.
+              the core algorithms across supervised, unsupervised, reinforcement and
+              deep learning, and the Azure ML lifecycle. The theory those algorithms
+              rest on is not a second enrollment: it is the reading, Stage 1 statistics
+              and then the Stage 2 core, which is why the plan goes straight from the
+              breadth to the operations.
             </p>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
               The Duke MLOps specialization is the operations layer, and it comes
-              after the fundamentals on purpose: Python and automation for MLOps,
-              the DevOps and DataOps practices behind a production pipeline, the
-              Amazon SageMaker and Azure ML platforms, and MLflow with Hugging Face
-              for tracking, model management and deployment. A pipeline only means
-              something once there is a model worth putting through it.
+              second on purpose: Python and automation for MLOps, the DevOps and
+              DataOps practices behind a production pipeline, the Amazon SageMaker and
+              Azure ML platforms, and MLflow with Hugging Face for tracking, model
+              management and deployment. A pipeline only means something once there is
+              a model worth putting through it, and the Microsoft certificate is that
+              model.
             </p>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
               LangChain Academy is the orchestration tooling that ties models into
               working software, and CS221 supplies the mathematics underneath all of it.
-              Breadth, then fundamentals, then operations, then the tooling and the
-              theory, because the tooling is specific and will age, while the breadth
-              and the mathematics compound.
+              Breadth, then operations, then the tooling and the theory, because the
+              tooling is specific and will age, while the breadth and the mathematics
+              compound.
             </p>
           </div>
         </section>

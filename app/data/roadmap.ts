@@ -1779,23 +1779,6 @@ export const roadmapSteps: RoadmapStep[] = [
     ],
   },
   {
-    id: "deeplearning-ai-ml-specialization",
-    order: "Next",
-    title: "Machine Learning Specialization",
-    issuer: "DeepLearning.AI · Stanford Online",
-    credentialType: "Specialization · 3 courses",
-    commitment: "~2 months at 10 hrs/week",
-    summary:
-      "The fundamentals underneath that breadth, taught by Andrew Ng: supervised learning (linear and logistic regression, neural networks, decision trees and tree ensembles) and unsupervised learning for clustering, anomaly detection and recommender systems, and the development practices that make models generalise rather than memorise.",
-    outcomes: [
-      "Build supervised models for prediction and classification with NumPy and scikit-learn",
-      "Train neural networks with TensorFlow for multi-class classification",
-      "Apply unsupervised learning: clustering, anomaly detection, recommender systems",
-      "Evaluate, tune, and improve models with a data-centric approach",
-    ],
-    url: "https://www.coursera.org/specializations/machine-learning-introduction/",
-  },
-  {
     id: "duke-mlops-specialization",
     order: "Next",
     title: "MLOps | Machine Learning Operations Specialization",
