@@ -11,7 +11,7 @@ import { Markdown } from "../../../../lib/markdown";
 export function generateStaticParams() {
   return roadmapSteps.flatMap((step) =>
     (step.courses ?? []).flatMap((course) =>
-      course.modules.map((entry) => ({
+      (course.modules ?? []).map((entry) => ({
         slug: step.id,
         course: course.slug,
         module: entry.slug,
@@ -28,7 +28,7 @@ export async function generateMetadata({
   const { slug, course: courseSlug, module: moduleSlug } = await params;
   const step = roadmapSteps.find((item) => item.id === slug);
   const course = step?.courses?.find((item) => item.slug === courseSlug);
-  const mod = course?.modules.find((item) => item.slug === moduleSlug);
+  const mod = (course?.modules ?? []).find((item) => item.slug === moduleSlug);
   if (!step || !course || !mod) return {};
   const url = canonical(`/plan/${step.id}/${course.slug}/${mod.slug}`);
   return {
@@ -58,7 +58,7 @@ export default async function RoadmapModulePage({
   const { slug, course: courseSlug, module: moduleSlug } = await params;
   const step = roadmapSteps.find((item) => item.id === slug);
   const course = step?.courses?.find((item) => item.slug === courseSlug);
-  const mod = course?.modules.find((item) => item.slug === moduleSlug);
+  const mod = (course?.modules ?? []).find((item) => item.slug === moduleSlug);
   if (!step || !course || !mod) notFound();
 
   return (

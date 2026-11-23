@@ -132,8 +132,11 @@ export default async function RoadmapStepPage({
                       {course.title}
                     </span>
                     <span className="shrink-0 text-[11px] text-slate-400 tabular-nums">
-                      {course.modules.length}{" "}
-                      {plural(course.modules.length, course.moduleLabel ?? "modules")}
+                      {course.modules && course.modules.length > 0
+                        ? `${course.modules.length} ${plural(course.modules.length, course.moduleLabel ?? "modules")}`
+                        : course.hours
+                          ? `${course.hours} hours`
+                          : ""}
                     </span>
                   </span>
                   {course.summary ? (
@@ -142,8 +145,10 @@ export default async function RoadmapStepPage({
                     </span>
                   ) : null}
                   <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
-                    {(course.moduleLabel ?? "modules")[0].toUpperCase() +
-                      (course.moduleLabel ?? "modules").slice(1)}
+                    {course.modules && course.modules.length > 0
+                      ? (course.moduleLabel ?? "modules")[0].toUpperCase() +
+                        (course.moduleLabel ?? "modules").slice(1)
+                      : "Overview"}
                     <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
                       →
                     </span>

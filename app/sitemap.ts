@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: "monthly" as const,
         priority: 0.4,
       },
-      ...course.modules.map((module) => ({
+      ...(course.modules ?? []).map((module) => ({
         url: `${siteUrl}/plan/${step.id}/${course.slug}/${module.slug}`,
         changeFrequency: "monthly" as const,
         priority: 0.3 as const,

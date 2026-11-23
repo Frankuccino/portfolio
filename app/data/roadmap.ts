@@ -47,7 +47,13 @@ export type RoadmapCourse = {
    * whose parts are themselves courses says "courses".
    */
   moduleLabel?: string;
-  modules: RoadmapModule[];
+  /** Hours the issuer publishes for the course, where it publishes one. */
+  hours?: number;
+  /**
+   * Optional, because a course can be catalogued before it is worked. The
+   * course page and the sitemap both guard on it.
+   */
+  modules?: RoadmapModule[];
 };
 
 export type RoadmapStep = {
@@ -1629,16 +1635,18 @@ export const roadmapSteps: RoadmapStep[] = [
     url: "https://www.coursera.org/professional-certificates/microsoft-ai-and-ml-engineering",
     courses: [
       {
-        slug: "course-1",
-        title: "Course 1: Foundations of AI and Machine Learning",
+        slug: "foundations-of-ai-and-machine-learning",
+        title: "Foundations of AI and Machine Learning",
+        hours: 36,
         summary:
-          "The foundations first: what an AI/ML environment actually is, the data and model lifecycle that runs through it, and the practices that make models generalise rather than memorise.",
+          "The environment end to end: what an AI/ML environment is, the data and model lifecycle that runs through it, data sources and pipelines, framework and deployment platform selection, and the monitoring that closes the loop.",
         modules: [
           {
             slug: "introduction-to-ai-ml-environments",
             title: "Module 1: Introduction to AI/ML Environments",
             summary:
               "The environment end to end: ingestion, the lakehouse layers, the model frameworks, deployment, and the monitoring that closes the loop.",
+            completed: "Module 1 of 5",
             image: {
               src: "/roadmap/microsoft-course-1-module-1.png",
               alt: "Diagram of the Azure AI/ML environment: Event Hub and Data Factory ingesting IoT, database, external API and CRM/ERP sources into Databricks over a Data Lake with bronze, silver and gold layers, SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure Machine Learning SDK for model development, and AKS, Azure Machine Learning Service, App Service and Functions behind Monitor and Application Insights.",
@@ -1776,6 +1784,34 @@ export const roadmapSteps: RoadmapStep[] = [
           },
         ],
       },
+      {
+        slug: "ai-and-machine-learning-algorithms-and-techniques",
+        title: "AI and Machine Learning Algorithms and Techniques",
+        hours: 45,
+        summary:
+          "The core algorithms: supervised, unsupervised and reinforcement learning, and deep learning including how these operate in pre-trained large language models, with the feature selection and engineering that decide whether a model generalises.",
+      },
+      {
+        slug: "building-intelligent-troubleshooting-agents",
+        title: "Building Intelligent Troubleshooting Agents",
+        hours: 43,
+        summary:
+          "Designing agents that diagnose and resolve issues on their own: the architecture of a troubleshooting agent, natural language processing for user interaction, and the decision-making algorithms behind diagnosis and resolution.",
+      },
+      {
+        slug: "microsoft-azure-for-ai-and-machine-learning",
+        title: "Microsoft Azure for AI and Machine Learning",
+        hours: 21,
+        summary:
+          "The Azure ML lifecycle by hand: configuring and managing Azure resources, building end-to-end pipelines, deploying and monitoring models in production, and troubleshooting the workflows that fail.",
+      },
+      {
+        slug: "advanced-ai-and-machine-learning-techniques-and-capstone",
+        title: "Advanced AI and Machine Learning Techniques and Capstone",
+        hours: 31,
+        summary:
+          "Ensemble methods and transfer learning, the ethical and responsible AI questions around GenAI, and designing for scale, ending in a capstone that applies the whole certificate to one real problem.",
+      },
     ],
   },
   {
@@ -1794,6 +1830,36 @@ export const roadmapSteps: RoadmapStep[] = [
       "Design a full MLOps pipeline with MLflow, and fine-tune and deploy models with Hugging Face",
     ],
     url: "https://www.coursera.org/specializations/mlops-machine-learning-duke",
+    courses: [
+      {
+        slug: "python-mlops-duke",
+        title: "Python Essentials for MLOps",
+        hours: 43,
+        summary:
+          "Python for operations: variables and data structures, writing and debugging tests with Pytest, and working with APIs and SDKs to build the command-line tools and HTTP APIs that automate machine learning work.",
+      },
+      {
+        slug: "devops-dataops-mlops-duke",
+        title: "DevOps, DataOps, MLOps",
+        hours: 45,
+        summary:
+          "Building operations pipelines across the three: the MLOps principles and practices of data management, model training and development, continuous integration and delivery, and deploying models to a production environment.",
+      },
+      {
+        slug: "mlops-aws-azure-duke",
+        title: "MLOps Platforms: Amazon SageMaker and Azure ML",
+        hours: 31,
+        summary:
+          "Exploratory data analysis on real datasets, building machine learning solutions on both AWS and Azure, and training and deploying them to production with cloud technology.",
+      },
+      {
+        slug: "mlops-mlflow-huggingface-duke",
+        title: "MLOps Tools: MLflow and Hugging Face",
+        hours: 26,
+        summary:
+          "Creating MLflow projects and registering models, building APIs from Hugging Face models and datasets, and packaging and deploying Hugging Face to the cloud with automation.",
+      },
+    ],
   },
   {
     id: "langchain-academy",
@@ -1811,13 +1877,39 @@ export const roadmapSteps: RoadmapStep[] = [
       "Sit the LangChain Certified Agent Engineer (LCAE) exam",
     ],
     url: "https://academy.langchain.com/enrollments",
+    coursesLabel: "Tracks",
+    courses: [
+      {
+        slug: "build",
+        title: "Build",
+        summary:
+          "The framework layer, and the first track to start in: Introduction to LangChain, Introduction to LangGraph, Introduction to Deep Agents, dcode Essentials, Building and Deploying Managed Agents, and the Ambient Agents project.",
+      },
+      {
+        slug: "test",
+        title: "Test",
+        summary:
+          "Observability and evaluation with LangSmith: Quickstart, LangSmith Essentials, Introduction to Agent Observability and Evaluations, and Building Reliable Agents with LangSmith.",
+      },
+      {
+        slug: "deploy",
+        title: "Deploy",
+        summary:
+          "Getting an agent into a production runtime: Building and Deploying Managed Agents, and Introduction to LangSmith Agent Server for deploying, managing and controlling agents.",
+      },
+      {
+        slug: "monitor",
+        title: "Monitor",
+        summary:
+          "Watching agents in production: Monitoring Production Agents, on cost, trace analysis, quality and latency, and Autonomous Agent Improvement with LangSmith Engine for closing the loop.",
+      },
+    ],
   },
   {
     id: "stanford-cs221",
     order: "Then",
     title: "CS221: Artificial Intelligence: Principles and Techniques",
     issuer: "Stanford University",
-    credentialType: "Course · 4 units",
     commitment: "10 weeks · 10–20 hrs/week",
     summary:
       "The mathematical foundations that make applied work durable: search, game playing, Markov decision processes, constraint satisfaction, graphical models, and logic: AI as the mathematics of good decisions under incomplete information.",
@@ -1826,6 +1918,46 @@ export const roadmapSteps: RoadmapStep[] = [
       "Constraint satisfaction and graphical models",
       "Machine learning and logic",
       "Probability and algorithms under incomplete information",
+    ],
+    credentialType: "Graduate course · 6 topics",
+    coursesLabel: "Topics",
+    courses: [
+      {
+        slug: "machine-learning",
+        title: "Machine Learning",
+        summary:
+          "The opening block: learning from data, the methods the rest of the course assumes, and the first homework.",
+      },
+      {
+        slug: "search",
+        title: "Search",
+        summary:
+          "Uninformed and informed search, heuristic design, and the algorithms underneath route finding and web search.",
+      },
+      {
+        slug: "reinforcement-learning",
+        title: "Reinforcement Learning",
+        summary:
+          "Markov decision processes, value and policy iteration, and learning from reward. The largest block of the quarter, and the Mountaincar homework.",
+      },
+      {
+        slug: "games",
+        title: "Games",
+        summary:
+          "Adversarial search: minimax, alpha-beta pruning and the Pacman project.",
+      },
+      {
+        slug: "bayesian-networks",
+        title: "Bayesian Networks",
+        summary:
+          "Graphical models: representation, inference and learning over a joint distribution, and the Bayesian homework.",
+      },
+      {
+        slug: "logic",
+        title: "Logic",
+        summary:
+          "Propositional and first-order logic as the representation for an agent that reasons, and the Logic homework.",
+      },
     ],
   },
 ];

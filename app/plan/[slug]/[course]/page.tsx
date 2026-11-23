@@ -81,26 +81,37 @@ export default async function RoadmapCoursePage({
         </header>
 
         {/* Each module is a card carrying its own diagram, so the picture and
-            the hook for it stay together. */}
-        <section className="mb-12 space-y-3">
-          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
-            {"//"}{" "}
-            {(course.moduleLabel ?? "modules")[0].toUpperCase() +
-              (course.moduleLabel ?? "modules").slice(1)}
-          </h2>
-          <div className="space-y-3">
-            {course.modules.map((module) => (
-              <RoadmapModuleCard
-                key={module.slug}
-                module={module}
-                href={`/plan/${step.id}/${course.slug}/${module.slug}`}
-              />
-            ))}
-          </div>
-        </section>
+            the hook for it stay together. A catalogued course with nothing
+            worked yet says so instead of rendering an empty list. */}
+        {course.modules && course.modules.length > 0 ? (
+          <section className="mb-12 space-y-3">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+              {"//"}{" "}
+              {(course.moduleLabel ?? "modules")[0].toUpperCase() +
+                (course.moduleLabel ?? "modules").slice(1)}
+            </h2>
+            <div className="space-y-3">
+              {course.modules.map((module) => (
+                <RoadmapModuleCard
+                  key={module.slug}
+                  module={module}
+                  href={`/plan/${step.id}/${course.slug}/${module.slug}`}
+                />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <p className="mb-12 text-xs text-slate-400 leading-relaxed">
+            Catalogued, not yet worked.
+          </p>
+        )}
 
         <TrackClose
-          note="Each module above carries the diagram of the environment it describes, and links to the page that explains what every component in it is for. The certificate page carries the plan they belong to."
+          note={
+            course.modules && course.modules.length > 0
+              ? "Each module above carries the diagram of the environment it describes, and links to the page that explains what every component in it is for. The certificate page carries the plan they belong to."
+              : "This course is catalogued rather than worked: the syllabus is here, and the module breakdown follows as it is done. The certificate page carries the plan it belongs to."
+          }
           links={[
             { label: "The certificate", href: `/plan/${step.id}` },
             { label: "The full plan", href: "/plan" },
