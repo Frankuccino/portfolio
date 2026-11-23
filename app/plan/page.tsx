@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { canonical } from "../lib/siteUrl";
 import { lookingFor, roadmapSteps } from "../data/roadmap";
+import { takeawayStepId } from "../data/takeaways";
 import TrackClose from "../components/TrackClose";
 
 const hostOf = (url: string) => {
@@ -15,7 +16,7 @@ const hostOf = (url: string) => {
 export const metadata: Metadata = {
   title: "The Plan · Frank Angelo Malubag",
   description:
-    "Where I'm headed: AI & ML breadth with Microsoft, then the operations layer with the Duke University MLOps and LLMOps specializations, and finally LangChain Academy and Stanford CS221. Building the depth to lead in AI engineering.",
+    "Where I'm headed: AI & ML breadth with Microsoft, then the operations layer with the Duke University MLOps and LLMOps specializations, LangChain Academy with an evaluation methodology alongside it, and Stanford CS221. Building the depth to lead in AI engineering.",
   alternates: { canonical: canonical("/plan") },
 };
 
@@ -40,9 +41,10 @@ export default function PlanPage() {
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering, the kind that lets me design production systems and set
-            technical direction, not just implement against an API. Six steps: one
-            already finished, then five in three phases, the breadth, the operations,
-            then the tooling and the mathematics that makes it durable.
+            technical direction, not just implement against an API. Seven steps: one
+            already finished, then six, the breadth, the operations, the tooling, the
+            evaluation methodology that sits alongside it, and the mathematics that
+            makes it durable.
           </p>
         </header>
 
@@ -53,27 +55,41 @@ export default function PlanPage() {
             {roadmapSteps.map((step) => (
               <div key={step.id} className="relative pl-6">
                 <div className="absolute left-0 top-5 w-[15px] h-[15px] rounded-full border-2 border-[#3e6274] bg-[#0e0d16]" />
-                <Link
-                  href={`/plan/${step.id}`}
-                  aria-label={`Read more about ${step.title}`}
-                  className="group block p-5 rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors"
-                >
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    {step.finished ? (
-                      <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-emerald-400/15 border border-emerald-400/40 text-emerald-300">
-                        Finished
+                <div className="group relative rounded-xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md hover:border-[#3e6274]/50 transition-colors p-5">
+                  {/* The card is one link, laid over the content, so the
+                      condensation badge can be a second destination without a
+                      nested anchor. The issuer's own page still lives on the
+                      step page. */}
+                  <Link
+                    href={`/plan/${step.id}`}
+                    aria-label={`Read more about ${step.title}`}
+                    className="absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5f93a8]"
+                  />
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {step.finished ? (
+                        <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-emerald-400/15 border border-emerald-400/40 text-emerald-300">
+                          Finished
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
+                          {step.order}
+                        </span>
+                      )}
+                      <span className="text-[11px] text-slate-400">
+                        {step.issuer}
+                        {step.url ? ` · ${hostOf(step.url)}` : ""}
                       </span>
-                    ) : (
-                      <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100">
-                        {step.order}
-                      </span>
-                    )}
-                    {/* The issuer's own page lives on the step page; a nested
-                        anchor inside this link would be invalid HTML. */}
-                    <span className="text-[11px] text-slate-400">
-                      {step.issuer}
-                      {step.url ? ` · ${hostOf(step.url)}` : ""}
-                    </span>
+                    </div>
+                    {step.id === takeawayStepId ? (
+                      <Link
+                        href={`/plan/${step.id}/takeaways?from=plan`}
+                        className="relative z-10 inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-[#3e6274]/25 border border-[#3e6274]/40 text-slate-100 hover:bg-[#3e6274]/40 hover:text-white transition-colors"
+                      >
+                        Condensed Key Takeaways
+                        <span className="text-[#5f93a8]">→</span>
+                      </Link>
+                    ) : null}
                   </div>
                   <h2 className="text-lg md:text-xl font-semibold text-white leading-snug">
                     {step.title}
@@ -93,12 +109,14 @@ export default function PlanPage() {
                     ))}
                   </ul>
                   <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 group-hover:text-white transition-colors">
-                    Module breakdown
+                    {step.courses && step.courses.length > 0
+                      ? "Module breakdown"
+                      : "Read the resource"}
                     <span className="text-slate-400 group-hover:text-[#5f93a8] transition-colors">
                       →
                     </span>
                   </span>
-                </Link>
+                </div>
               </div>
             ))}
           </div>

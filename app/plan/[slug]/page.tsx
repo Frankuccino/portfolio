@@ -5,6 +5,8 @@ import { roadmapSteps } from "../../data/roadmap";
 import { canonical } from "../../lib/siteUrl";
 import { ogImage } from "../../lib/ogImage";
 import TrackClose from "../../components/TrackClose";
+import TakeawayCard from "../../components/TakeawayCard";
+import { takeawayStepId } from "../../data/takeaways";
 
 export function generateStaticParams() {
   return roadmapSteps.map((step) => ({ slug: step.id }));
@@ -113,6 +115,13 @@ export default async function RoadmapStepPage({
           </ul>
         </header>
 
+        {/* The condensation of this step's own notes. Only the DataCamp track
+            has one, so the other steps render no card rather than an empty
+            slot. */}
+        {step.id === takeawayStepId ? (
+          <TakeawayCard href={`/plan/${step.id}/takeaways?from=track`} />
+        ) : null}
+
         {/* Each course gets its own page, because the modules under it are the
             part that links out to the work reinforcing them. */}
         {step.courses && step.courses.length > 0 ? (
@@ -185,7 +194,11 @@ export default async function RoadmapStepPage({
         ) : null}
 
         <TrackClose
-          note="The credential is the proof point; the capability behind it is what these pages point at. The reading order is the depth underneath, and the certificates already earned are the evidence that the path is being walked."
+          note={
+            step.kind === "resource"
+              ? "This is a resource rather than a credential, and it is here because the method matters more than the certificate. The reading order is the depth underneath, and the portfolio is the evidence that the path is being walked."
+              : "The credential is the proof point; the capability behind it is what these pages point at. The reading order is the depth underneath, and the certificates already earned are the evidence that the path is being walked."
+          }
           links={[
             { label: "The full plan", href: "/plan" },
             { label: "The reading plan", href: "/books" },

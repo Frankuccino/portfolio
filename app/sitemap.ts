@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getPosts } from "./lib/posts";
+import { takeawayStepId } from "./data/takeaways";
 import { roadmapSteps } from "./data/roadmap";
 import { siteUrl } from "./lib/siteUrl";
 
@@ -56,6 +57,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}/research-writing`,
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/plan/${takeawayStepId}/takeaways`,
+      changeFrequency: "monthly",
+      priority: 0.6,
     },
     {
       url: `${siteUrl}/blog`,

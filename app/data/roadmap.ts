@@ -84,6 +84,11 @@ export type RoadmapStep = {
    * written up", which renders no block rather than an empty one.
    */
   courses?: RoadmapCourse[];
+  /**
+   * Set when the step is a self-study resource rather than a credential, so the
+   * plan card and the step page stop calling it a certificate.
+   */
+  kind?: "resource";
 };
 
 export const roadmapSteps: RoadmapStep[] = [
@@ -1966,6 +1971,24 @@ export const roadmapSteps: RoadmapStep[] = [
           "Watching agents in production: Monitoring Production Agents, on cost, trace analysis, quality and latency, and Autonomous Agent Improvement with LangSmith Engine for closing the loop.",
       },
     ],
+  },
+  {
+    id: "ai-evals-faq",
+    order: "Alongside",
+    title: "AI Evals: Everything You Need to Know",
+    issuer: "Hamel Husain and Shreya Shankar",
+    credentialType: "Self-study resource",
+    commitment: "Free · self-paced · 1 to 2 hrs",
+    summary:
+      "The methodology layer behind the tooling: how to design an evaluation rather than operate one. Read traces before automating anything, group the failures into a taxonomy, judge binary pass and fail, hold a test set back from the judge, and validate an LLM judge against human labels before trusting it.",
+    outcomes: [
+      "Read traces before automating, and turn the failures into a taxonomy",
+      "Split examples into train, dev and test, and keep the test set away from the judge",
+      "Prefer binary pass and fail over a one to five scale",
+      "Validate an LLM judge against human labels before trusting it",
+    ],
+    url: "https://hamel.dev/blog/posts/evals-faq/",
+    kind: "resource",
   },
   {
     id: "stanford-cs221",
