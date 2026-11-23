@@ -15,7 +15,7 @@ const hostOf = (url: string) => {
 export const metadata: Metadata = {
   title: "The Plan · Frank Angelo Malubag",
   description:
-    "Where I'm headed: AI & ML breadth with Microsoft, then the operations layer with the Duke University MLOps specialization, and finally LangChain Academy and Stanford CS221. Building the depth to lead in AI engineering.",
+    "Where I'm headed: AI & ML breadth with Microsoft, then the operations layer with the Duke University MLOps and LLMOps specializations, and finally LangChain Academy and Stanford CS221. Building the depth to lead in AI engineering.",
   alternates: { canonical: canonical("/plan") },
 };
 
@@ -40,8 +40,8 @@ export default function PlanPage() {
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering, the kind that lets me design production systems and set
-            technical direction, not just implement against an API. Five steps: one
-            already finished, then four in three phases, the breadth, the operations,
+            technical direction, not just implement against an API. Six steps: one
+            already finished, then five in three phases, the breadth, the operations,
             then the tooling and the mathematics that makes it durable.
           </p>
         </header>
@@ -129,6 +129,15 @@ export default function PlanPage() {
               management and deployment. A pipeline only means something once there is
               a model worth putting through it, and the Microsoft certificate is that
               model.
+            </p>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+              The Duke LLMOps specialization follows it, and it is the same
+              operations layer pointed at language models: deploying, managing and
+              optimizing large language models across Azure, AWS, Databricks, local
+              infrastructure and open source, through more than twenty hands-on
+              projects. MLOps teaches the pipeline, LLMOps teaches what that pipeline
+              carries once the model is a language model, and the two run
+              consecutively rather than as alternatives.
             </p>
             <p className="text-sm md:text-base text-slate-400 leading-relaxed">
               LangChain Academy is the orchestration tooling that ties models into

@@ -1862,6 +1862,68 @@ export const roadmapSteps: RoadmapStep[] = [
     ],
   },
   {
+    id: "duke-llmops-specialization",
+    order: "Next",
+    title: "Large Language Model Operations (LLMOps) Specialization",
+    issuer: "Duke University · Coursera",
+    credentialType: "Specialization · 6 courses",
+    commitment: "~5 months at 10 hrs/week",
+    summary:
+      "The operations layer pointed at language models: deploying, managing and optimizing large language models across Azure, AWS, Databricks, local infrastructure and open source, through more than twenty hands-on projects. Beginner level, and the difference between a prompt that works once and a language model that holds up in production.",
+    outcomes: [
+      "Build generative AI software solutions, and improve their output with prompt engineering",
+      "Deploy and manage large language models on Azure with Semantic Kernel, and implement RAG applications",
+      "Design data pipelines with message queues, and store data at scale in vector, graph and key/value databases",
+      "Build generative AI solutions on AWS, and develop them with Amazon Bedrock",
+      "Run local LLMs with Databricks, Llamafile and Mixtral, and fine-tune open source models",
+    ],
+    url: "https://www.coursera.org/specializations/large-language-model-operations",
+    courses: [
+      {
+        slug: "introduction-to-generative-ai",
+        title: "Introduction to Generative AI",
+        hours: 38,
+        summary:
+          "Generative AI for automation: developing generative AI software solutions, and building with prompt engineering to improve the output.",
+      },
+      {
+        slug: "operationalizing-llms-on-azure",
+        title: "Operationalizing LLMs on Azure",
+        hours: 11,
+        summary:
+          "Deploying and managing large language models on Azure, crafting queries with Semantic Kernel, and implementing and deploying applications with retrieval augmented generation.",
+      },
+      {
+        slug: "advanced-data-engineering",
+        title: "Advanced Data Engineering",
+        hours: 23,
+        summary:
+          "Data pipelines and their lifecycle, message queues for managing data processing, and vector, graph and key/value databases for storage at scale.",
+      },
+      {
+        slug: "genai-and-llms-on-aws",
+        title: "GenAI and LLMs on AWS",
+        hours: 46,
+        summary:
+          "Building generative AI solutions on AWS, the cloud computing fundamentals underneath machine learning on AWS, and developing solutions with Amazon Bedrock.",
+      },
+      {
+        slug: "databricks-to-local-llms",
+        title: "Databricks to Local LLMs",
+        hours: 27,
+        summary:
+          "Databricks for data engineering and machine learning workloads, designing ML pipelines, and running local LLMs with Llamafile and Mixtral.",
+      },
+      {
+        slug: "open-source-llmops-solutions",
+        title: "Open Source LLMOps Solutions",
+        hours: 36,
+        summary:
+          "Running local large language models, fine-tuning them, and using open source generative AI.",
+      },
+    ],
+  },
+  {
     id: "langchain-academy",
     order: "Then",
     title: "LangChain Academy",
