@@ -4,6 +4,7 @@ import { canonical } from "../lib/siteUrl";
 import { lookingFor, roadmapSteps } from "../data/roadmap";
 import { takeawayStepId } from "../data/takeaways";
 import TrackClose from "../components/TrackClose";
+import Coverage from "../components/Coverage";
 
 const hostOf = (url: string) => {
   try {
@@ -11,6 +12,30 @@ const hostOf = (url: string) => {
   } catch {
     return url;
   }
+};
+
+/**
+ * Why each step sits where it does, keyed by step id so the list follows
+ * `roadmapSteps` order and a step with no entry is skipped rather than rendered
+ * as a heading with nothing under it. Each one answers the two questions the
+ * section is really asking: what does this cover that nothing before it does,
+ * and why here.
+ */
+const orderReasons: Record<string, string> = {
+  "datacamp-ai-engineer-developers":
+    "First because it is already finished, and because it is the applied layer everything else builds on: the API, embeddings and vector search, orchestration, and the engineering discipline around the model. The rest of the plan is the depth underneath it.",
+  "microsoft-ai-ml-engineering":
+    "The breadth the applied layer stands on: the data and model lifecycle, the core algorithms, and the Azure ML lifecycle. Without it the operations steps have nothing to operate, which is why the plan goes straight from here to the operations rather than to a second theory enrollment.",
+  "duke-mlops-specialization":
+    "The general operations layer, and the part nothing else in the plan covers: DevOps and DataOps practice, CI/CD for models, MLflow tracking, model registry and deployment. The Microsoft capstone is the model that makes a pipeline worth building.",
+  "duke-llmops-specialization":
+    "The same operations layer pointed at language models. It comes after MLOps because two of its courses assume that pipeline vocabulary and none of MLOps assumes this one, so the general layer is read first.",
+  "langchain-academy":
+    "The orchestration tooling that ties models into working software. Its Test and Monitor tracks assume the operations vocabulary from the two steps before it, which is why it sits after them.",
+  "ai-evals-faq":
+    "Not a step in the sequence. It is the methodology the tooling is operated with, so it is read alongside the Test track rather than saved for the end of the syllabus.",
+  "stanford-cs221":
+    "The mathematics underneath all of it. Last because it compounds the slowest and is the least urgent, not because it matters least.",
 };
 
 export const metadata: Metadata = {
@@ -47,6 +72,8 @@ export default function PlanPage() {
             makes it durable.
           </p>
         </header>
+
+        <Coverage />
 
         {/* Roadmap */}
         <div className="relative mb-12">
@@ -122,49 +149,61 @@ export default function PlanPage() {
           </div>
         </div>
 
-        {/* Why this order */}
+        {/* The page opens by saying credentials are a means. This says why they
+            exist in the shape they do, which is the part no certificate covers. */}
+        <section className="mb-12 ml-6 rounded-xl border border-slate-800/60 bg-slate-900/40 p-5">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+            {"//"} What these are for
+          </h2>
+          <p className="mt-3 text-sm md:text-base text-slate-400 leading-relaxed">
+            Every credential above is built the same way. A provider finds a role
+            title that appears in enough job postings to sell seats, then assembles
+            courses to match the keywords in those postings, so the syllabus maps a
+            job description rather than a discipline. That is why two MLOps
+            specializations from different universities cover the same ground, and
+            why a certificate can be genuinely useful while still proving nothing
+            about judgement. They pass the filter. The portfolio, and the eval set,
+            are what answer the next question.
+          </p>
+        </section>
+
+        {/* Why this order. One block per step, because the question is always two
+            questions: what does this cover that nothing before it does, and why
+            does it sit here. Prose paragraphs buried both. */}
         <section className="mb-12 space-y-3">
           <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
             {"//"} Why this order
           </h2>
-          <div className="space-y-3">
-            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-              The DataCamp associate sits first because it is already finished: ten
-              courses in the applied layer, completed in November 2026. The plan that
-              follows is the depth underneath it. The Microsoft certificate comes next
-              because it is the breadth: AI &amp; ML infrastructure, data pipelines,
-              the core algorithms across supervised, unsupervised, reinforcement and
-              deep learning, and the Azure ML lifecycle. The theory those algorithms
-              rest on is not a second enrollment: it is the reading, Stage 1 statistics
-              and then the Stage 2 core, which is why the plan goes straight from the
-              breadth to the operations.
-            </p>
-            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-              The Duke MLOps specialization is the operations layer, and it comes
-              second on purpose: Python and automation for MLOps, the DevOps and
-              DataOps practices behind a production pipeline, the Amazon SageMaker and
-              Azure ML platforms, and MLflow with Hugging Face for tracking, model
-              management and deployment. A pipeline only means something once there is
-              a model worth putting through it, and the Microsoft certificate is that
-              model.
-            </p>
-            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-              The Duke LLMOps specialization follows it, and it is the same
-              operations layer pointed at language models: deploying, managing and
-              optimizing large language models across Azure, AWS, Databricks, local
-              infrastructure and open source, through more than twenty hands-on
-              projects. MLOps teaches the pipeline, LLMOps teaches what that pipeline
-              carries once the model is a language model, and the two run
-              consecutively rather than as alternatives.
-            </p>
-            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-              LangChain Academy is the orchestration tooling that ties models into
-              working software, and CS221 supplies the mathematics underneath all of it.
-              Breadth, then operations, then the tooling and the theory, because the
-              tooling is specific and will age, while the breadth and the mathematics
-              compound.
-            </p>
+          <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
+            The order is dependency, not importance. Each step supplies something
+            the next one assumes, so the sequence runs from the applied layer to
+            the operations, then to the tooling, and finally to the mathematics
+            underneath. Nothing here is ranked by difficulty.
+          </p>
+          <div className="space-y-4 pt-1">
+            {roadmapSteps.map((step) => {
+              const reason = orderReasons[step.id];
+              if (!reason) return null;
+              return (
+                <div key={step.id}>
+                  <p className="flex flex-wrap items-baseline gap-x-3 text-sm font-semibold text-slate-100">
+                    {step.title}
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500">
+                      {step.finished ? "Finished" : step.order}
+                    </span>
+                  </p>
+                  <p className="mt-1 text-xs md:text-sm text-slate-400 leading-relaxed">
+                    {reason}
+                  </p>
+                </div>
+              );
+            })}
           </div>
+          <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
+            What the set leaves out: pre-training and large-scale training, which
+            the reading covers at a design level, and product management, which is
+            learned by deciding rather than certified.
+          </p>
         </section>
 
         {/* What I'm looking for */}
