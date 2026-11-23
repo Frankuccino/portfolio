@@ -404,6 +404,15 @@ html body :focus-visible {
   font-weight: 800;
 }
 
+/* Spotlight highlighting, driven by the foundation pages' `?highlight=` and by
+   the in page category control. The match keeps full strength and everything
+   else dims, so the shape of the track stays readable while one part reads
+   loudest. The opacity itself is set inline by `Highlight`, which also leaves
+   this transition in charge of the fade. */
+[data-hl-item] {
+  transition: opacity 150ms ease;
+}
+
 /* Print: the site is a dark, textured screen, and a recruiter printing it
    should get a document. One ink colour, no decoration, no blur, and each
    record starting on its own page. */
@@ -415,6 +424,7 @@ html body :focus-visible {
     box-shadow: none !important;
     text-shadow: none !important;
     backdrop-filter: none !important;
+    opacity: 1 !important;
     color: #101828 !important;
     border-color: #cbd5e1 !important;
   }

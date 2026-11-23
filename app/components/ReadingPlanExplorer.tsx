@@ -179,7 +179,12 @@ export default function ReadingPlanExplorer() {
       {readingStages.map((entry, stageIndex) => {
         const isActive = entry.id === activeId;
         return (
-          <section key={entry.id} id={entry.id} className="mb-16 scroll-mt-28">
+          <section
+            key={entry.id}
+            id={entry.id}
+            data-hl-item={entry.id}
+            className="mb-16 scroll-mt-28"
+          >
             {/* The index chip is what makes one stage visually distinct from the
                 next; the rule beneath is the shared baseline. The active stage is
                 filled rather than outlined and its header carries a wash. The

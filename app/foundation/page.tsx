@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { canonical } from "../lib/siteUrl";
 import ReadingPlanLayout from "../components/ReadingPlanLayout";
 import TrackClose from "../components/TrackClose";
+import FoundationCoverage from "../components/FoundationCoverage";
 import {
   readingBookCount,
   readingConsolidationHours,
@@ -140,6 +141,8 @@ export default function ReadingPage() {
               </span>
             </Link>
           </div>
+
+          <FoundationCoverage />
 
           <TrackClose
             note="Both tracks serve the same plan: the certificates are the credential layer on top, and the blog is where the reading turns into build notes."

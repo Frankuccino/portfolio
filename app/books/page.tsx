@@ -5,10 +5,13 @@ import ReadingPlanExplorer from "../components/ReadingPlanExplorer";
 import ReadingPlanLayout from "../components/ReadingPlanLayout";
 import ReadingRationale from "../components/ReadingRationale";
 import TrackClose from "../components/TrackClose";
+import Highlight from "../components/Highlight";
+import HighlightBar from "../components/HighlightBar";
 import {
   readingBookCount,
   readingCoreHours,
   readingConsolidationHours,
+  readingStages,
   readingTotalCommitmentHours,
   readingTotalHours,
   stressTestProtocol,
@@ -22,13 +25,20 @@ export const metadata: Metadata = {
 };
 
 export default function ReadingPage() {
+  /** The spotlight choices: one per reading stage, short labelled for the rail. */
+  const spotlight = readingStages.map((stage) => ({
+    id: stage.id,
+    label: stage.label.replace(/^Stage \d+: /, ""),
+  }));
+
   return (
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
       <div className="mx-auto max-w-6xl">
         {/* The layout puts every block — prose and cards alike — in one reading
             column, with the side rail in the second column. Nothing sticks out
             past the centred block. */}
-        <ReadingPlanLayout>
+        <Highlight>
+        <ReadingPlanLayout spotlight={spotlight}>
           <Link
             href="/foundation"
             className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
@@ -55,6 +65,12 @@ export default function ReadingPage() {
               {readingTotalCommitmentHours} h total · core path ~{readingCoreHours} h
             </p>
           </header>
+
+          {/* Below the wide breakpoint the rail is hidden, so the same control
+              stays under the header as a row; the rail carries the stack. */}
+          <div className="mb-10 lg:hidden">
+            <HighlightBar options={spotlight} />
+          </div>
 
           <ReadingRationale />
 
@@ -142,6 +158,7 @@ export default function ReadingPage() {
             ]}
           />
         </ReadingPlanLayout>
+        </Highlight>
       </div>
     </main>
   );

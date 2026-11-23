@@ -5,6 +5,7 @@ import {
   paperStages,
 } from "../data/readingPlan";
 import { glossaryGroups, glossaryTerms } from "../data/glossary";
+import PaperCategoryChip from "./PaperCategoryChip";
 
 /**
  * Resolve a typed stage reference to the stage's own title and a link to it.
@@ -47,7 +48,7 @@ export default function ReadingPapers() {
           if (papers.length === 0) return null;
 
           return (
-            <div key={stage.id}>
+            <div key={stage.id} id={stage.id} className="scroll-mt-28">
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-slate-800/70 pb-2">
                 <span className="text-[10px] font-mono tabular-nums text-slate-400">
                   {String(stageIndex + 1).padStart(2, "0")}
@@ -70,7 +71,7 @@ export default function ReadingPapers() {
                   const category = paperCategory(paper.category);
 
                   return (
-                    <li key={paper.id}>
+                    <li key={paper.id} data-hl-item={paper.category}>
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                         <span className="text-[10px] font-mono tabular-nums text-slate-400">
                           {String(index + 1).padStart(2, "0")}
@@ -82,9 +83,7 @@ export default function ReadingPapers() {
                           {paper.authors} · {paper.year} · ~{paper.hours} h
                         </span>
                         {category ? (
-                          <span className="text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
-                            {category.label}
-                          </span>
+                          <PaperCategoryChip id={category.id} label={category.label} />
                         ) : null}
                         <span className="ml-auto flex items-center gap-2 text-[11px] font-mono">
                           {paper.arxiv ? (
@@ -164,7 +163,7 @@ export default function ReadingPapers() {
 
       {/* The same fifteen again, one sentence each: a first read for anyone who
           wants the shape of the field before the derivations above. */}
-      <div className="mt-14 border-t border-slate-800/70 pt-8">
+      <div id="plain-terms" className="mt-14 border-t border-slate-800/70 pt-8 scroll-mt-28">
         <h2 className="text-base font-semibold text-slate-100">In plain terms</h2>
         <p className="mt-1 mb-6 max-w-3xl text-xs leading-relaxed text-slate-400">
           A first read of each paper, before the detail above. One sentence each,
@@ -203,7 +202,7 @@ export default function ReadingPapers() {
 
       {/* The vocabulary the papers assume. Grouped, one sentence each, after the
           detail so it never interrupts a reader who already knows the term. */}
-      <div className="mt-14 border-t border-slate-800/70 pt-8">
+      <div id="glossary" className="mt-14 border-t border-slate-800/70 pt-8 scroll-mt-28">
         <h2 className="text-base font-semibold text-slate-100">Glossary</h2>
         <p className="mt-1 mb-6 max-w-3xl text-xs leading-relaxed text-slate-400">
           The terms the papers assume, in plain words. Grouped by what they are

@@ -2,9 +2,47 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { canonical } from "../lib/siteUrl";
 import ReadingPapers from "../components/ReadingPapers";
-import ReadingPlanLayout from "../components/ReadingPlanLayout";
+import ReadingPlanLayout, {
+  type ReadingRailSection,
+} from "../components/ReadingPlanLayout";
 import TrackClose from "../components/TrackClose";
-import { readingPapersCount, readingPapersHours } from "../data/readingPlan";
+import Highlight from "../components/Highlight";
+import HighlightBar from "../components/HighlightBar";
+import {
+  paperCategories,
+  paperStages,
+  readingPapers,
+  readingPapersCount,
+  readingPapersHours,
+} from "../data/readingPlan";
+
+/**
+ * The rail describes this page rather than the book stages: the four reading
+ * stages, then the two reference blocks below them.
+ */
+const paperRail: ReadingRailSection[] = [
+  ...paperStages.map((stage, index) => {
+    const count = readingPapers.filter((paper) => paper.stage === stage.id).length;
+    return {
+      id: stage.id,
+      label: stage.label,
+      chip: String(index + 1).padStart(2, "0"),
+      meta: `Stage ${index + 1} of ${paperStages.length} · ${count} ${count === 1 ? "paper" : "papers"}`,
+    };
+  }),
+  {
+    id: "plain-terms",
+    label: "In plain terms",
+    chip: "P",
+    meta: "First read",
+  },
+  {
+    id: "glossary",
+    label: "Glossary",
+    chip: "G",
+    meta: "Vocabulary",
+  },
+];
 
 export const metadata: Metadata = {
   title: "Research Papers · Frank Angelo Malubag",
@@ -13,12 +51,19 @@ export const metadata: Metadata = {
 };
 
 export default function ReadingPapersPage() {
+  /** The spotlight choices: the paper categories, not the rail's stages. */
+  const spotlight = paperCategories.map((category) => ({
+    id: category.id,
+    label: category.label,
+  }));
+
   return (
     <main className="px-4 sm:px-6 pt-28 pb-24 min-h-screen">
       <div className="mx-auto max-w-6xl">
         {/* The same layout as the book plan, so the two pages read as one
             document at two levels rather than as unrelated surfaces. */}
-        <ReadingPlanLayout rail={false}>
+        <Highlight>
+        <ReadingPlanLayout rail={paperRail} spotlight={spotlight}>
           <Link
             href="/foundation"
             className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
@@ -45,6 +90,12 @@ export default function ReadingPapersPage() {
             </p>
           </header>
 
+          {/* The rail carries the stack on the wide measure; below it the same
+              control stays under the header as a row. */}
+          <div className="mb-10 lg:hidden">
+            <HighlightBar options={spotlight} />
+          </div>
+
           <ReadingPapers />
 
           <TrackClose
@@ -57,6 +108,7 @@ export default function ReadingPapersPage() {
             ]}
           />
         </ReadingPlanLayout>
+        </Highlight>
       </div>
     </main>
   );

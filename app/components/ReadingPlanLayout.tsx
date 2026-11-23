@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { readingStages } from "../data/readingPlan";
+import HighlightBar, { type HighlightOption } from "./HighlightBar";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -13,8 +14,35 @@ const shortLabel = (label: string) => label.replace(/^Stage \d+: /, "");
 const PROBE_RATIO = 0.35;
 
 /**
+ * One row of the side rail. Pages whose sections are not the book stages pass
+ * their own list, so the rail describes the page it is on rather than a fixed
+ * set of anchors.
+ */
+export type ReadingRailSection = {
+  id: string;
+  label: string;
+  /** The chip at the left of the row: 01, 02, and so on, or E. */
+  chip: string;
+  /** The line under "// On this page", naming where the reader is. */
+  meta: string;
+};
+
+const plural = (count: number, noun: string) =>
+  `${count} ${count === 1 ? noun : `${noun}s`}`;
+
+/** The book plan's own rail, derived so it cannot drift from the stages. */
+const bookRail: ReadingRailSection[] = readingStages.map((entry, index) => ({
+  id: entry.id,
+  label: shortLabel(entry.label),
+  chip: entry.parallel ? "E" : pad(index + 1),
+  meta: entry.parallel
+    ? `Elective · ${plural(entry.books.length, "book")}`
+    : `Stage ${index + 1} of ${readingStages.length} · ${plural(entry.books.length, "book")}`,
+}));
+
+/**
  * The layout owns the scroll-spy and the side rail; the explorer consumes the
- * active stage through this context so the highlight and the rail can never
+ * active section through this context so the highlight and the rail can never
  * disagree about which block is on screen.
  */
 const ActiveStageContext = createContext<string>(readingStages[0]?.id ?? "");
@@ -32,27 +60,41 @@ export default function ReadingPlanLayout({
   header,
   children,
   rail = true,
+  spotlight,
 }: {
   header?: ReactNode;
   children: ReactNode;
   /**
-   * The rail indexes the book-plan stages, so it only belongs where those
-   * sections exist: `/books` and the home summary. On the hub and the papers
-   * page it would list eight anchors that are not on the page.
+   * The rail indexes the page's own sections. `true` uses the book stages, which
+   * is right where those sections exist (`/books` and the home summary); a page
+   * with different sections passes its own list; `false` drops the rail, which
+   * lets the column take the wrapper's full measure the way `/blog` and `/plan`
+   * do.
    */
-  rail?: boolean;
+  rail?: boolean | ReadingRailSection[];
+  /**
+   * The spotlight choices, rendered as a stack at the top of the rail. Its ids
+   * are the highlight ids, which are not always the section ids: on `/papers`
+   * the rail lists reading stages while the spotlight selects categories. Pages
+   * without a spotlight pass nothing and the rail is unchanged.
+   */
+  spotlight?: HighlightOption[];
 }) {
-  const [activeId, setActiveId] = useState<string>(readingStages[0]?.id ?? "");
+  const sections: ReadingRailSection[] = useMemo(
+    () => (Array.isArray(rail) ? rail : rail ? bookRail : []),
+    [rail],
+  );
+  const [activeId, setActiveId] = useState<string>(sections[0]?.id ?? "");
 
   useEffect(() => {
     // Measure the section offsets once, then read only `scrollY` in the scroll
     // handler. Reading `getBoundingClientRect()` for every section on every
     // scroll event is what produced the forced synchronous layouts: each read
     // can flush pending style and layout work before it returns.
-    let tops: number[] = readingStages.map(() => Infinity);
+    let tops: number[] = sections.map(() => Infinity);
 
     const measure = () => {
-      tops = readingStages.map((entry) => {
+      tops = sections.map((entry) => {
         const el = document.getElementById(entry.id);
         return el ? el.getBoundingClientRect().top + window.scrollY : Infinity;
       });
@@ -60,9 +102,9 @@ export default function ReadingPlanLayout({
 
     const locate = () => {
       const probe = window.scrollY + window.innerHeight * PROBE_RATIO;
-      let current = readingStages[0]?.id ?? "";
+      let current = sections[0]?.id ?? "";
       for (let i = 0; i < tops.length; i += 1) {
-        if (tops[i] <= probe) current = readingStages[i].id;
+        if (tops[i] <= probe) current = sections[i].id;
       }
       setActiveId(current);
     };
@@ -78,7 +120,7 @@ export default function ReadingPlanLayout({
     // Section heights move when the covers finish loading, so re-measure when a
     // section resizes rather than trusting the mount-time offsets.
     const observer = new ResizeObserver(onResize);
-    readingStages.forEach((entry) => {
+    sections.forEach((entry) => {
       const el = document.getElementById(entry.id);
       if (el) observer.observe(el);
     });
@@ -90,13 +132,13 @@ export default function ReadingPlanLayout({
       window.removeEventListener("resize", onResize);
       observer.disconnect();
     };
-  }, []);
+  }, [sections]);
 
   const activeIndex = Math.max(
     0,
-    readingStages.findIndex((entry) => entry.id === activeId),
+    sections.findIndex((entry) => entry.id === activeId),
   );
-  const active = readingStages[activeIndex];
+  const active = sections[activeIndex];
 
   return (
     <ActiveStageContext.Provider value={activeId}>
@@ -106,7 +148,7 @@ export default function ReadingPlanLayout({
           right. Every prose block and every card shares the column's left
           edge, so nothing steps in or out. Without the rail the column takes
           the wrapper's full measure, the way /blog and /plan do. */}
-      {rail ? (
+      {sections.length > 0 ? (
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_232px] lg:gap-10">
           <div className="min-w-0">{children}</div>
 
@@ -116,22 +158,32 @@ export default function ReadingPlanLayout({
               put the same sentences in the page twice. */}
           <aside className="hidden lg:block">
             <div className="sticky top-24 space-y-5">
+              {/* The spotlight sits above the table of contents because it is
+                  the control the reader arrived to use: the gauge links in with
+                  `?highlight=<id>`, and this is where the choices and the way
+                  back live on the wide measure. */}
+              {spotlight && spotlight.length > 0 ? (
+                <div className="pb-4 border-b border-slate-800/60">
+                  <HighlightBar options={spotlight} layout="stack" />
+                </div>
+              ) : null}
+
               <div className="flex items-baseline justify-between">
                 <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
                   {"// On this page"}
                 </p>
                 <span className="text-[10px] font-mono tabular-nums text-slate-400">
-                  {activeIndex + 1} / {readingStages.length}
+                  {activeIndex + 1} / {sections.length}
                 </span>
               </div>
-              <p className="mt-1.5 text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
-                {active.parallel
-                  ? `Elective · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`
-                  : `Stage ${activeIndex + 1} of ${readingStages.length} · ${active.books.length} ${active.books.length === 1 ? "book" : "books"}`}
-              </p>
+              {active ? (
+                <p className="mt-1.5 text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
+                  {active.meta}
+                </p>
+              ) : null}
 
               <ol className="space-y-0.5">
-                {readingStages.map((entry, i) => {
+                {sections.map((entry) => {
                   const isActive = entry.id === activeId;
                   return (
                     <li key={entry.id}>
@@ -149,10 +201,10 @@ export default function ReadingPlanLayout({
                             isActive ? "text-[#8fb0c2]" : "text-slate-400"
                           }`}
                         >
-                          {entry.parallel ? "E" : pad(i + 1)}
+                          {entry.chip}
                         </span>
                         <span className="min-w-0 truncate">
-                          {shortLabel(entry.label)}
+                          {entry.label}
                         </span>
                       </a>
                     </li>
