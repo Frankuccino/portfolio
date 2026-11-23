@@ -1929,6 +1929,130 @@ export const roadmapSteps: RoadmapStep[] = [
     ],
   },
   {
+    id: "security-engineering-agentic-ai",
+    order: "Alongside",
+    title: "Security Engineering for Agentic AI Systems",
+    issuer: "Packt · Coursera",
+    credentialType: "Course · 14 modules",
+    commitment: "1 week at 10 hours a week · intermediate",
+    summary:
+      "The layer the operations steps assume and never teach, aimed at agents rather than models in general: goal integrity and hijacking, tool security and sandboxing, non-human identity and delegated privilege, supply chain trust, code and RCE defense, memory and context poisoning, multi-agent protocol security, cascading failures, human-agent manipulation, and rogue-agent detection.",
+    outcomes: [
+      "Threat model an agentic system and defend against goal drift, hijacking and hidden instruction channels",
+      "Secure the toolchain: sandboxing, egress control, least privilege and blast radius",
+      "Apply zero-trust identity, scoped credentials and per-action authorization to agents",
+      "Protect memory, context and knowledge bases from poisoning, and design for cascading failure",
+    ],
+    url: "https://www.coursera.org/learn/packt-security-engineering-for-agentic-ai-systems-amy6d",
+    courses: [
+      {
+        slug: "security-engineering-for-agentic-ai-systems",
+        title: "Security Engineering for Agentic AI Systems",
+        summary:
+          "Fourteen modules, from the agentic attack surface to a capstone secure agent. Based on Anand Rao Nednur's book of the same name. The header says one week at 10 hours a week and the modules publish 13 hours; both are left as Packt publishes them.",
+        modules: [
+          {
+            slug: "introduction",
+            title: "Introduction",
+            summary:
+              "Why agentic AI security matters, and how to work through the masterclass.",
+          },
+          {
+            slug: "the-agentic-ai-security-universe",
+            title: "Module 1 — The Agentic AI Security Universe",
+            hours: 1,
+            summary:
+              "What makes agentic AI different, the new attack surface, autonomy and delegation risks, why traditional cybersecurity fails for agents, and the foundations of secure AI architecture.",
+          },
+          {
+            slug: "mastering-agent-goal-integrity",
+            title: "Module 2 — Mastering Agent Goal Integrity",
+            hours: 1,
+            summary:
+              "Goal drift, hijacking and injection, hidden instruction channels and trigger-based exploits, defended through intent provenance, capsules and drift monitoring.",
+          },
+          {
+            slug: "tool-security-sandboxing-execution-safety",
+            title: "Module 3 — Tool Security, Sandboxing & Execution Safety",
+            hours: 1,
+            summary:
+              "Secure toolchains: tool interfaces and selection, misuse and unsafe delegation, sandboxing in Docker, VM and WASM, egress control, rate limits and blast radius.",
+          },
+          {
+            slug: "ai-identity-access-controls-credential-security",
+            title: "Module 4 — AI Identity, Access Controls & Credential Security",
+            hours: 1,
+            summary:
+              "Non-human identity, delegated privilege and escalation, confused deputy and impersonation attacks, credential leakage, policy-as-code and per-action authorization.",
+          },
+          {
+            slug: "agentic-supply-chain-component-trust",
+            title: "Module 5 — Agentic Supply Chain & Component Trust",
+            hours: 1,
+            summary:
+              "Dataset and embedding poisoning, MCP and tool descriptor attacks, registry compromise and typosquatting, prompt template hardening, and the AI Bill of Materials.",
+          },
+          {
+            slug: "code-safety-rce-defense-execution-control",
+            title: "Module 6 — Code Safety, RCE Defense & Execution Control",
+            hours: 1,
+            summary:
+              "Prompt-based code injection, code hallucinations and dependency-based RCE, safe generation pipelines, static and dynamic analysis, and locked execution sandboxes.",
+          },
+          {
+            slug: "memory-context-knowledge-base-security",
+            title: "Module 7 — Memory, Context & Knowledge Base Security",
+            hours: 1,
+            summary:
+              "Memory poisoning, embedding store attacks, cross-user contamination, trust-scored retrieval, multi-tenant isolation and secure RAG design.",
+          },
+          {
+            slug: "multi-agent-comms-protocols-coordination-security",
+            title: "Module 8 — Multi-Agent Comms, Protocols & Coordination Security",
+            hours: 1,
+            summary:
+              "Agent-in-the-middle, replay and coordination corruption, semantic drift between agents, mTLS and signatures, protocol pinning and secure discovery.",
+          },
+          {
+            slug: "cascading-failures-systemic-risk-resilience",
+            title: "Module 9 — Cascading Failures, Systemic Risk & Resilience",
+            hours: 1,
+            summary:
+              "Planner-executor-tool loops, error propagation across agents, circuit breakers and fail-fast, blast radius engineering and AI observability.",
+          },
+          {
+            slug: "human-agent-trust-psychology-manipulation-defense",
+            title: "Module 10 — Human-Agent Trust, Psychology & Manipulation Defense",
+            hours: 1,
+            summary:
+              "Authority illusions and automation bias, social engineering through AI, fake explainability, secure recommendation systems and human-in-the-loop patterns.",
+          },
+          {
+            slug: "rogue-agents-misalignment-behavioral-security",
+            title: "Module 11 — Rogue Agents, Misalignment & Behavioral Security",
+            hours: 1,
+            summary:
+              "Emergent misalignment, agent collusion and reward hacking, behavioral drift detection, constraint engines, kill switches and integrity monitoring.",
+          },
+          {
+            slug: "capstone-build-a-secure-agentic-system",
+            title: "Module 12 — Capstone: Build a Secure Agentic System",
+            hours: 1,
+            summary:
+              "Threat model, red-team and harden a full agent: architecture, identity, tools, memory and communications integrated, then hardened for production.",
+          },
+          {
+            slug: "course-conclusion",
+            title: "Course Conclusion",
+            hours: 1,
+            summary:
+              "A reflective close on the course and what to keep practising.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     id: "langchain-academy",
     order: "Then",
     title: "LangChain Academy",

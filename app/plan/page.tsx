@@ -31,9 +31,11 @@ const orderReasons: Record<string, string> = {
   "duke-llmops-specialization":
     "The same operations layer pointed at language models. It comes after MLOps because two of its courses assume that pipeline vocabulary and none of MLOps assumes this one, so the general layer is read first.",
   "langchain-academy":
-    "The orchestration tooling that ties models into working software. Its Test and Monitor tracks assume the operations vocabulary from the two steps before it, which is why it sits after them.",
+    "The orchestration tooling that ties models into working software. Its Test and Monitor tracks assume the operations vocabulary from the two Duke specializations before it, which is why it sits after them.",
   "ai-evals-faq":
     "Not a step in the sequence. It is the methodology the tooling is operated with, so it is read alongside the Test track rather than saved for the end of the syllabus.",
+  "security-engineering-agentic-ai":
+    "Not a step in the sequence, and the part nothing else in the plan covers. The two Duke specializations teach how to run a model in production and never touch how to keep an agent safe, so goal integrity, toolchain security, non-human identity and memory poisoning are read alongside them rather than after the syllabus.",
   "stanford-cs221":
     "The mathematics underneath all of it. Last because it compounds the slowest and is the least urgent, not because it matters least.",
 };
@@ -41,7 +43,7 @@ const orderReasons: Record<string, string> = {
 export const metadata: Metadata = {
   title: "The Plan · Frank Angelo Malubag",
   description:
-    "Where I'm headed: AI & ML breadth with Microsoft, then the operations layer with the Duke University MLOps and LLMOps specializations, LangChain Academy with an evaluation methodology alongside it, and Stanford CS221. Building the depth to lead in AI engineering.",
+    "Where I'm headed: AI & ML breadth with Microsoft, then the operations layer with the Duke University MLOps and LLMOps specializations, LangChain Academy with an evaluation methodology and an agentic security course alongside it, and Stanford CS221. Building the depth to lead in AI engineering.",
   alternates: { canonical: canonical("/plan") },
 };
 
@@ -66,10 +68,10 @@ export default function PlanPage() {
           <p className="max-w-2xl text-sm md:text-base text-slate-400 leading-relaxed">
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering, the kind that lets me design production systems and set
-            technical direction, not just implement against an API. Seven steps: one
-            already finished, then six, the breadth, the operations, the tooling, the
-            evaluation methodology that sits alongside it, and the mathematics that
-            makes it durable.
+            technical direction, not just implement against an API. Eight steps: one
+            already finished, then seven, the breadth, the operations, the tooling,
+            the evaluation methodology and the security layer that sit alongside
+            them, and the mathematics that makes it durable.
           </p>
         </header>
 

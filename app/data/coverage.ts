@@ -65,7 +65,11 @@ export const coverageAreas: CoverageArea[] = [
     sections: ["agents-and-tools"],
     statement:
       "How a model acts: chains versus agents, function calling, and the protocol that lets it reach outside itself.",
-    steps: ["datacamp-ai-engineer-developers", "langchain-academy"],
+    steps: [
+      "datacamp-ai-engineer-developers",
+      "langchain-academy",
+      "security-engineering-agentic-ai",
+    ],
   },
   {
     id: "engineering-and-operations",
@@ -78,6 +82,7 @@ export const coverageAreas: CoverageArea[] = [
       "datacamp-ai-engineer-developers",
       "duke-mlops-specialization",
       "duke-llmops-specialization",
+      "security-engineering-agentic-ai",
     ],
   },
   {
@@ -87,7 +92,7 @@ export const coverageAreas: CoverageArea[] = [
     sections: ["beyond-the-track"],
     statement:
       "How you know it works: error analysis, judges, significance, and the vocabulary the courses stop short of.",
-    steps: ["ai-evals-faq", "langchain-academy"],
+    steps: ["ai-evals-faq", "langchain-academy", "security-engineering-agentic-ai"],
   },
 ];
 
@@ -178,6 +183,14 @@ export const stepComposition: Record<string, Partial<Record<string, number>>> = 
     "agents-tools-and-protocols": 10,
     "engineering-and-operations": 15,
     "evaluation-and-the-wider-field": 60,
+  },
+  "security-engineering-agentic-ai": {
+    "ml-and-model-fundamentals": 5,
+    "prompting-and-language-applications": 10,
+    retrieval: 10,
+    "agents-tools-and-protocols": 30,
+    "engineering-and-operations": 30,
+    "evaluation-and-the-wider-field": 15,
   },
   "stanford-cs221": {
     "ml-and-model-fundamentals": 80,
