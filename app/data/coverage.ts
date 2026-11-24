@@ -56,7 +56,11 @@ export const coverageAreas: CoverageArea[] = [
     sections: ["retrieval"],
     statement:
       "How a model answers from knowledge it was never trained on: embeddings, vector search, chunking, and the RAG pattern.",
-    steps: ["datacamp-ai-engineer-developers", "duke-llmops-specialization"],
+    steps: [
+      "datacamp-ai-engineer-developers",
+      "duke-llmops-specialization",
+      "ibm-ai-native-data-engineering",
+    ],
   },
   {
     id: "agents-tools-and-protocols",
@@ -83,6 +87,7 @@ export const coverageAreas: CoverageArea[] = [
       "duke-mlops-specialization",
       "duke-llmops-specialization",
       "security-engineering-agentic-ai",
+      "ibm-ai-native-data-engineering",
     ],
   },
   {
@@ -166,6 +171,14 @@ export const stepComposition: Record<string, Partial<Record<string, number>>> = 
     retrieval: 10,
     "agents-tools-and-protocols": 10,
     "engineering-and-operations": 35,
+    "evaluation-and-the-wider-field": 10,
+  },
+  "ibm-ai-native-data-engineering": {
+    "ml-and-model-fundamentals": 20,
+    "prompting-and-language-applications": 5,
+    retrieval: 20,
+    "agents-tools-and-protocols": 5,
+    "engineering-and-operations": 40,
     "evaluation-and-the-wider-field": 10,
   },
   "langchain-academy": {
