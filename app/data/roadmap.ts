@@ -2236,6 +2236,227 @@ export const roadmapSteps: RoadmapStep[] = [
               "### How the course is assessed\n\nThe course is graded in six parts:\n\n- **Five quizzes, 15% each**: AI/ML applications; data management in AI/ML; selecting a framework; platform deployment; AI/ML concepts in practice.\n- **One peer review, 25%**: draft your pitch to the C-suite.\n\nIt is the first of five courses in the Microsoft AI & ML Engineering Professional Certificate:\n\n- AI and Machine Learning Algorithms and Techniques.\n- Building Intelligent Troubleshooting Agents.\n- Microsoft Azure for AI and Machine Learning.\n- Advanced AI and Machine Learning Techniques and Capstone.",
             ],
           },
+          {
+            slug: "data-management-in-ai-ml",
+            title: "Data management in AI/ML",
+            hours: 7,
+            summary: "How data is acquired, cleaned, preprocessed, stored and governed, and kept secure across the AI lifecycle, for both traditional ML pipelines and RAG in LLMs.",
+            completed: "Module 2 of 5",
+            breakdown: [
+              {
+                group: "Data sources",
+                items: [
+                  {
+                    name: "Relational databases",
+                    role: "SQL Server, MySQL and PostgreSQL: structured, queryable stores where integrity and consistency matter, such as finance or healthcare records.",
+                  },
+                  {
+                    name: "Web scraping",
+                    role: "Extracting unstructured data from sites with automated scripts, which brings cleaning work and terms-of-service and privacy exposure.",
+                  },
+                  {
+                    name: "APIs",
+                    role: "Programmatic access to live third-party data, usually returned as JSON or XML and documented by the provider.",
+                  },
+                  {
+                    name: "External datasets",
+                    role: "Public, government, research and marketplace data used to supplement your own or to add context.",
+                  },
+                  {
+                    name: "Direct collection",
+                    role: "Sensors, cameras, user input and internal systems you own, gathered at the source.",
+                  },
+                  {
+                    name: "Third-party providers",
+                    role: "Licensed data bought rather than gathered, when coverage matters more than cost.",
+                  },
+                ],
+              },
+              {
+                group: "Querying and tooling",
+                items: [
+                  {
+                    name: "SQL",
+                    role: "SELECT, WHERE, JOIN, GROUP BY and ORDER BY to filter, aggregate and join across tables, plus INSERT, UPDATE and DELETE to write back.",
+                  },
+                  {
+                    name: "Subqueries and indexing",
+                    role: "Nested queries for a shaped extract, and indexes so those queries stay fast as the tables grow.",
+                  },
+                  {
+                    name: "Transactions and ACID",
+                    role: "The guarantee that a set of writes lands consistently or not at all.",
+                  },
+                  {
+                    name: "requests and BeautifulSoup",
+                    role: "Fetch a page, parse the HTML, and pull the tables and fields you actually need.",
+                  },
+                  {
+                    name: "pandas",
+                    role: "Hold what you extracted as a DataFrame, reshape it, and write it out to CSV.",
+                  },
+                ],
+              },
+              {
+                group: "Cleaning and preprocessing",
+                items: [
+                  {
+                    name: "Handle missing values",
+                    role: "Drop them or fill them, with the mean for numeric columns and an explicit decision for categoricals.",
+                  },
+                  {
+                    name: "Remove outliers",
+                    role: "Z-score the numeric columns and drop rows past three sigma.",
+                  },
+                  {
+                    name: "Scale numeric features",
+                    role: "StandardScaler puts every numeric feature on the same scale so none dominates on magnitude alone.",
+                  },
+                  {
+                    name: "Encode categorical variables",
+                    role: "One-hot encoding through get_dummies turns categories into model-ready columns.",
+                  },
+                  {
+                    name: "Save and verify",
+                    role: "Write the preprocessed file, then confirm nulls are gone, outliers removed, numerics scaled and categoricals encoded.",
+                  },
+                ],
+              },
+              {
+                group: "Data sources for RAG versus traditional ML",
+                items: [
+                  {
+                    name: "Static datasets",
+                    role: "Fixed at training time, consistent across runs, cheap to manage and reproduce, but limited to what was collected.",
+                  },
+                  {
+                    name: "Live retrieval",
+                    role: "Pulled at query time, contextually relevant and current, but variable between calls and more complex to operate.",
+                  },
+                  {
+                    name: "Governance, quality, scalability, freshness",
+                    role: "The four properties to trade off when choosing between them, with collaboration and security alongside.",
+                  },
+                ],
+              },
+              {
+                group: "Error identification in data collection",
+                items: [
+                  {
+                    name: "Sampling, measurement, entry, response bias, non-response, systematic",
+                    role: "The six ways collected data drifts away from the thing it was meant to measure.",
+                  },
+                  {
+                    name: "Detection",
+                    role: "Descriptive statistics, visualization, data auditing, consistency checks and control groups.",
+                  },
+                  {
+                    name: "Mitigation",
+                    role: "Standardize the procedure, train the collectors, automate collection, detect in real time and review the method regularly.",
+                  },
+                ],
+              },
+              {
+                group: "Data security across the lifecycle",
+                items: [
+                  {
+                    name: "Encryption at rest and in transit",
+                    role: "AES-256 for stored data and TLS for data moving between systems.",
+                  },
+                  {
+                    name: "Access control",
+                    role: "Role-based permissions on the principle of least privilege, with access logged.",
+                  },
+                  {
+                    name: "Anonymization and masking",
+                    role: "Pseudonymization, masking and differential privacy applied before training on PII.",
+                  },
+                  {
+                    name: "Audits and continuous monitoring",
+                    role: "Access logs and anomaly detection, reviewed on a schedule.",
+                  },
+                  {
+                    name: "Secure sharing, backup and recovery",
+                    role: "Encrypted channels and access agreements for third parties; backups and a recovery plan for availability.",
+                  },
+                  {
+                    name: "Compliance and transparency",
+                    role: "GDPR and CCPA alignment, and being able to explain how data is handled.",
+                  },
+                ],
+              },
+              {
+                group: "Auditing ML code for vulnerabilities",
+                items: [
+                  {
+                    name: "No data validation or sanitization",
+                    role: "Values reach the pipeline unchecked, so malformed or malicious rows train the model.",
+                  },
+                  {
+                    name: "No input validation",
+                    role: "Untrusted input flows straight into processing.",
+                  },
+                  {
+                    name: "Fixed random state",
+                    role: "A hardcoded seed that trades reproducibility away without saying so.",
+                  },
+                  {
+                    name: "Unencrypted model saving",
+                    role: "Artifacts written to disk where anyone on the host can read them.",
+                  },
+                  {
+                    name: "No integrity check on load",
+                    role: "A loaded model is never verified, so a swapped file is used as-is.",
+                  },
+                ],
+              },
+            ],
+            notes: [
+              "### What data management covers\n\nData management is collecting, storing, organizing and maintaining data so that its quality, accessibility and security hold across its whole lifecycle. The module's premise is that model performance is capped by data quality, and that poor management produces inaccurate models, biased predictions and failed projects.\n\nFour components carry it:\n\n- **Data collection**: gathering from databases, sensors, APIs or web scraping, with the goal of data that actually represents the problem.\n- **Data storage**: databases or data lakes depending on size and complexity, scaled for analysis and secured by encryption.\n- **Data preprocessing**: cleaning, transforming and preparing raw data for analysis and training.\n- **Data governance**: the policies and procedures behind quality, security and ethical use, covering ownership, access control, compliance and audit trails.\n\nThe module's examples: Tesla gathers from vehicle sensors and cameras for autonomous driving, Amazon stores structured and unstructured behaviour data in data lakes for recommendations and logistics, and JPMorgan Chase cleans and normalizes transaction data before feeding fraud detection.",
+              "### Libraries and tools used in this module\n\nThe module is written in **Python 3.x** and runs in a standard virtual environment. These are the packages it touches, and what each one contributes:\n\n- **Python 3.x.** The language every step runs in.\n- **pip.** Python's package installer. The module installs everything with `pip install pandas numpy scikit-learn missingno`.\n- **VS Code, PyCharm, Sublime Text.** The code editors the activity opens the scripts in. Any editor works; the module only assumes somewhere to type and run the code.\n- **pandas.** The data-frame library that carries the module. Every stage loads a dataset into a DataFrame and leaves with one; it is the common shape of the whole text.\n- **NumPy.** The numerical engine underneath pandas, supplying the `np.log`, `np.where` and `np.abs` calls and the array maths behind the statistics.\n- **Scikit-learn.** Preprocessing and modelling. `StandardScaler`, `MinMaxScaler` and `get_dummies` serve the cleaning steps, `train_test_split` and `LogisticRegression` serve the audit activity.\n- **Missingno (optional).** Visualises where the gaps are with `msno.matrix` and `msno.heatmap`. Optional, because it shows the gaps; the fixes themselves use pandas.\n- **matplotlib.pyplot.** Draws the box plots used to spot outliers by eye in the error-identification walkthrough.\n- **scipy.stats.** Supplies `zscore` and `boxcox`, the two statistical functions behind the outlier and transformation steps.\n- **requests.** Fetches the pages the scraper visits, one HTTP GET per page.\n- **bs4.BeautifulSoup.** Parses the HTML those pages return, finding the table and reading the stripped cell text.\n- **os.** Produces the secure random state with `os.urandom(16)`, the fix for a fixed `random_state` in the audit activity.\n- **pickle.** Serialises and deserialises the scikit-learn model, so the audit activity saves the artefact and loads it again on the other side of disk.\n- **hashlib.** Counts the SHA-256 digest of the loaded model, so the audit activity can tell whether the file changed since it was saved.\n- **cryptography.fernet.** Encrypts the saved model behind a generated key, the fix for unencrypted model saving.\n\nWhere each appears:\n\n- **Scraper:** requests, `bs4.BeautifulSoup`, pandas, matplotlib.pyplot.\n- **Cleaning and preprocessing:** pandas, NumPy, Scikit-learn, scipy.stats, matplotlib.pyplot, Missingno.\n- **Reusable tool:** pandas, NumPy, Scikit-learn, scipy.stats, Missingno.\n- **RAG:** none. The section is conceptual and names no packages.\n- **Errors in data collection:** pandas, matplotlib.pyplot, scipy.stats.\n- **Data security:** conceptual, plus `cryptography.fernet`, `hashlib`, `pickle` and `os` in the audit activity.\n- **Auditing ML code:** `os`, pandas, Scikit-learn, `pickle`, `hashlib`, `cryptography.fernet`",
+
+              "### Data sources\n\n- **Databases** are relational stores such as SQL Server, MySQL and PostgreSQL, organized into tables and easy to query, update and manage. That structure makes them ideal where integrity and consistency are critical, such as finance or healthcare, and a customer recommendation system would pull purchase history from one.\n- **Web scraping** extracts data from websites, usually by automated scripts, and suits large volumes of unstructured data such as product reviews, social posts or news. The costs are significant cleaning and terms-of-service and privacy exposure.\n- **APIs** give programmatic access to other applications, often real-time weather, social or market data, and usually return JSON or XML so the data integrates directly. They come with documentation, which makes them reliable.\n- **External datasets** come from government portals, research institutions and data marketplaces, often already curated and cleaned, which saves preparation time. They still need quality and relevance assessed before use.\n\nThe choice of source shapes the downstream processing and ultimately the model.",
+              "### Methods for acquiring data\n\nFive methods, each with an ideal case:\n\n- **Direct data collection** gathers firsthand from your own systems or devices, and is the most controlled because you decide what to collect, how and how often. Sensors in an IoT setup, website interaction logging, customer surveys. Ideal when you need specific data closely aligned to the project.\n- **Third-party data sources** are providers who specialize in collecting and curating, from data brokers to firms covering market trends or weather. Valuable, but the quality, accuracy and licensing terms need checking.\n- **Web scraping** uses automated tools for large volumes of unstructured data such as reviews, social posts or competitor pricing, with legal and cleaning overhead attached.\n- **APIs** pull real-time or frequently updated information directly into your system, in a structured format, which makes them efficient for dynamic needs.\n- **Publicly available datasets** are freely accessible, from governments, academic institutions or organizations promoting research. Useful for supplementing your own data or when budget rules out other routes.",
+              "### SQL for data acquisition\n\nSQL is the standardized language for communicating with relational databases, and the reading covers its components and then the advanced ones.\n\nKey components:\n\n- **SELECT** queries and retrieves specific columns against defined criteria.\n- **WHERE** filters records by condition, narrowing what a query returns.\n- **JOIN** combines rows from two or more tables on a related column: INNER returns only matches in both, LEFT keeps every left row with NULLs where the right has no match, RIGHT is the mirror, and FULL keeps matches from either side.\n- **GROUP BY** with COUNT, SUM, AVG, MIN and MAX groups rows into summary rows.\n- **ORDER BY** sorts ascending or descending.\n- **INSERT, UPDATE, DELETE** add, modify and remove records, and correct use is what maintains dataset integrity.\n\nAdvanced concepts:\n\n- **Subqueries** nest a query inside another, as with IN over a second table, for multi-step conditions.\n- **Indexing** keeps a sorted copy of a column so retrieval speeds up, at the cost of slower writes, so it should be used deliberately.\n- **Transactions and ACID** treat a sequence of operations as one unit. Atomicity means the whole sequence commits or the whole sequence rolls back; consistency means every operation leaves the database in a valid state; isolation means concurrent operations do not see each other's mid-state; durability means committed data survives power loss or crash. A money transfer is the standard example: both accounts update, or neither does.",
+              "### Building a scraper in Python\n\nPrerequisites: Python 3.x, pip, a code editor such as VS Code, PyCharm or Sublime Text, and a basic understanding of HTML.\n\nThe steps: import requests, BeautifulSoup and pandas; send a GET request and check `response.status_code == 200`; parse with `BeautifulSoup(response.content, 'html.parser')`; locate the table and loop its rows into lists of stripped cell text; convert to a pandas DataFrame; save with `to_csv(index=False)`.\n\nThe worked example scrapes the Wikipedia cloud computing comparison page: it reads headers from the first row's `th` tags, loops the remaining rows for `td` cells, builds a DataFrame with those headers as columns, and saves it. Same shape every time: fetch, parse, tabulate, persist.",
+              "### Why cleaning and preprocessing matter\n\nCleaning identifies and corrects or removes errors and inconsistencies, meaning missing values, duplicated records and outliers. Preprocessing transforms data into a shape suitable for analysis and training, meaning normalizing, encoding categorical variables and splitting into training and test sets.\n\nThe module's worked example: missing ages filled with the average is cleaning, converting customer location into numerical values is preprocessing.\n\nPoor quality data drives overfitting, where the model ties itself to noise in the training data, and underfitting, where it misses the underlying trend. Both end in lost trust in the predictions, and the module cites the common estimate that data scientists spend up to 80 percent of their time on this stage.",
+              "### Handling missing values\n\nMissing values arrive through entry errors or information that was simply unavailable, and left alone they bias results and cut model accuracy. Three strategies:\n\n1. **Remove missing data.** `df.dropna()` drops rows carrying missing values and `df.dropna(axis=1)` drops columns. Use it when the missing share is small enough that removal does not materially change the dataset.\n2. **Impute missing data.** Fill with a substitute such as the mean, `df['column_name'].fillna(df['column_name'].mean(), inplace=True)`, or the median. Use it when missing data is more prevalent and dropping rows would discard usable information.\n3. **Forward or backward fill.** `df.fillna(method='ffill')` propagates the last valid observation forward and `bfill` does the reverse. Use it on time series, where the sequence and the trend are the point.",
+              "### Managing outliers\n\nOutliers distort statistical analysis and degrade model performance, so the work splits into identifying them and then handling them.\n\n**Identify.** The Z-score route uses `scipy.stats.zscore` inside `numpy.abs` and flags anything past three sigma. The IQR route takes quantiles at 0.25 and 0.75, computes the spread, and fences at 1.5 times it on either side.\n\n**Handle.** Remove the offending rows, keeping `z_scores <= 3` or negating the IQR mask. Or keep the rows and reduce their impact: cap with `numpy.where` against an upper threshold such as the 0.95 quantile, or dampen with a log transform.",
+              "### Normalization and transformation\n\nNormalization adjusts numeric columns onto a common scale so that magnitude alone does not decide importance. Two methods: `sklearn.preprocessing.MinMaxScaler` scales into the 0 to 1 range, and `StandardScaler` gives a mean of zero and a standard deviation of one, which is better when features are measured in different units and you need to compare them directly. Use MinMax when you need bounded output, as with neural networks; use StandardScaler when the algorithm assumes centred data, as with PCA or SVMs.\n\nTransformation changes the shape of the data rather than its scale, because some algorithms assume normal-ish distributions and some columns are dominated by a few extreme values:\n\n- **Logarithmic**, `np.log(x + 1)`, stabilizes variance and softens outliers. The plus-one avoids log-of-zero. Use it when the column is right-skewed, as with income or transaction amount.\n- **Box-Cox**, `scipy.stats.boxcox`, finds the best power transform automatically. Use it when log is not enough and you want the data closer to normal without guessing the exponent.\n- **Binning**, `pd.cut`, converts a continuous variable into labelled discrete bands. You choose the number of bands and optionally the boundaries; `pd.cut(..., bins=[0, 10, 20, 30], labels=['Low', 'Medium', 'High'])` splits age into three readable tiers. Use it when the exact value does not matter and the range does, such as turning credit scores into risk tiers for a marketing audience, or turning sensor readings into on or off states. The module uses it on a continuous numeric column, which is exactly the case where it converts a machine-friendly scale into a human-shaped one.\n- **One-hot encoding**, `pandas.get_dummies`, converts categories into binary columns. The module flags the limit here: it is right for low-cardinality columns such as true or false, because each category becomes exactly one 1 and the rest 0s. It becomes a problem when a column has many distinct values, because the frame balloons in width and the model has to learn from mostly empty columns. When a categorical column has many values, consider target encoding or frequency encoding instead.",
+              "### The reusable preprocessing tool\n\nThe practice activity turns the whole pipeline into a local tool. Prerequisites: Python 3.x, pip, a code editor, and pandas for manipulation, NumPy for numerical operations, Scikit-learn for preprocessing and modeling, plus the optional Missingno for visualizing gaps. Installed with `pip install pandas numpy scikit-learn missingno`.\n\nSeven steps: import; load with `read_csv`; handle missing values, optionally visualizing first with `msno.matrix` and `msno.heatmap`, then `dropna()` or `fillna(df.mean())`; manage outliers by Z-score removal or capping at the 0.95 quantile; scale with MinMaxScaler or StandardScaler; encode categoricals with `get_dummies`; save with `to_csv`.\n\nThe automation step wraps each stage in a function: `load_data`, `handle_missing_values`, `remove_outliers`, `scale_data`, `encode_categorical` and `save_data`, then composes them into one call so the identical pipeline runs against a different dataset without rewriting anything.",
+              "### Data sources for RAG versus traditional ML\n\nTraditional pipelines rely on static, pre-collected datasets organized into training, validation and test sets. Their sources are structured databases holding customer records or transactions, CSV and Excel files for small to medium sets, APIs whose output is fetched and stored rather than live, and scraped web data. Their strengths are stability, a controlled environment and reproducibility; their challenges are outdated information and a scope fixed at collection time.\n\nRAG retrieves external information during generation instead of learning it at training time. Its sources are structured knowledge bases, document repositories such as internal databases or technical manuals, live APIs and real-time feeds, and occasionally live web search. Its strengths are current information, contextual relevance and adaptability to unexpected questions; its challenges are variable data, harder quality assurance and more infrastructure.\n\nThe module compares the two on five aspects: data stability, update frequency, scope and relevance, complexity, and reproducibility.\n\nBest practices for keeping a RAG source efficient: data governance with clear access, quality and lifecycle policy aligned to GDPR and CCPA; data quality through regular audits and automated validation; scalable infrastructure using cloud storage, distributed databases and caching; security through encryption at rest and in transit, role-based access, monitoring and a breach response plan; freshness through automated sync and refresh triggers; and collaboration between data engineers, data scientists and AI developers.",
+              "### Errors in data collection\n\nSix error types, with the module's own examples:\n\n- **Sampling error**, when the data is not representative of the population, as customer feedback drawn from one location.\n- **Measurement error**, when the measuring process is flawed, as a sensor consistently two degrees high.\n- **Data entry error**, mistakes in manual input, as a survey response recorded as 5.0 instead of 50.\n- **Response bias**, respondents answering inaccurately, as underreporting of socially undesirable behaviour.\n- **Non-response error**, when a large part of the sample never responds, as dropouts in a longitudinal study.\n- **Systematic error**, a consistent repeatable skew from faulty equipment or method, as a scale always five grams light.\n\nSix ways to find them: descriptive statistics, data visualization, cross-validation against trusted sources, data auditing, consistency checks, and control groups or redundant collection points.\n\nFive ways to reduce them: standardize the collection procedure, train the collectors, automate collection to remove human error, implement real-time error detection, and review and update the method regularly.\n\nThe step-by-step walkthrough runs the same ground in pandas: `read_csv` then `head` and `dtypes`; `isnull().sum()` and `dropna()` or `fillna(df.mean())`; `describe()`, a matplotlib box plot, and `scipy.stats` Z-scores on numeric columns; `unique()` to surface spelling variants; `duplicated()` and `drop_duplicates()`; then cross-column consistency checks.",
+              "### Why data security in AI\n\nThree roles for data set the stakes: training data, whose compromise produces biased, inaccurate or harmful outputs; inference data, whose integrity carries trust in the deployed system; and sensitive PII, whose exposure carries legal and financial consequences.\n\nFour risks follow weak security: data breaches exposing sensitive information, data poisoning where false data is introduced into the training set so the model learns wrong patterns, model inversion where attackers reconstruct training data from the model, and adversarial attacks where manipulated inputs force wrong predictions.\n\nSeven practices answer them: encryption, access control, anonymization, regular audits and monitoring, secure data sharing, adversarial robustness, and the ethical and legal layer. On the legal side the module names GDPR and CCPA compliance, plus transparency about how data is collected, stored and used.",
+              "### Security practices in detail\n\n- **Encryption.** At rest, AES-256 on servers, databases and cloud storage. In transit, SSL and TLS between clients and servers. Benefits: confidentiality, fewer breaches, regulatory compliance.\n- **Access control.** Role-based access control granting least privilege, with permissions tied to job function, and multifactor authentication especially for administrative and remote access. Benefits: less unauthorized access and accountability through logged access.\n- **Anonymization and masking.** Anonymization through k-anonymity, l-diversity and t-closeness; masking for fields such as card numbers and national identifiers while keeping the data useful for testing. Benefits: privacy, safe sharing, reduced breach and noncompliance risk.\n- **Audits and monitoring.** Regular audits of policy, practice and infrastructure, internally or by third parties, plus continuous monitoring of access, network traffic and system activity with real-time alerts. Benefits: vulnerabilities caught early, ongoing compliance, visible security health.\n- **Secure sharing.** Encrypted channels and end-to-end encryption, with secure file transfer for large payloads, and written data access agreements covering protection, who may access, and responsibilities.\n- **Backup and recovery.** Automated encrypted backups on a schedule matched to data criticality, plus a tested disaster recovery plan covering restoration, system recovery and stakeholder communication. Benefits: availability and continuity, minimal downtime and data loss.",
+              "### Two breach case studies\n\n**Facebook and Cambridge Analytica, 2018.** The error was a loophole in Facebook's API that let third-party apps collect data from users who consented and from their friends who had not. Ramifications: a major loss of public trust, lawsuits and regulatory scrutiny worldwide, and an FTC fine of $5 billion, then the largest the commission had imposed. Policy changes: restricted API access, stricter consent mechanisms and auditing of third-party apps, and a contribution to GDPR and CCPA.\n\n**MyFitnessPal, 2018.** Around 150 million accounts were affected, exposing usernames, email addresses and hashed passwords, some still protected by the older SHA-1 algorithm. Ramifications: eroded user trust, legal and notification costs, a temporary stock dip and account deletions. Policy changes: moving from SHA-1 to bcrypt, stronger storage and transmission protocols, enhanced monitoring and incident response, and user education including two-factor authentication.",
+              "### Auditing ML code\n\nThe practice activity hands over intentionally flawed ML code, and the five planted vulnerabilities are the module's real assessment. Each has a package-level fix, and the corrected file at the end shows the set together.\n\n1. **No data validation or sanitization.** A `validate_data()` helper checks `df.isnull().values.any()` and raises ValueError, then wraps both the load and the feature and target split so nothing reaches training unchecked.\n2. **No input validation.** The same helper applies to `X` and `y` after slicing, so a corrupted column cannot slip through.\n3. **Fixed random state.** `random_state=42` becomes `os.urandom(16)`, so the split cannot be reproduced by someone who guesses the seed.\n4. **Unencrypted model saving.** `cryptography.fernet.Fernet` encrypts `pickle.dumps(model)` before the bytes reach disk, with a key generated per save.\n5. **No integrity check on load.** `hashlib.sha256` digests the decrypted payload and compares it with the digest of the model in memory, raising if they differ.\n\nRead the corrected file's imports as the checklist: `os`, `pandas`, `sklearn.model_selection.train_test_split`, `sklearn.linear_model.LogisticRegression`, `pickle`, `hashlib` and `cryptography.fernet`. If a pipeline touches data, a random seed and a saved artifact, those seven are the minimum surface to secure.",
+            ],
+          image: {
+            src: "/roadmap/microsoft-course-1-module-2.png",
+            alt: "Diagram of the data management in AI/ML module showing the data lifecycle from collection through processing to governance and security.",
+            caption: "The data management in AI/ML module at a glance.",
+            credit: "Diagrammed by Frank Angelo Malubay",
+            width: 1904,
+            height: 856,
+          },          },
+          {
+            slug: "considering-and-selecting-model-frameworks",
+            title: "Considering and selecting model frameworks",
+            hours: 9,
+            summary: "The popular ML frameworks, libraries and pretrained LLMs, and how to weigh their strengths and weaknesses against a project's needs.",
+          },
+          {
+            slug: "considerations-when-deploying-platforms",
+            title: "Considerations when deploying platforms",
+            hours: 7,
+            summary: "Deploying models into production: the features of a deployment platform, preparing a model for real use, version control for reproducibility, and judging scalability and efficiency.",
+          },
+          {
+            slug: "ai-ml-concepts-in-practice",
+            title: "AI/ML concepts in practice",
+            hours: 6,
+            summary: "The AI/ML engineer's role in a corporate setting: the responsibilities across data, frameworks, deployment and cloud, the operational priorities, and networking and mentorship.",
+          },
         ],
       },
       {
