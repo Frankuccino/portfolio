@@ -122,6 +122,18 @@ export default async function RoadmapStepPage({
           <TakeawayCard href={`/plan/${step.id}/takeaways?from=track`} />
         ) : null}
 
+        {/* The workflow for turning this step's raw sub-module files into a
+            module guide. Shown on IBM only, where the study loop is running. */}
+        {step.id === "ibm-ai-native-data-engineering" ? (
+          <Link
+            href="/plan/ibm-ai-native-data-engineering/course-walkthrough"
+            className="mb-12 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-slate-500 hover:text-white transition-colors"
+          >
+            <span className="text-[#5f93a8]">→</span>
+            Course Walkthrough Guide
+          </Link>
+        ) : null}
+
         {/* Each course gets its own page, because the modules under it are the
             part that links out to the work reinforcing them. */}
         {step.courses && step.courses.length > 0 ? (
