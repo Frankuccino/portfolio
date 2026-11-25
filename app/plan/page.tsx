@@ -115,7 +115,13 @@ export default function PlanPage() {
                       </span>
                     </div>
                     {step.moduleProgress ? (
-                      <span className="text-[11px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-amber-400/15 border border-amber-400/40 text-amber-300">
+                      <span
+                        className={
+                          step.moduleProgress === "In progress"
+                            ? "text-[11px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-emerald-400/15 border border-emerald-400/40 text-emerald-300"
+                            : "text-[11px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-amber-400/15 border border-amber-400/40 text-amber-300"
+                        }
+                      >
                         {step.moduleProgress}
                       </span>
                     ) : null}

@@ -1630,6 +1630,7 @@ export const roadmapSteps: RoadmapStep[] = [
     issuer: "IBM · Coursera",
     credentialType: "Professional Certificate · 7 courses",
     commitment: "4 months at 10 hrs/week · intermediate",
+    moduleProgress: "In progress",
     summary:
       "The data platform layer nothing else in the plan covers: governed ingestion and lakehouse storage, embedding and vector retrieval, unstructured corpora, reproducible training data, and the CI/CD, observability and governance that make them production systems rather than pipelines. Ends in a capstone that builds and operates an end-to-end AI-native data platform.",
     outcomes: [
@@ -2082,7 +2083,7 @@ export const roadmapSteps: RoadmapStep[] = [
     /**
      * Where the builder is, right now, inside the syllabus.
      */
-    moduleProgress: "Course 1 · Module 2 · ATM",
+    moduleProgress: "Paused",
     summary:
       "The breadth first: AI & ML infrastructure and data pipelines, core algorithms and techniques, intelligent troubleshooting agents, and the Azure ML lifecycle from data prep through deployment and monitoring. The foundation the applied layer sits on.",
     outcomes: [
