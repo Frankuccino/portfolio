@@ -24,10 +24,10 @@ const hostOf = (url: string) => {
 const orderReasons: Record<string, string> = {
   "datacamp-ai-engineer-developers":
     "First because it is already finished, and because it is the applied layer everything else builds on: the API, embeddings and vector search, orchestration, and the engineering discipline around the model. The rest of the plan is the depth underneath it.",
-  "microsoft-ai-ml-engineering":
-    "The breadth the applied layer stands on: the data and model lifecycle, the core algorithms, and the Azure ML lifecycle. Without it the operations steps have nothing to operate, which is why the plan goes straight from here to the data platform layer and then the operations rather than to a second theory enrollment.",
   "ibm-ai-native-data-engineering":
-    "Third, and the layer the rest of the plan stands on. Every later step assumes data that is already fit for AI use; this certificate builds the platform that makes it so, governed lakehouse storage, vector retrieval, unstructured corpora and reproducible training data. It sits ahead of the operations pair because those specializations run models over data this one teaches you to engineer.",
+    "Second, and first among the unfinished work: the data platform layer everything above and below stands on. It asks for SQL, Python and pipelines rather than machine learning breadth, so it can be started now, and every later step runs models over data this certificate teaches you to engineer.",
+  "microsoft-ai-ml-engineering":
+    "Third: the breadth the applied layer stands on, the data and model lifecycle, the core algorithms and the Azure ML lifecycle. It follows the data platform layer, which carries no machine learning prerequisite, and it precedes the operations pair, which has nothing to operate without it.",
   "duke-mlops-specialization":
     "The general operations layer, and the part nothing else in the plan covers: DevOps and DataOps practice, CI/CD for models, MLflow tracking, model registry and deployment. The Microsoft capstone is the model that makes a pipeline worth building.",
   "duke-llmops-specialization":
@@ -37,7 +37,7 @@ const orderReasons: Record<string, string> = {
   "ai-evals-faq":
     "Not a step in the sequence. It is the methodology the tooling is operated with, so it is read alongside the Test track rather than saved for the end of the syllabus.",
   "security-engineering-agentic-ai":
-    "Not a step in the sequence, and the part nothing else in the plan covers. The two Duke specializations teach how to run a model in production and never touch how to keep an agent safe, so goal integrity, toolchain security, non-human identity and memory poisoning are read alongside them rather than after the syllabus.",
+    "Fourth, and still small enough to close in two focused days. Placed here rather than beside the long operations blocks so a short course is finished before 145 hours of MLOps begins, instead of being carried open alongside it.",
   "stanford-cs221":
     "The mathematics underneath all of it. Last because it compounds the slowest and is the least urgent, not because it matters least.",
 };
@@ -45,7 +45,7 @@ const orderReasons: Record<string, string> = {
 export const metadata: Metadata = {
   title: "The Plan · Frank Angelo Malubag",
   description:
-    "Where I'm headed: AI & ML breadth with Microsoft, then the data platform layer with the IBM AI-Native Data Engineering Professional Certificate, then the operations layer with the Duke University MLOps and LLMOps specializations, LangChain Academy with an evaluation methodology and an agentic security course alongside it, and Stanford CS221. Building the depth to lead in AI engineering.",
+    "Where I'm headed: the data platform layer with the IBM AI-Native Data Engineering Professional Certificate first, because it carries no machine learning prerequisite, then AI & ML breadth with Microsoft, the Packt Security Engineering for Agentic AI Systems course, the operations layer with the Duke University MLOps and LLMOps specializations, LangChain Academy with an evaluation methodology alongside it, and Stanford CS221. Building the depth to lead in AI engineering.",
   alternates: { canonical: canonical("/plan") },
 };
 
@@ -71,10 +71,11 @@ export default function PlanPage() {
             Certifications are a means, not an end. I&apos;m building the depth to lead
             in AI engineering, the kind that lets me design production systems and set
             technical direction, not just implement against an API. Nine steps: one
-            already finished, then eight, the breadth, the data platform layer that
-            feeds it, the operations, the tooling, the evaluation methodology and the
-            security layer that sit alongside them, and the mathematics that makes
-            it durable.
+            already finished, then eight. The data platform layer goes first, because
+            it needs no machine learning prerequisites and everything after it runs
+            models over what it builds; then the breadth, the short security course,
+            the operations, the tooling, the evaluation methodology, and the
+            mathematics that makes it durable.
           </p>
         </header>
 

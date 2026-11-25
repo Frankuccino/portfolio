@@ -1623,205 +1623,8 @@ export const roadmapSteps: RoadmapStep[] = [
     ],
   },
   {
-    id: "microsoft-ai-ml-engineering",
-    order: "Now",
-    title: "Microsoft AI & ML Engineering Professional Certificate",
-    issuer: "Microsoft · Coursera",
-    credentialType: "Professional Certificate · 5 courses",
-    commitment: "~6 months at 7 hrs/week",
-    summary:
-      "The breadth first: AI & ML infrastructure and data pipelines, core algorithms and techniques, intelligent troubleshooting agents, and the Azure ML lifecycle from data prep through deployment and monitoring. The foundation the applied layer sits on.",
-    outcomes: [
-      "Design AI & ML infrastructure, data pipelines, and deployment platforms",
-      "Apply supervised, unsupervised, reinforcement, and deep learning methods",
-      "Build troubleshooting agents that diagnose and resolve issues autonomously",
-      "Run the end-to-end ML lifecycle on Azure",
-    ],
-    url: "https://www.coursera.org/professional-certificates/microsoft-ai-and-ml-engineering",
-    courses: [
-      {
-        slug: "foundations-of-ai-and-machine-learning",
-        title: "Foundations of AI and Machine Learning",
-        hours: 36,
-        summary:
-          "The environment end to end: what an AI/ML environment is, the data and model lifecycle that runs through it, data sources and pipelines, framework and deployment platform selection, and the monitoring that closes the loop.",
-        modules: [
-          {
-            slug: "introduction-to-ai-ml-environments",
-            title: "Module 1: Introduction to AI/ML Environments",
-            summary:
-              "The environment end to end: ingestion, the lakehouse layers, the model frameworks, deployment, and the monitoring that closes the loop.",
-            completed: "Module 1 of 5",
-            image: {
-              src: "/roadmap/microsoft-course-1-module-1.png",
-              alt: "Diagram of the Azure AI/ML environment: Event Hub and Data Factory ingesting IoT, database, external API and CRM/ERP sources into Databricks over a Data Lake with bronze, silver and gold layers, SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure Machine Learning SDK for model development, and AKS, Azure Machine Learning Service, App Service and Functions behind Monitor and Application Insights.",
-              caption: "The Azure AI/ML environment, end to end.",
-              credit: "Diagrammed by Frank Angelo Malubag",
-              width: 1622,
-              height: 745,
-            },
-            breakdown: [
-              {
-                group: "Raw data sources",
-                items: [
-                  {
-                    name: "IoT",
-                    role: "Sensor and device telemetry: the streaming source that arrives continuously rather than in batches.",
-                  },
-                  {
-                    name: "DB",
-                    role: "Existing operational and analytical databases, the structured record of the business.",
-                  },
-                  {
-                    name: "External API",
-                    role: "Third-party data and services pulled in over HTTP at ingest time.",
-                  },
-                  {
-                    name: "CRM, ERP",
-                    role: "The customer and back-office systems (Salesforce, SAP and peers) whose records describe the business directly.",
-                  },
-                ],
-              },
-              {
-                group: "Ingestion & orchestration",
-                items: [
-                  {
-                    name: "Event Hub",
-                    role: "Azure's streaming ingestion service: takes in millions of events per second and hands them to consumers or to storage.",
-                  },
-                  {
-                    name: "Azure Data Factory",
-                    role: "The orchestration layer: schedules and chains the pipelines that move and transform data across services.",
-                  },
-                ],
-              },
-              {
-                group: "Processing & transformation",
-                items: [
-                  {
-                    name: "Azure Databricks",
-                    role: "The Apache Spark-based analytics engine where raw data is cleaned, joined and engineered into features.",
-                  },
-                ],
-              },
-              {
-                group: "Storage",
-                items: [
-                  {
-                    name: "Azure Data Lake Storage",
-                    role: "The landing store, in medallion layers: bronze holds raw ingested data, silver holds cleaned and conformed data, gold holds the aggregates ready for consumption.",
-                  },
-                  {
-                    name: "Azure SQL Database",
-                    role: "The relational store for structured, transactional and reporting workloads.",
-                  },
-                  {
-                    name: "Azure Cosmos DB",
-                    role: "The distributed NoSQL store for globally replicated, low-latency reads and writes at scale.",
-                  },
-                ],
-              },
-              {
-                group: "Model development frameworks",
-                items: [
-                  {
-                    name: "TensorFlow",
-                    role: "Google's framework for building and training deep models, from research through to production serving.",
-                  },
-                  {
-                    name: "PyTorch",
-                    role: "The research-first deep learning framework that dominates papers and experimentation.",
-                  },
-                  {
-                    name: "scikit-learn",
-                    role: "The classical ML library: regression, classification, clustering, and the evaluation tooling around them.",
-                  },
-                  {
-                    name: "Azure Machine Learning SDK",
-                    role: "The Azure-native API for tracking experiments, packaging models and managing their lifecycle.",
-                  },
-                ],
-              },
-              {
-                group: "Deployment platforms",
-                items: [
-                  {
-                    name: "Azure Kubernetes Service (AKS)",
-                    role: "Managed Kubernetes, for containerised services that scale on demand.",
-                  },
-                  {
-                    name: "Azure Machine Learning Service",
-                    role: "The managed serving and lifecycle layer for trained models: endpoints, retraining and rollout.",
-                  },
-                  {
-                    name: "Azure App Service",
-                    role: "The managed web app host for APIs and front ends, without managing the underlying machines.",
-                  },
-                  {
-                    name: "Azure Functions",
-                    role: "Event-driven serverless compute: run a small unit of logic in response to a trigger and pay per execution.",
-                  },
-                ],
-              },
-              {
-                group: "Continuous monitoring",
-                items: [
-                  {
-                    name: "Azure Monitor",
-                    role: "Platform-wide metrics and logs: the health of every Azure resource in one place.",
-                  },
-                  {
-                    name: "Application Insights",
-                    role: "Application-level telemetry: requests, dependencies, exceptions and user flows inside the deployed app.",
-                  },
-                ],
-              },
-            ],
-            notes: [
-              "### What the module is about\n\nAI/ML infrastructure is the cloud-based tools, services and resources that carry a model through its entire lifecycle. The course frames it as three pillars, and the argument is that infrastructure comes before technique.\n\n- **Data pipelines**: how data is ingested, processed, stored and served to models.\n- **Model development frameworks**: the libraries that build, train and evaluate models.\n- **Deployment platforms**: the services that put a trained model into production.\n\nBefore supervised learning or pre-trained LLMs, you need to know how data flows through systems, how models are built inside frameworks, and how they reach production.",
-              "### The working environment\n\nThe course runs in Azure Machine Learning Studio. The lab is set up in four moves:\n\n- **Workspace**: create one at ml.azure.com, then add a notebook.\n- **Kernel**: select the Python - AzureML kernel, which carries the machine learning libraries the course uses.\n- **Resources**: the lab runs on a resource group with virtual machines and SSH access.\n- **Reproducibility**: save the setup as an Azure Resource Manager template so it can be recreated.",
-              "### Data sources and pipelines\n\nA pipeline is a series of automated processes that move data from source to destination, transforming it along the way. Sources come in four kinds:\n\n- **Relational databases**: SQL Server, MySQL, PostgreSQL.\n- **NoSQL stores**: Azure Cosmos DB, MongoDB.\n- **Cloud object storage**: Azure Blob Storage, Amazon S3.\n- **Real-time streams**: IoT sensors, APIs.\n\nThe pipeline then runs through four stages:\n\n- **Ingestion**: collects the data, in real time or in batches; Azure Data Factory schedules and orchestrates it.\n- **Processing and transformation**: cleans, normalises, aggregates and engineers features; Azure Databricks, built on Apache Spark, does the heavy work.\n- **Storage**: Azure Data Lake Storage for raw unstructured data, Azure SQL Database for structured data that needs advanced queries, Azure Blob Storage for files and media.\n- **Access and utilisation**: Azure Machine Learning trains the models, Power BI reports on them.\n\nModel quality is bounded by data quality, which is why the pipeline comes first.",
-              "### Choosing a framework\n\nModel development is the cycle of selecting an algorithm, training on data while tuning hyperparameters, and evaluating until the model generalises to new data. Four frameworks dominate:\n\n- **TensorFlow**: deep learning, with eager execution for prototyping and graph execution for optimised runs; TensorFlow Serving for production.\n- **PyTorch**: the research favourite, with dynamic computation graphs that are easier to debug; TorchScript for deployment.\n- **scikit-learn**: traditional machine learning, with regression, classification, clustering, preprocessing and evaluation behind one consistent API.\n- **Azure Machine Learning SDK**: the Azure-native layer, integrating with Data Factory, Databricks and AKS; AutoML for baselines, experiment tracking and managed deployment.\n\nThe selection factors are the nature of the problem, data type and size, performance requirements, ease of use, deployment and maintenance, and total cost of ownership.",
-              "### Choosing a deployment platform\n\nDeployment takes a trained model and makes it available in a real environment: as a service, inside a web application, or on a device. Azure offers four routes:\n\n- **Azure Kubernetes Service**: containerises the model and runs it across a cluster, with autoscaling, load balancing and high availability; suits large-scale, high-traffic systems.\n- **Azure Machine Learning Service**: deploys a model as a RESTful endpoint in a few clicks; adds automated machine learning and model management.\n- **Azure App Service**: hosts web applications and APIs with built-in scaling, security and monitoring.\n- **Azure Functions**: serverless and event-driven, so you pay per execution and the model runs only when triggered.\n\nSix factors decide the choice: deployment speed, cost efficiency, ease of use, scalability, updates and maintenance, and security and compliance. The module's tips follow from those factors:\n\n- Azure Machine Learning Service for rapid prototyping and low-latency predictions.\n- Azure Functions or Azure Container Instances for infrequent or temporary deployments.\n- AKS for enterprise scale, and reserved instances for long-term runs.",
-              "### Monitoring and maintenance\n\nDeployment is not the end of the loop. Two services watch a deployed model:\n\n- **Azure Monitor**: platform metrics and logs across every Azure resource.\n- **Application Insights**: application telemetry, meaning requests, dependencies, exceptions and user flows.\n\nAzure DevOps sits beside them for continuous integration and deployment, so updates, rollbacks and testing are automated rather than manual. The module points onward from here to model observability and drift detection as the next layer of the same problem.",
-              "### How the course is assessed\n\nThe course is graded in six parts:\n\n- **Five quizzes, 15% each**: AI/ML applications; data management in AI/ML; selecting a framework; platform deployment; AI/ML concepts in practice.\n- **One peer review, 25%**: draft your pitch to the C-suite.\n\nIt is the first of five courses in the Microsoft AI & ML Engineering Professional Certificate:\n\n- AI and Machine Learning Algorithms and Techniques.\n- Building Intelligent Troubleshooting Agents.\n- Microsoft Azure for AI and Machine Learning.\n- Advanced AI and Machine Learning Techniques and Capstone.",
-            ],
-          },
-        ],
-      },
-      {
-        slug: "ai-and-machine-learning-algorithms-and-techniques",
-        title: "AI and Machine Learning Algorithms and Techniques",
-        hours: 45,
-        summary:
-          "The core algorithms: supervised, unsupervised and reinforcement learning, and deep learning including how these operate in pre-trained large language models, with the feature selection and engineering that decide whether a model generalises.",
-      },
-      {
-        slug: "building-intelligent-troubleshooting-agents",
-        title: "Building Intelligent Troubleshooting Agents",
-        hours: 43,
-        summary:
-          "Designing agents that diagnose and resolve issues on their own: the architecture of a troubleshooting agent, natural language processing for user interaction, and the decision-making algorithms behind diagnosis and resolution.",
-      },
-      {
-        slug: "microsoft-azure-for-ai-and-machine-learning",
-        title: "Microsoft Azure for AI and Machine Learning",
-        hours: 21,
-        summary:
-          "The Azure ML lifecycle by hand: configuring and managing Azure resources, building end-to-end pipelines, deploying and monitoring models in production, and troubleshooting the workflows that fail.",
-      },
-      {
-        slug: "advanced-ai-and-machine-learning-techniques-and-capstone",
-        title: "Advanced AI and Machine Learning Techniques and Capstone",
-        hours: 31,
-        summary:
-          "Ensemble methods and transfer learning, the ethical and responsible AI questions around GenAI, and designing for scale, ending in a capstone that applies the whole certificate to one real problem.",
-      },
-    ],
-  },
-  {
     id: "ibm-ai-native-data-engineering",
-    order: "Next",
+    order: "Now",
     title: "AI-Native Data Engineering Professional Certificate",
     issuer: "IBM · Coursera",
     credentialType: "Professional Certificate · 7 courses",
@@ -2269,117 +2072,205 @@ export const roadmapSteps: RoadmapStep[] = [
     ],
   },
   {
-    id: "duke-mlops-specialization",
+    id: "microsoft-ai-ml-engineering",
     order: "Next",
-    title: "MLOps | Machine Learning Operations Specialization",
-    issuer: "Duke University · Coursera",
-    credentialType: "Specialization · 4 courses",
-    commitment: "~6 months at 5 hrs/week",
+    title: "Microsoft AI & ML Engineering Professional Certificate",
+    issuer: "Microsoft · Coursera",
+    credentialType: "Professional Certificate · 5 courses",
+    commitment: "~6 months at 7 hrs/week",
     summary:
-      "The operations layer: Python and automation for MLOps, the DevOps and DataOps practices behind a production pipeline, the Amazon SageMaker and Azure ML platforms, and MLflow with Hugging Face for experiment tracking, model management and deployment. Advanced level, and the difference between a model that works in a notebook and one that holds up in production.",
+      "The breadth first: AI & ML infrastructure and data pipelines, core algorithms and techniques, intelligent troubleshooting agents, and the Azure ML lifecycle from data prep through deployment and monitoring. The foundation the applied layer sits on.",
     outcomes: [
-      "Automate data preprocessing and feature extraction with Python, tests and command-line tools",
-      "Build operations pipelines across DevOps, DataOps and MLOps, and deploy models to production",
-      "Train, optimize and deploy models on Amazon SageMaker and Azure ML",
-      "Design a full MLOps pipeline with MLflow, and fine-tune and deploy models with Hugging Face",
+      "Design AI & ML infrastructure, data pipelines, and deployment platforms",
+      "Apply supervised, unsupervised, reinforcement, and deep learning methods",
+      "Build troubleshooting agents that diagnose and resolve issues autonomously",
+      "Run the end-to-end ML lifecycle on Azure",
     ],
-    url: "https://www.coursera.org/specializations/mlops-machine-learning-duke",
+    url: "https://www.coursera.org/professional-certificates/microsoft-ai-and-ml-engineering",
     courses: [
       {
-        slug: "python-mlops-duke",
-        title: "Python Essentials for MLOps",
-        hours: 43,
-        summary:
-          "Python for operations: variables and data structures, writing and debugging tests with Pytest, and working with APIs and SDKs to build the command-line tools and HTTP APIs that automate machine learning work.",
-      },
-      {
-        slug: "devops-dataops-mlops-duke",
-        title: "DevOps, DataOps, MLOps",
-        hours: 45,
-        summary:
-          "Building operations pipelines across the three: the MLOps principles and practices of data management, model training and development, continuous integration and delivery, and deploying models to a production environment.",
-      },
-      {
-        slug: "mlops-aws-azure-duke",
-        title: "MLOps Platforms: Amazon SageMaker and Azure ML",
-        hours: 31,
-        summary:
-          "Exploratory data analysis on real datasets, building machine learning solutions on both AWS and Azure, and training and deploying them to production with cloud technology.",
-      },
-      {
-        slug: "mlops-mlflow-huggingface-duke",
-        title: "MLOps Tools: MLflow and Hugging Face",
-        hours: 26,
-        summary:
-          "Creating MLflow projects and registering models, building APIs from Hugging Face models and datasets, and packaging and deploying Hugging Face to the cloud with automation.",
-      },
-    ],
-  },
-  {
-    id: "duke-llmops-specialization",
-    order: "Next",
-    title: "Large Language Model Operations (LLMOps) Specialization",
-    issuer: "Duke University · Coursera",
-    credentialType: "Specialization · 6 courses",
-    commitment: "~5 months at 10 hrs/week",
-    summary:
-      "The operations layer pointed at language models: deploying, managing and optimizing large language models across Azure, AWS, Databricks, local infrastructure and open source, through more than twenty hands-on projects. Beginner level, and the difference between a prompt that works once and a language model that holds up in production.",
-    outcomes: [
-      "Build generative AI software solutions, and improve their output with prompt engineering",
-      "Deploy and manage large language models on Azure with Semantic Kernel, and implement RAG applications",
-      "Design data pipelines with message queues, and store data at scale in vector, graph and key/value databases",
-      "Build generative AI solutions on AWS, and develop them with Amazon Bedrock",
-      "Run local LLMs with Databricks, Llamafile and Mixtral, and fine-tune open source models",
-    ],
-    url: "https://www.coursera.org/specializations/large-language-model-operations",
-    courses: [
-      {
-        slug: "introduction-to-generative-ai",
-        title: "Introduction to Generative AI",
-        hours: 38,
-        summary:
-          "Generative AI for automation: developing generative AI software solutions, and building with prompt engineering to improve the output.",
-      },
-      {
-        slug: "operationalizing-llms-on-azure",
-        title: "Operationalizing LLMs on Azure",
-        hours: 11,
-        summary:
-          "Deploying and managing large language models on Azure, crafting queries with Semantic Kernel, and implementing and deploying applications with retrieval augmented generation.",
-      },
-      {
-        slug: "advanced-data-engineering",
-        title: "Advanced Data Engineering",
-        hours: 23,
-        summary:
-          "Data pipelines and their lifecycle, message queues for managing data processing, and vector, graph and key/value databases for storage at scale.",
-      },
-      {
-        slug: "genai-and-llms-on-aws",
-        title: "GenAI and LLMs on AWS",
-        hours: 46,
-        summary:
-          "Building generative AI solutions on AWS, the cloud computing fundamentals underneath machine learning on AWS, and developing solutions with Amazon Bedrock.",
-      },
-      {
-        slug: "databricks-to-local-llms",
-        title: "Databricks to Local LLMs",
-        hours: 27,
-        summary:
-          "Databricks for data engineering and machine learning workloads, designing ML pipelines, and running local LLMs with Llamafile and Mixtral.",
-      },
-      {
-        slug: "open-source-llmops-solutions",
-        title: "Open Source LLMOps Solutions",
+        slug: "foundations-of-ai-and-machine-learning",
+        title: "Foundations of AI and Machine Learning",
         hours: 36,
         summary:
-          "Running local large language models, fine-tuning them, and using open source generative AI.",
+          "The environment end to end: what an AI/ML environment is, the data and model lifecycle that runs through it, data sources and pipelines, framework and deployment platform selection, and the monitoring that closes the loop.",
+        modules: [
+          {
+            slug: "introduction-to-ai-ml-environments",
+            title: "Module 1: Introduction to AI/ML Environments",
+            summary:
+              "The environment end to end: ingestion, the lakehouse layers, the model frameworks, deployment, and the monitoring that closes the loop.",
+            completed: "Module 1 of 5",
+            image: {
+              src: "/roadmap/microsoft-course-1-module-1.png",
+              alt: "Diagram of the Azure AI/ML environment: Event Hub and Data Factory ingesting IoT, database, external API and CRM/ERP sources into Databricks over a Data Lake with bronze, silver and gold layers, SQL Database and Cosmos DB as stores, TensorFlow, PyTorch, scikit-learn and the Azure Machine Learning SDK for model development, and AKS, Azure Machine Learning Service, App Service and Functions behind Monitor and Application Insights.",
+              caption: "The Azure AI/ML environment, end to end.",
+              credit: "Diagrammed by Frank Angelo Malubag",
+              width: 1622,
+              height: 745,
+            },
+            breakdown: [
+              {
+                group: "Raw data sources",
+                items: [
+                  {
+                    name: "IoT",
+                    role: "Sensor and device telemetry: the streaming source that arrives continuously rather than in batches.",
+                  },
+                  {
+                    name: "DB",
+                    role: "Existing operational and analytical databases, the structured record of the business.",
+                  },
+                  {
+                    name: "External API",
+                    role: "Third-party data and services pulled in over HTTP at ingest time.",
+                  },
+                  {
+                    name: "CRM, ERP",
+                    role: "The customer and back-office systems (Salesforce, SAP and peers) whose records describe the business directly.",
+                  },
+                ],
+              },
+              {
+                group: "Ingestion & orchestration",
+                items: [
+                  {
+                    name: "Event Hub",
+                    role: "Azure's streaming ingestion service: takes in millions of events per second and hands them to consumers or to storage.",
+                  },
+                  {
+                    name: "Azure Data Factory",
+                    role: "The orchestration layer: schedules and chains the pipelines that move and transform data across services.",
+                  },
+                ],
+              },
+              {
+                group: "Processing & transformation",
+                items: [
+                  {
+                    name: "Azure Databricks",
+                    role: "The Apache Spark-based analytics engine where raw data is cleaned, joined and engineered into features.",
+                  },
+                ],
+              },
+              {
+                group: "Storage",
+                items: [
+                  {
+                    name: "Azure Data Lake Storage",
+                    role: "The landing store, in medallion layers: bronze holds raw ingested data, silver holds cleaned and conformed data, gold holds the aggregates ready for consumption.",
+                  },
+                  {
+                    name: "Azure SQL Database",
+                    role: "The relational store for structured, transactional and reporting workloads.",
+                  },
+                  {
+                    name: "Azure Cosmos DB",
+                    role: "The distributed NoSQL store for globally replicated, low-latency reads and writes at scale.",
+                  },
+                ],
+              },
+              {
+                group: "Model development frameworks",
+                items: [
+                  {
+                    name: "TensorFlow",
+                    role: "Google's framework for building and training deep models, from research through to production serving.",
+                  },
+                  {
+                    name: "PyTorch",
+                    role: "The research-first deep learning framework that dominates papers and experimentation.",
+                  },
+                  {
+                    name: "scikit-learn",
+                    role: "The classical ML library: regression, classification, clustering, and the evaluation tooling around them.",
+                  },
+                  {
+                    name: "Azure Machine Learning SDK",
+                    role: "The Azure-native API for tracking experiments, packaging models and managing their lifecycle.",
+                  },
+                ],
+              },
+              {
+                group: "Deployment platforms",
+                items: [
+                  {
+                    name: "Azure Kubernetes Service (AKS)",
+                    role: "Managed Kubernetes, for containerised services that scale on demand.",
+                  },
+                  {
+                    name: "Azure Machine Learning Service",
+                    role: "The managed serving and lifecycle layer for trained models: endpoints, retraining and rollout.",
+                  },
+                  {
+                    name: "Azure App Service",
+                    role: "The managed web app host for APIs and front ends, without managing the underlying machines.",
+                  },
+                  {
+                    name: "Azure Functions",
+                    role: "Event-driven serverless compute: run a small unit of logic in response to a trigger and pay per execution.",
+                  },
+                ],
+              },
+              {
+                group: "Continuous monitoring",
+                items: [
+                  {
+                    name: "Azure Monitor",
+                    role: "Platform-wide metrics and logs: the health of every Azure resource in one place.",
+                  },
+                  {
+                    name: "Application Insights",
+                    role: "Application-level telemetry: requests, dependencies, exceptions and user flows inside the deployed app.",
+                  },
+                ],
+              },
+            ],
+            notes: [
+              "### What the module is about\n\nAI/ML infrastructure is the cloud-based tools, services and resources that carry a model through its entire lifecycle. The course frames it as three pillars, and the argument is that infrastructure comes before technique.\n\n- **Data pipelines**: how data is ingested, processed, stored and served to models.\n- **Model development frameworks**: the libraries that build, train and evaluate models.\n- **Deployment platforms**: the services that put a trained model into production.\n\nBefore supervised learning or pre-trained LLMs, you need to know how data flows through systems, how models are built inside frameworks, and how they reach production.",
+              "### The working environment\n\nThe course runs in Azure Machine Learning Studio. The lab is set up in four moves:\n\n- **Workspace**: create one at ml.azure.com, then add a notebook.\n- **Kernel**: select the Python - AzureML kernel, which carries the machine learning libraries the course uses.\n- **Resources**: the lab runs on a resource group with virtual machines and SSH access.\n- **Reproducibility**: save the setup as an Azure Resource Manager template so it can be recreated.",
+              "### Data sources and pipelines\n\nA pipeline is a series of automated processes that move data from source to destination, transforming it along the way. Sources come in four kinds:\n\n- **Relational databases**: SQL Server, MySQL, PostgreSQL.\n- **NoSQL stores**: Azure Cosmos DB, MongoDB.\n- **Cloud object storage**: Azure Blob Storage, Amazon S3.\n- **Real-time streams**: IoT sensors, APIs.\n\nThe pipeline then runs through four stages:\n\n- **Ingestion**: collects the data, in real time or in batches; Azure Data Factory schedules and orchestrates it.\n- **Processing and transformation**: cleans, normalises, aggregates and engineers features; Azure Databricks, built on Apache Spark, does the heavy work.\n- **Storage**: Azure Data Lake Storage for raw unstructured data, Azure SQL Database for structured data that needs advanced queries, Azure Blob Storage for files and media.\n- **Access and utilisation**: Azure Machine Learning trains the models, Power BI reports on them.\n\nModel quality is bounded by data quality, which is why the pipeline comes first.",
+              "### Choosing a framework\n\nModel development is the cycle of selecting an algorithm, training on data while tuning hyperparameters, and evaluating until the model generalises to new data. Four frameworks dominate:\n\n- **TensorFlow**: deep learning, with eager execution for prototyping and graph execution for optimised runs; TensorFlow Serving for production.\n- **PyTorch**: the research favourite, with dynamic computation graphs that are easier to debug; TorchScript for deployment.\n- **scikit-learn**: traditional machine learning, with regression, classification, clustering, preprocessing and evaluation behind one consistent API.\n- **Azure Machine Learning SDK**: the Azure-native layer, integrating with Data Factory, Databricks and AKS; AutoML for baselines, experiment tracking and managed deployment.\n\nThe selection factors are the nature of the problem, data type and size, performance requirements, ease of use, deployment and maintenance, and total cost of ownership.",
+              "### Choosing a deployment platform\n\nDeployment takes a trained model and makes it available in a real environment: as a service, inside a web application, or on a device. Azure offers four routes:\n\n- **Azure Kubernetes Service**: containerises the model and runs it across a cluster, with autoscaling, load balancing and high availability; suits large-scale, high-traffic systems.\n- **Azure Machine Learning Service**: deploys a model as a RESTful endpoint in a few clicks; adds automated machine learning and model management.\n- **Azure App Service**: hosts web applications and APIs with built-in scaling, security and monitoring.\n- **Azure Functions**: serverless and event-driven, so you pay per execution and the model runs only when triggered.\n\nSix factors decide the choice: deployment speed, cost efficiency, ease of use, scalability, updates and maintenance, and security and compliance. The module's tips follow from those factors:\n\n- Azure Machine Learning Service for rapid prototyping and low-latency predictions.\n- Azure Functions or Azure Container Instances for infrequent or temporary deployments.\n- AKS for enterprise scale, and reserved instances for long-term runs.",
+              "### Monitoring and maintenance\n\nDeployment is not the end of the loop. Two services watch a deployed model:\n\n- **Azure Monitor**: platform metrics and logs across every Azure resource.\n- **Application Insights**: application telemetry, meaning requests, dependencies, exceptions and user flows.\n\nAzure DevOps sits beside them for continuous integration and deployment, so updates, rollbacks and testing are automated rather than manual. The module points onward from here to model observability and drift detection as the next layer of the same problem.",
+              "### How the course is assessed\n\nThe course is graded in six parts:\n\n- **Five quizzes, 15% each**: AI/ML applications; data management in AI/ML; selecting a framework; platform deployment; AI/ML concepts in practice.\n- **One peer review, 25%**: draft your pitch to the C-suite.\n\nIt is the first of five courses in the Microsoft AI & ML Engineering Professional Certificate:\n\n- AI and Machine Learning Algorithms and Techniques.\n- Building Intelligent Troubleshooting Agents.\n- Microsoft Azure for AI and Machine Learning.\n- Advanced AI and Machine Learning Techniques and Capstone.",
+            ],
+          },
+        ],
+      },
+      {
+        slug: "ai-and-machine-learning-algorithms-and-techniques",
+        title: "AI and Machine Learning Algorithms and Techniques",
+        hours: 45,
+        summary:
+          "The core algorithms: supervised, unsupervised and reinforcement learning, and deep learning including how these operate in pre-trained large language models, with the feature selection and engineering that decide whether a model generalises.",
+      },
+      {
+        slug: "building-intelligent-troubleshooting-agents",
+        title: "Building Intelligent Troubleshooting Agents",
+        hours: 43,
+        summary:
+          "Designing agents that diagnose and resolve issues on their own: the architecture of a troubleshooting agent, natural language processing for user interaction, and the decision-making algorithms behind diagnosis and resolution.",
+      },
+      {
+        slug: "microsoft-azure-for-ai-and-machine-learning",
+        title: "Microsoft Azure for AI and Machine Learning",
+        hours: 21,
+        summary:
+          "The Azure ML lifecycle by hand: configuring and managing Azure resources, building end-to-end pipelines, deploying and monitoring models in production, and troubleshooting the workflows that fail.",
+      },
+      {
+        slug: "advanced-ai-and-machine-learning-techniques-and-capstone",
+        title: "Advanced AI and Machine Learning Techniques and Capstone",
+        hours: 31,
+        summary:
+          "Ensemble methods and transfer learning, the ethical and responsible AI questions around GenAI, and designing for scale, ending in a capstone that applies the whole certificate to one real problem.",
       },
     ],
   },
   {
     id: "security-engineering-agentic-ai",
-    order: "Alongside",
+    order: "Next",
     title: "Security Engineering for Agentic AI Systems",
     issuer: "Packt · Coursera",
     credentialType: "Course · 14 modules",
@@ -2498,6 +2389,115 @@ export const roadmapSteps: RoadmapStep[] = [
               "A reflective close on the course and what to keep practising.",
           },
         ],
+      },
+    ],
+  },
+  {
+    id: "duke-mlops-specialization",
+    order: "Next",
+    title: "MLOps | Machine Learning Operations Specialization",
+    issuer: "Duke University · Coursera",
+    credentialType: "Specialization · 4 courses",
+    commitment: "~6 months at 5 hrs/week",
+    summary:
+      "The operations layer: Python and automation for MLOps, the DevOps and DataOps practices behind a production pipeline, the Amazon SageMaker and Azure ML platforms, and MLflow with Hugging Face for experiment tracking, model management and deployment. Advanced level, and the difference between a model that works in a notebook and one that holds up in production.",
+    outcomes: [
+      "Automate data preprocessing and feature extraction with Python, tests and command-line tools",
+      "Build operations pipelines across DevOps, DataOps and MLOps, and deploy models to production",
+      "Train, optimize and deploy models on Amazon SageMaker and Azure ML",
+      "Design a full MLOps pipeline with MLflow, and fine-tune and deploy models with Hugging Face",
+    ],
+    url: "https://www.coursera.org/specializations/mlops-machine-learning-duke",
+    courses: [
+      {
+        slug: "python-mlops-duke",
+        title: "Python Essentials for MLOps",
+        hours: 43,
+        summary:
+          "Python for operations: variables and data structures, writing and debugging tests with Pytest, and working with APIs and SDKs to build the command-line tools and HTTP APIs that automate machine learning work.",
+      },
+      {
+        slug: "devops-dataops-mlops-duke",
+        title: "DevOps, DataOps, MLOps",
+        hours: 45,
+        summary:
+          "Building operations pipelines across the three: the MLOps principles and practices of data management, model training and development, continuous integration and delivery, and deploying models to a production environment.",
+      },
+      {
+        slug: "mlops-aws-azure-duke",
+        title: "MLOps Platforms: Amazon SageMaker and Azure ML",
+        hours: 31,
+        summary:
+          "Exploratory data analysis on real datasets, building machine learning solutions on both AWS and Azure, and training and deploying them to production with cloud technology.",
+      },
+      {
+        slug: "mlops-mlflow-huggingface-duke",
+        title: "MLOps Tools: MLflow and Hugging Face",
+        hours: 26,
+        summary:
+          "Creating MLflow projects and registering models, building APIs from Hugging Face models and datasets, and packaging and deploying Hugging Face to the cloud with automation.",
+      },
+    ],
+  },
+  {
+    id: "duke-llmops-specialization",
+    order: "Next",
+    title: "Large Language Model Operations (LLMOps) Specialization",
+    issuer: "Duke University · Coursera",
+    credentialType: "Specialization · 6 courses",
+    commitment: "~5 months at 10 hrs/week",
+    summary:
+      "The operations layer pointed at language models: deploying, managing and optimizing large language models across Azure, AWS, Databricks, local infrastructure and open source, through more than twenty hands-on projects. Beginner level, and the difference between a prompt that works once and a language model that holds up in production.",
+    outcomes: [
+      "Build generative AI software solutions, and improve their output with prompt engineering",
+      "Deploy and manage large language models on Azure with Semantic Kernel, and implement RAG applications",
+      "Design data pipelines with message queues, and store data at scale in vector, graph and key/value databases",
+      "Build generative AI solutions on AWS, and develop them with Amazon Bedrock",
+      "Run local LLMs with Databricks, Llamafile and Mixtral, and fine-tune open source models",
+    ],
+    url: "https://www.coursera.org/specializations/large-language-model-operations",
+    courses: [
+      {
+        slug: "introduction-to-generative-ai",
+        title: "Introduction to Generative AI",
+        hours: 38,
+        summary:
+          "Generative AI for automation: developing generative AI software solutions, and building with prompt engineering to improve the output.",
+      },
+      {
+        slug: "operationalizing-llms-on-azure",
+        title: "Operationalizing LLMs on Azure",
+        hours: 11,
+        summary:
+          "Deploying and managing large language models on Azure, crafting queries with Semantic Kernel, and implementing and deploying applications with retrieval augmented generation.",
+      },
+      {
+        slug: "advanced-data-engineering",
+        title: "Advanced Data Engineering",
+        hours: 23,
+        summary:
+          "Data pipelines and their lifecycle, message queues for managing data processing, and vector, graph and key/value databases for storage at scale.",
+      },
+      {
+        slug: "genai-and-llms-on-aws",
+        title: "GenAI and LLMs on AWS",
+        hours: 46,
+        summary:
+          "Building generative AI solutions on AWS, the cloud computing fundamentals underneath machine learning on AWS, and developing solutions with Amazon Bedrock.",
+      },
+      {
+        slug: "databricks-to-local-llms",
+        title: "Databricks to Local LLMs",
+        hours: 27,
+        summary:
+          "Databricks for data engineering and machine learning workloads, designing ML pipelines, and running local LLMs with Llamafile and Mixtral.",
+      },
+      {
+        slug: "open-source-llmops-solutions",
+        title: "Open Source LLMOps Solutions",
+        hours: 36,
+        summary:
+          "Running local large language models, fine-tuning them, and using open source generative AI.",
       },
     ],
   },
