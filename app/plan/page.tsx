@@ -114,6 +114,11 @@ export default function PlanPage() {
                         {step.url ? ` · ${hostOf(step.url)}` : ""}
                       </span>
                     </div>
+                    {step.moduleProgress ? (
+                      <span className="text-[11px] font-mono uppercase tracking-wider px-2 py-1 rounded-md bg-amber-400/15 border border-amber-400/40 text-amber-300">
+                        {step.moduleProgress}
+                      </span>
+                    ) : null}
                     {step.id === takeawayStepId ? (
                       <Link
                         href={`/plan/${step.id}/takeaways?from=plan`}

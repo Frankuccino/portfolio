@@ -63,6 +63,7 @@ export type RoadmapStep = {
   issuer: string;
   credentialType: string;
   commitment: string;
+  moduleProgress?: string;
   summary: string;
   outcomes: string[];
   /** Set when the credential has been earned, which tags it on the plan. */
@@ -2078,6 +2079,10 @@ export const roadmapSteps: RoadmapStep[] = [
     issuer: "Microsoft · Coursera",
     credentialType: "Professional Certificate · 5 courses",
     commitment: "~6 months at 7 hrs/week",
+    /**
+     * Where the builder is, right now, inside the syllabus.
+     */
+    moduleProgress: "Course 1 · Module 2 · ATM",
     summary:
       "The breadth first: AI & ML infrastructure and data pipelines, core algorithms and techniques, intelligent troubleshooting agents, and the Azure ML lifecycle from data prep through deployment and monitoring. The foundation the applied layer sits on.",
     outcomes: [
