@@ -81,7 +81,123 @@ function Heading({
   return <Tag className={styles[level] ?? styles[4]}>{children}</Tag>;
 }
 
+const KEYWORDS = new Set([
+  "and", "as", "assert", "async", "await", "break", "class", "continue",
+  "def", "del", "elif", "else", "except", "False", "finally", "for", "from",
+  "global", "if", "import", "in", "is", "lambda", "None", "nonlocal", "not",
+  "or", "pass", "raise", "return", "True", "try", "while", "with", "yield",
+  "int", "float", "str", "bool", "dict", "list", "tuple", "len", "all",
+  "print", "range", "enumerate", "zip", "min", "max", "sum", "round",
+]);
+
+const TOKEN = {
+  comment: "text-[#5f7180] italic",
+  string: "text-[#a7d3bf]",
+  keyword: "text-[#8fbfe0]",
+  fn: "text-[#c9b6e4]",
+  number: "text-[#e2b98f]",
+  key: "text-[#9fd0e0]",
+};
+
+type CodePart = { text: string; className?: string };
+
+/**
+ * A small, dependency-free tokeniser for the code this site actually ships:
+ * Python, JSON and short text snippets. It preserves whitespace verbatim and
+ * merges adjacent tokens of the same class so the DOM stays small.
+ */
+function highlight(code: string, language: string): CodePart[] {
+  const parts: CodePart[] = [];
+  const isPython = language === "python" || language === "py";
+  const isJs = language === "javascript" || language === "typescript";
+  const isJson = language === "json";
+
+  const push = (text: string, className?: string) => {
+    if (!text) return;
+    const last = parts[parts.length - 1];
+    if (last && last.className === className) last.text += text;
+    else parts.push({ text, className });
+  };
+
+  let i = 0;
+  while (i < code.length) {
+    const rest = code.slice(i);
+
+    if (isPython && code[i] === "#") {
+      const end = code.indexOf("\n", i);
+      const stop = end === -1 ? code.length : end;
+      push(code.slice(i, stop), TOKEN.comment);
+      i = stop;
+      continue;
+    }
+    if (isJs && rest.startsWith("//")) {
+      const end = code.indexOf("\n", i);
+      const stop = end === -1 ? code.length : end;
+      push(code.slice(i, stop), TOKEN.comment);
+      i = stop;
+      continue;
+    }
+    if (isPython && rest.startsWith('"""')) {
+      const end = code.indexOf('"""', i + 3);
+      const stop = end === -1 ? code.length : end + 3;
+      push(code.slice(i, stop), TOKEN.string);
+      i = stop;
+      continue;
+    }
+    if (code[i] === '"' || code[i] === "'") {
+      const quote = code[i];
+      let j = i + 1;
+      while (j < code.length) {
+        if (code[j] === "\\") {
+          j += 2;
+          continue;
+        }
+        if (code[j] === quote) {
+          j += 1;
+          break;
+        }
+        if (code[j] === "\n") break;
+        j += 1;
+      }
+      const isKey = isJson && /^\s*:/.test(code.slice(j));
+      push(code.slice(i, j), isKey ? TOKEN.key : TOKEN.string);
+      i = j;
+      continue;
+    }
+
+    const number = rest.match(/^\d+(?:\.\d+)?/);
+    if (number) {
+      push(number[0], TOKEN.number);
+      i += number[0].length;
+      continue;
+    }
+
+    const word = rest.match(/^[A-Za-z_][A-Za-z0-9_]*/);
+    if (word) {
+      const token = word[0];
+      let className: string | undefined;
+      if (KEYWORDS.has(token)) className = TOKEN.keyword;
+      else if (token === "true" || token === "false" || token === "null") {
+        className = TOKEN.number;
+      } else {
+        let j = i + token.length;
+        while (code[j] === " " || code[j] === "\t") j += 1;
+        if (code[j] === "(") className = TOKEN.fn;
+        else if (isJson && code[j] === ":") className = TOKEN.key;
+      }
+      push(token, className);
+      i += token.length;
+      continue;
+    }
+
+    push(code[i]);
+    i += 1;
+  }
+  return parts;
+}
+
 function CodeBlock({ language, code }: { language: string; code: string }) {
+  const parts = highlight(code, language);
   return (
     <div className="my-4 rounded-lg border border-slate-800 bg-slate-950 overflow-hidden">
       {language ? (
@@ -90,7 +206,13 @@ function CodeBlock({ language, code }: { language: string; code: string }) {
         </div>
       ) : null}
       <pre className="p-3 overflow-x-auto text-xs font-mono leading-relaxed text-slate-300">
-        <code>{code}</code>
+        <code>
+          {parts.map((part, index) => (
+            <span key={index} className={part.className}>
+              {part.text}
+            </span>
+          ))}
+        </code>
       </pre>
     </div>
   );
@@ -100,6 +222,33 @@ const HEADING_PATTERN = /^(#{1,4})\s+(.*)$/;
 const ULIST_PATTERN = /^\s*[-*]\s+/;
 const OLIST_PATTERN = /^\s*\d+\.\s+/;
 const TABLE_ROW_PATTERN = /^\s*\|.*\|\s*$/;
+
+/** Stable anchors derived from the heading text the reader actually sees. */
+export function headingSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/** Level-2 headings declare a chapter; level-3 headings are its note sections. */
+export function noteChapters(notes: string[] | undefined): {
+  id: string;
+  label: string;
+  count: number;
+}[] {
+  const chapters: { id: string; label: string; count: number }[] = [];
+  for (const note of notes ?? []) {
+    const line = note.split("\n").find((part) => /^##\s+/.test(part));
+    if (line) {
+      const label = line.replace(/^##\s+/, "").trim();
+      chapters.push({ id: headingSlug(label), label, count: 0 });
+    } else if (/^###\s+/.test(note) && chapters.length > 0) {
+      chapters[chapters.length - 1].count += 1;
+    }
+  }
+  return chapters;
+}
 
 function isTableSeparator(line: string): boolean {
   const trimmed = line.trim();
@@ -114,7 +263,15 @@ function parseTableRow(row: string): string[] {
   return trimmed.split("|").map((cell) => cell.trim());
 }
 
-export function Markdown({ content }: { content: string }) {
+export function Markdown({
+  content,
+  headingAnchors = false,
+  chapterDividers = false,
+}: {
+  content: string;
+  headingAnchors?: boolean;
+  chapterDividers?: boolean;
+}) {
   const lines = content.split("\n");
   const blocks: React.ReactNode[] = [];
   let index = 0;
@@ -145,11 +302,27 @@ export function Markdown({ content }: { content: string }) {
 
     const heading = line.match(HEADING_PATTERN);
     if (heading) {
-      blocks.push(
-        <Heading key={key++} level={heading[1].length}>
-          {parseInline(heading[2])}
-        </Heading>,
-      );
+      const level = heading[1].length;
+      const id = headingAnchors ? headingSlug(heading[2]) : undefined;
+      if (chapterDividers && level === 2) {
+        blocks.push(
+          <div
+            key={key++}
+            className="mt-10 pt-5 border-t border-slate-800/70 first:mt-0 scroll-mt-28"
+            id={id}
+          >
+            <h2 className="text-[11px] font-mono uppercase tracking-widest text-[#7fb0c2]">
+              {parseInline(heading[2])}
+            </h2>
+          </div>,
+        );
+      } else {
+        blocks.push(
+          <Heading key={key++} level={level}>
+            {id ? <span id={id} className="scroll-mt-28">{parseInline(heading[2])}</span> : parseInline(heading[2])}
+          </Heading>,
+        );
+      }
       index += 1;
       continue;
     }
