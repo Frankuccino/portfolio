@@ -9,7 +9,7 @@ import RoadmapFigure from "../../../../components/RoadmapFigure";
 import { PageMetrics } from "../../../../components/PageMetrics";
 import ModuleRail from "../../../../components/ModuleRail";
 import type { ReadingRailSection } from "../../../../components/ReadingPlanLayout";
-import { Markdown, noteChapters } from "../../../../lib/markdown";
+import { Markdown, headingSlug, noteChapters } from "../../../../lib/markdown";
 
 export function generateStaticParams() {
   return roadmapSteps.flatMap((step) =>
@@ -53,8 +53,37 @@ export async function generateMetadata({
   };
 }
 
-const shortChapter = (label: string) => label.replace(/^\d+\s*\/\s*/, "");
-const sectionCount = (count: number) => `${count} note${count === 1 ? "" : "s"}`;
+const LAYER_COLORS = ["#3e6274", "#4f7d92", "#5f93a8", "#7fb0c2", "#a8d0de"];
+
+type TopicUnit = { id: string; label: string; body: string };
+
+function noteHeading(note: string): string {
+  const line = note
+    .split("\n")
+    .find((part) => /^#{2,3}\s+/.test(part));
+  return line?.replace(/^#{2,3}\s+/, "").trim() ?? "";
+}
+
+function buildUnits(notes: string[], hasChapters: boolean): TopicUnit[] {
+  return notes.map((note, index) => {
+    const lines = note.split("\n");
+    if (hasChapters) {
+      const marker = lines.findIndex((line) => /^##\s+/.test(line));
+      const fallback = noteHeading(note);
+      const label = (marker >= 0
+        ? lines[marker].replace(/^##\s+/, "")
+        : fallback || `Section ${index + 1}`
+      ).replace(/^\d+\s*\/\s*/, "").trim();
+      const bodyLines = marker >= 0
+        ? [...lines.slice(0, marker), ...lines.slice(marker + 1)]
+        : lines;
+      const body = bodyLines.join("\n").replace(/^###\s+/gm, "#### ");
+      return { id: `${headingSlug(label)}-${index}`, label, body: `### ${label}\n\n${body}` };
+    }
+    const label = noteHeading(note) || `Section ${index + 1}`;
+    return { id: `${headingSlug(label)}-${index}`, label, body: note };
+  });
+}
 
 export default async function RoadmapModulePage({
   params,
@@ -68,37 +97,55 @@ export default async function RoadmapModulePage({
   if (!step || !course || !mod) notFound();
 
   const chapters = noteChapters(mod.notes);
+  const hasChapters = chapters.length > 0;
   const groups = mod.breakdown ?? [];
   const mustMasterSkills = mod.mustMasterSkills ?? [];
   const mentalLocks = mod.mentalLocks ?? [];
+  const layers = mod.layers ?? [];
   const conceptCount = groups.reduce((total, group) => total + group.items.length, 0);
-  const chapterSections: ReadingRailSection[] = chapters.map((chapter, index) => ({
-    id: chapter.id,
-    label: shortChapter(chapter.label),
+  const units = buildUnits(mod.notes ?? [], hasChapters);
+  const topics = mod.topics?.length
+    ? mod.topics
+    : units.map((unit, index) => ({ label: unit.label, units: [index] }));
+
+  const topicLayers: Record<string, { label: string; color: string }> = {};
+  topics.forEach((topic) => {
+    const layerIndex = layers.findIndex((layer) => {
+      const offset = hasChapters ? 0 : -1;
+      const covered = new Set<number>();
+      for (let position = layer.start + offset; position <= layer.end + offset; position += 1) {
+        covered.add(position);
+      }
+      return topic.units.some((unit) => covered.has(unit));
+    });
+    if (layerIndex >= 0) {
+      topicLayers[headingSlug(topic.label)] = {
+        label: layers[layerIndex].label,
+        color: LAYER_COLORS[layerIndex % LAYER_COLORS.length],
+      };
+    }
+  });
+
+  const topicKeywords: Record<string, string[]> = {};
+  topics.forEach((topic) => {
+    const seen = new Set<string>();
+    topicKeywords[headingSlug(topic.label)] = topic.units
+      .map((unit) => units[unit]?.label ?? "")
+      .filter((label) => {
+        if (!label || seen.has(label)) return false;
+        seen.add(label);
+        return true;
+      })
+      .slice(0, 4);
+  });
+  const topicSections: ReadingRailSection[] = topics.map((topic, index) => ({
+    id: headingSlug(topic.label),
+    label: topic.label,
     chip: String(index + 1).padStart(2, "0"),
-    meta: sectionCount(chapter.count),
+    meta: `${topic.units.length} ${topic.units.length === 1 ? "section" : "sections"}`,
+    keywords: topicKeywords[headingSlug(topic.label)],
   }));
-  const submoduleSections: ReadingRailSection[] = (mod.submodules ?? []).flatMap(
-    (group, index) => {
-      const selected = chapters.slice(
-        Math.max(0, group.start - 1),
-        Math.min(chapters.length, group.end),
-      );
-      if (selected.length === 0) return [];
-      return [
-        {
-          id: selected[0].id,
-          label: group.label,
-          chip: String(index + 1).padStart(2, "0"),
-          meta: sectionCount(
-            selected.reduce((total, chapter) => total + chapter.count, 0),
-          ),
-          ids: selected.map((chapter) => chapter.id),
-        },
-      ];
-    },
-  );
-  const rail: ReadingRailSection[] = chapters.length
+  const rail: ReadingRailSection[] = units.length
     ? [
         {
           id: "concept-map",
@@ -106,9 +153,21 @@ export default async function RoadmapModulePage({
           chip: "00",
           meta: `${conceptCount} concepts · ${groups.length} categories`,
         },
-        ...(mod.submodules?.length ? submoduleSections : chapterSections),
+        ...topicSections,
       ]
     : [];
+  const content = topics
+    .map((topic) =>
+      [
+        `## ${topic.label}`,
+        "",
+        topic.units
+          .map((unit) => units[unit]?.body ?? "")
+          .filter(Boolean)
+          .join("\n\n"),
+      ].join("\n"),
+    )
+    .join("\n\n");
 
   return (
     <main className="relative px-4 sm:px-6 pt-28 pb-24 min-h-screen">
@@ -201,6 +260,35 @@ export default async function RoadmapModulePage({
                   </ol>
                 </div>
               ) : null}
+
+              {layers.length > 0 ? (
+                <div className="mt-6 border-t border-slate-800/70 pt-5">
+                  <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+                    {"//"} Layer map
+                  </h2>
+                  <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+                    {layers.map((layer, index) => (
+                      <div key={layer.label} className="flex items-center gap-2">
+                        <span
+                          className="font-mono text-[10px]"
+                          style={{
+                            color: LAYER_COLORS[index % LAYER_COLORS.length],
+                          }}
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="text-xs text-slate-300">
+                          {layer.label}
+                        </span>
+                        <span className="text-[10px] text-slate-500">
+                          {layer.end - layer.start + 1}{" "}
+                          {hasChapters ? "subtopics" : "sections"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
             </section>
           ) : null}
 
@@ -269,9 +357,11 @@ export default async function RoadmapModulePage({
                 {"//"} Module notes
               </h2>
               <Markdown
-                content={mod.notes.join("\n\n")}
+                content={content}
                 headingAnchors
                 chapterDividers
+                chapterLayers={topicLayers}
+                topicKeywords={topicKeywords}
               />
             </section>
           ) : null}

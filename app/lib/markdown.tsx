@@ -267,10 +267,14 @@ export function Markdown({
   content,
   headingAnchors = false,
   chapterDividers = false,
+  chapterLayers,
+  topicKeywords,
 }: {
   content: string;
   headingAnchors?: boolean;
   chapterDividers?: boolean;
+  chapterLayers?: Record<string, { label: string; color: string }>;
+  topicKeywords?: Record<string, string[]>;
 }) {
   const lines = content.split("\n");
   const blocks: React.ReactNode[] = [];
@@ -305,15 +309,33 @@ export function Markdown({
       const level = heading[1].length;
       const id = headingAnchors ? headingSlug(heading[2]) : undefined;
       if (chapterDividers && level === 2) {
+        const layer = id ? chapterLayers?.[id] : undefined;
         blocks.push(
           <div
             key={key++}
-            className="mt-10 pt-5 border-t border-slate-800/70 first:mt-0 scroll-mt-28"
+            className="mt-12 pt-6 pl-5 border-t border-l-2 border-slate-800/80 first:mt-0 scroll-mt-28"
+            style={layer ? { borderLeftColor: layer.color } : undefined}
             id={id}
           >
-            <h2 className="text-[11px] font-mono uppercase tracking-widest text-[#7fb0c2]">
+            {layer ? (
+              <div className="mb-2 flex items-center gap-3">
+                <span
+                  className="font-mono text-[10px] uppercase tracking-widest"
+                  style={{ color: layer.color }}
+                >
+                  {layer.label}
+                </span>
+                <span className="h-px flex-1 bg-slate-800/70" />
+              </div>
+            ) : null}
+            <h2 className="text-lg md:text-xl font-semibold text-slate-100 tracking-tight leading-snug">
               {parseInline(heading[2])}
             </h2>
+            {id && topicKeywords?.[id]?.length ? (
+              <p className="mt-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-500">
+                Keywords: {topicKeywords[id].join(" · ")}
+              </p>
+            ) : null}
           </div>,
         );
       } else {

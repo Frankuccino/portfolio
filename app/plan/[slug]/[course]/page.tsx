@@ -91,9 +91,10 @@ export default async function RoadmapCoursePage({
                 (course.moduleLabel ?? "modules").slice(1)}
             </h2>
             <div className="space-y-3">
-              {course.modules.map((module) => (
+              {course.modules.map((module, index) => (
                 <RoadmapModuleCard
                   key={module.slug}
+                  number={index + 1}
                   module={module}
                   href={`/plan/${step.id}/${course.slug}/${module.slug}`}
                 />

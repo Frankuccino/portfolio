@@ -25,6 +25,8 @@ export type ReadingRailSection = {
   chip: string;
   /** The line under "// On this page", naming where the reader is. */
   meta: string;
+  /** Short navigational cues for this topic. */
+  keywords?: string[];
   /** Additional anchors that resolve to this row, used when chapters are grouped into sub-modules. */
   ids?: string[];
 };

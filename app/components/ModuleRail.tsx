@@ -97,7 +97,14 @@ export default function ModuleRail({
               >
                 {entry.chip}
               </span>
-              <span className="min-w-0 truncate">{entry.label}</span>
+              <span className="min-w-0">
+                <span className="block truncate">{entry.label}</span>
+                {isActive && entry.keywords?.length ? (
+                  <span className="mt-0.5 block truncate text-[9px] text-slate-500">
+                    {entry.keywords.slice(0, 3).join(" · ")}
+                  </span>
+                ) : null}
+              </span>
             </a>
           </li>
         );
@@ -122,7 +129,7 @@ export default function ModuleRail({
               </div>
               {active ? (
                 <p className="mt-1.5 text-[10px] font-mono uppercase tracking-widest text-[#5f93a8]">
-                  {active.meta}
+                  {active.keywords?.length ? active.keywords.join(" · ") : active.meta}
                 </p>
               ) : null}
               {railList(false)}
@@ -152,7 +159,7 @@ export default function ModuleRail({
           </div>
           {active ? (
             <p className="mt-1 truncate text-[10px] font-mono uppercase tracking-wider text-[#5f93a8]">
-              {active.meta}
+              {active.keywords?.length ? active.keywords.join(" · ") : active.meta}
             </p>
           ) : null}
           <div className="mt-2">{railList(true)}</div>
