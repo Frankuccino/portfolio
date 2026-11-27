@@ -1,4 +1,6 @@
 import React from "react";
+import CodeCopyButton from "../components/CodeCopyButton";
+import CollapsibleTableRows from "../components/CollapsibleTableRows";
 
 /**
  * Minimal, dependency-free markdown renderer.
@@ -201,8 +203,9 @@ function CodeBlock({ language, code }: { language: string; code: string }) {
   return (
     <div className="my-4 rounded-lg border border-slate-800 bg-slate-950 overflow-hidden">
       {language ? (
-        <div className="px-3 py-1.5 border-b border-slate-800 text-[10px] font-mono uppercase tracking-wider text-slate-400">
-          {language}
+        <div className="relative flex items-center justify-between border-b border-slate-800 px-3 py-1.5 pr-20 text-[10px] font-mono uppercase tracking-wider text-slate-400">
+          <span>{language}</span>
+          <CodeCopyButton code={code} />
         </div>
       ) : null}
       <pre className="p-3 overflow-x-auto text-xs font-mono leading-relaxed text-slate-300">
@@ -250,6 +253,28 @@ export function noteChapters(notes: string[] | undefined): {
   return chapters;
 }
 
+function semanticBadge(cell: string): { label: string; className: string } | null {
+  if (/failure|trap|watch for|risk/i.test(cell)) {
+    return {
+      label: "TRAP",
+      className: "border-amber-500/30 bg-amber-500/10 text-amber-300",
+    };
+  }
+  if (/boundary|rule|enforced|guardrail/i.test(cell)) {
+    return {
+      label: "BOUNDARY",
+      className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+    };
+  }
+  if (/metric|sla|latency|precision|score|rate/i.test(cell)) {
+    return {
+      label: "METRIC",
+      className: "border-purple-500/30 bg-purple-500/10 text-purple-300",
+    };
+  }
+  return null;
+}
+
 function isTableSeparator(line: string): boolean {
   const trimmed = line.trim();
   if (!trimmed.includes("-")) return false;
@@ -269,12 +294,14 @@ export function Markdown({
   chapterDividers = false,
   chapterLayers,
   topicKeywords,
+  collapsibleTables = false,
 }: {
   content: string;
   headingAnchors?: boolean;
   chapterDividers?: boolean;
   chapterLayers?: Record<string, { label: string; color: string }>;
   topicKeywords?: Record<string, string[]>;
+  collapsibleTables?: boolean;
 }) {
   const lines = content.split("\n");
   const blocks: React.ReactNode[] = [];
@@ -361,11 +388,28 @@ export function Markdown({
         buffer.push(lines[index].trimStart().replace(/^>\s?/, ""));
         index += 1;
       }
+      const callout = buffer[0]?.match(/^(Tip|Warning|Note):/i)?.[1];
+      const badgeClass = callout
+        ? /warning/i.test(callout)
+          ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
+          : /tip/i.test(callout)
+            ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+            : "border-[#3e6274]/40 bg-[#3e6274]/10 text-[#7fb0c2]"
+        : "";
       blocks.push(
         <blockquote
           key={key++}
-          className="border-l-2 border-[#3e6274]/60 pl-4 py-1 my-3 text-slate-400 italic"
+          className={`border-l-2 pl-4 py-1 my-3 text-slate-400 italic ${
+            badgeClass ? "border-[#5f93a8]/60" : "border-[#3e6274]/60"
+          }`}
         >
+          {callout ? (
+            <span
+              className={`mr-2 inline-block rounded border px-1.5 py-0.5 font-mono text-[9px] not-italic uppercase tracking-wider ${badgeClass}`}
+            >
+              {callout}
+            </span>
+          ) : null}
           {buffer.map((text, lineIndex) => (
             <p key={lineIndex} className="mb-1.5 last:mb-0 text-sm leading-relaxed">
               {parseInline(text)}
@@ -420,35 +464,60 @@ export function Markdown({
         rows.push(lines[index]);
         index += 1;
       }
+      const headerCells = parseTableRow(rows[0]);
       const bodyRows = rows.slice(isTableSeparator(rows[1] ?? "") ? 2 : 1);
+      const hasOverflow = collapsibleTables && bodyRows.length > 6;
+      const visibleRows = hasOverflow ? bodyRows.slice(0, 6) : bodyRows;
+      const hiddenRows = hasOverflow ? bodyRows.slice(6) : [];
+
+      const renderRow = (row: string, rowIndex: number, suffix: string) => (
+        <tr key={`${suffix}-${rowIndex}`} className="odd:bg-slate-950/40">
+          {parseTableRow(row).map((cell, cellIndex) => (
+            <td
+              key={`${suffix}-${rowIndex}-${cellIndex}`}
+              className="px-3 py-2 border-b border-slate-800/60 align-top"
+            >
+              {parseInline(cell)}
+            </td>
+          ))}
+        </tr>
+      );
+
       blocks.push(
         <div key={key++} className="my-4 overflow-x-auto">
           <table className="w-full text-xs text-slate-300 border border-slate-800 rounded-lg border-collapse">
             <thead>
               <tr className="bg-slate-900/70">
-                {parseTableRow(rows[0]).map((cell, cellIndex) => (
-                  <th
-                    key={cellIndex}
-                    className="px-3 py-2 text-left font-semibold text-slate-100 border-b border-slate-800"
-                  >
-                    {parseInline(cell)}
-                  </th>
-                ))}
+                {headerCells.map((cell, cellIndex) => {
+                  const badge = semanticBadge(cell);
+                  return (
+                    <th
+                      key={`h-${cellIndex}`}
+                      className="px-3 py-2 text-left font-semibold text-slate-100 border-b border-slate-800"
+                    >
+                      {badge ? (
+                        <span
+                          className={`mr-1.5 inline-block rounded border px-1 py-0.5 font-mono text-[8px] ${badge.className}`}
+                        >
+                          {badge.label}
+                        </span>
+                      ) : null}
+                      {parseInline(cell)}
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
-              {bodyRows.map((row, rowIndex) => (
-                <tr key={rowIndex} className="odd:bg-slate-950/40">
-                  {parseTableRow(row).map((cell, cellIndex) => (
-                    <td
-                      key={cellIndex}
-                      className="px-3 py-2 border-b border-slate-800/60 align-top"
-                    >
-                      {parseInline(cell)}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              {visibleRows.map((row, rowIndex) => renderRow(row, rowIndex, "row"))}
+              {hiddenRows.length ? (
+                <CollapsibleTableRows
+                  rows={hiddenRows.map((row, rowIndex) =>
+                    renderRow(row, rowIndex + visibleRows.length, "extra"),
+                  )}
+                  colSpan={headerCells.length}
+                />
+              ) : null}
             </tbody>
           </table>
         </div>,

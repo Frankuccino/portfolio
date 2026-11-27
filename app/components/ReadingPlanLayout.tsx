@@ -29,6 +29,8 @@ export type ReadingRailSection = {
   keywords?: string[];
   /** Additional anchors that resolve to this row, used when chapters are grouped into sub-modules. */
   ids?: string[];
+  /** Nested second-level anchors for a two-level table of contents. */
+  children?: { id: string; label: string }[];
 };
 
 const plural = (count: number, noun: string) =>

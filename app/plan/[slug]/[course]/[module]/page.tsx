@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { roadmapSteps } from "../../../../data/roadmap";
 import { canonical } from "../../../../lib/siteUrl";
@@ -7,9 +8,18 @@ import { ogImage } from "../../../../lib/ogImage";
 import TrackClose from "../../../../components/TrackClose";
 import RoadmapFigure from "../../../../components/RoadmapFigure";
 import { PageMetrics } from "../../../../components/PageMetrics";
-import ModuleRail from "../../../../components/ModuleRail";
+import ModuleWorkspace, { type ModuleTab } from "../../../../components/ModuleWorkspace";
+import ModuleStepper, { type ModuleStep } from "../../../../components/ModuleStepper";
+import QuizQuestion from "../../../../components/QuizQuestion";
 import type { ReadingRailSection } from "../../../../components/ReadingPlanLayout";
 import { Markdown, headingSlug, noteChapters } from "../../../../lib/markdown";
+import {
+  buildUnits,
+  collectCodeSnippets,
+  parseQuizQuestions,
+  splitNote,
+  type TopicUnit,
+} from "../../../../lib/moduleContent";
 
 export function generateStaticParams() {
   return roadmapSteps.flatMap((step) =>
@@ -55,34 +65,121 @@ export async function generateMetadata({
 
 const LAYER_COLORS = ["#3e6274", "#4f7d92", "#5f93a8", "#7fb0c2", "#a8d0de"];
 
-type TopicUnit = { id: string; label: string; body: string };
-
-function noteHeading(note: string): string {
-  const line = note
-    .split("\n")
-    .find((part) => /^#{2,3}\s+/.test(part));
-  return line?.replace(/^#{2,3}\s+/, "").trim() ?? "";
+function isQuizUnit(unit: TopicUnit): boolean {
+  return /quiz/i.test(unit.label) || /^Question\s+\d+:/m.test(unit.body);
 }
 
-function buildUnits(notes: string[], hasChapters: boolean): TopicUnit[] {
-  return notes.map((note, index) => {
-    const lines = note.split("\n");
-    if (hasChapters) {
-      const marker = lines.findIndex((line) => /^##\s+/.test(line));
-      const fallback = noteHeading(note);
-      const label = (marker >= 0
-        ? lines[marker].replace(/^##\s+/, "")
-        : fallback || `Section ${index + 1}`
-      ).replace(/^\d+\s*\/\s*/, "").trim();
-      const bodyLines = marker >= 0
-        ? [...lines.slice(0, marker), ...lines.slice(marker + 1)]
-        : lines;
-      const body = bodyLines.join("\n").replace(/^###\s+/gm, "#### ");
-      return { id: `${headingSlug(label)}-${index}`, label, body: `### ${label}\n\n${body}` };
-    }
-    const label = noteHeading(note) || `Section ${index + 1}`;
-    return { id: `${headingSlug(label)}-${index}`, label, body: note };
-  });
+function isAnswerUnit(unit: TopicUnit): boolean {
+  return /answer key|answer & explanation|answer and explanation/i.test(unit.label);
+}
+
+function isCodeUnit(unit: TopicUnit): boolean {
+  return unit.body.includes("```") && /lab|code cookbook/i.test(unit.label);
+}
+
+function isTakeaway(unit: TopicUnit): boolean {
+  return (
+    /three-bullet takeaway/i.test(unit.label) ||
+    /^#{2,4}\s+Three-bullet takeaway/im.test(unit.body)
+  );
+}
+
+function takeawaySource(unit: TopicUnit): string {
+  return unit.label
+    .replace(/^Derived notes:\s*/i, "")
+    .replace(/^Three-bullet takeaway:\s*/i, "")
+    .trim() || "module review";
+}
+
+function isDecisionTable(unit: TopicUnit): boolean {
+  return (
+    unit.body.includes("|") &&
+    /decision options|versus|trade-off|comparison|matrix|scoreboard|scorecard/i.test(unit.label)
+  );
+}
+
+function decisionFamily(label: string): string {
+  if (/chunk/i.test(label)) return "chunking";
+  if (/failure|diagnos/i.test(label)) return "failure";
+  if (/evaluation|scoreboard|scorecard/i.test(label)) return "evaluation";
+  if (/fine-tun|adaptation|rag versus/i.test(label)) return "adaptation";
+  if (/decision option/i.test(label)) return "decision";
+  return label;
+}
+
+function decisionRank(label: string): number {
+  if (/matrix|decision options|scorecard/i.test(label)) return 0;
+  if (/versus|comparison|trade-off/i.test(label)) return 1;
+  return 2;
+}
+
+function NoteBlock({ unit }: { unit: TopicUnit }) {
+  const { label, body } = splitNote(unit);
+  const gate = /gate/i.test(label);
+  return (
+    <div id={unit.id} className="scroll-mt-28 rounded-lg border border-slate-800/60 bg-slate-950/30 p-4">
+      <div className="flex items-center gap-2">
+        {gate ? (
+          <span className="rounded border border-purple-500/30 bg-purple-500/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-purple-300">
+            Gate
+          </span>
+        ) : null}
+        <h3 className="text-sm font-semibold text-slate-100">{label}</h3>
+      </div>
+      <div className="mt-2">
+        <Markdown content={body} collapsibleTables />
+      </div>
+    </div>
+  );
+}
+
+function TakeawayBlock({ unit }: { unit: TopicUnit }) {
+  const { body } = splitNote(unit);
+  const cleanBody = body.replace(/^####\s+Three-bullet takeaway\s*/i, "").trim();
+  return (
+    <div
+      id={unit.id}
+      className="scroll-mt-28 rounded-lg border border-slate-800/60 bg-slate-950/30 p-4"
+    >
+      <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+        From: {takeawaySource(unit)}
+      </p>
+      <div className="mt-3">
+        <Markdown content={cleanBody} collapsibleTables />
+      </div>
+    </div>
+  );
+}
+
+function CollapsedNote({ unit }: { unit: TopicUnit }) {
+  const { label, body } = splitNote(unit);
+  return (
+    <details id={unit.id} className="scroll-mt-28 rounded-lg border border-slate-800/60 bg-slate-950/30 px-4 py-3">
+      <summary className="cursor-pointer text-sm font-semibold text-slate-300 hover:text-slate-100">
+        {label}
+      </summary>
+      <div className="mt-3">
+        <Markdown content={body} collapsibleTables />
+      </div>
+    </details>
+  );
+}
+
+function toc(
+  id: string,
+  label: string,
+  chip: string,
+  children: { id: string; label: string }[],
+  keywords?: string[],
+): ReadingRailSection {
+  return {
+    id,
+    label,
+    chip,
+    meta: `${children.length} section${children.length === 1 ? "" : "s"}`,
+    keywords,
+    children,
+  };
 }
 
 export default async function RoadmapModulePage({
@@ -96,17 +193,35 @@ export default async function RoadmapModulePage({
   const mod = (course?.modules ?? []).find((item) => item.slug === moduleSlug);
   if (!step || !course || !mod) notFound();
 
+  const coursePath = `/plan/${step.id}/${course.slug}`;
+  const moduleSteps: ModuleStep[] = (course.modules ?? []).map((entry, index) => ({
+    slug: entry.slug,
+    title: entry.title,
+    number: index + 1,
+  }));
+  const currentIndex = Math.max(
+    0,
+    moduleSteps.findIndex((entry) => entry.slug === moduleSlug),
+  );
+
   const chapters = noteChapters(mod.notes);
   const hasChapters = chapters.length > 0;
   const groups = mod.breakdown ?? [];
   const mustMasterSkills = mod.mustMasterSkills ?? [];
   const mentalLocks = mod.mentalLocks ?? [];
   const layers = mod.layers ?? [];
-  const conceptCount = groups.reduce((total, group) => total + group.items.length, 0);
   const units = buildUnits(mod.notes ?? [], hasChapters);
   const topics = mod.topics?.length
     ? mod.topics
     : units.map((unit, index) => ({ label: unit.label, units: [index] }));
+
+  const goldenTopic = topics.find((topic) => /golden recall/i.test(topic.label));
+  const goldenUnits = new Set(goldenTopic?.units ?? []);
+  const caseUnits = new Set(
+    topics
+      .filter((topic) => /case study/i.test(topic.label))
+      .flatMap((topic) => topic.units),
+  );
 
   const topicLayers: Record<string, { label: string; color: string }> = {};
   topics.forEach((topic) => {
@@ -130,7 +245,7 @@ export default async function RoadmapModulePage({
   topics.forEach((topic) => {
     const seen = new Set<string>();
     topicKeywords[headingSlug(topic.label)] = topic.units
-      .map((unit) => units[unit]?.label ?? "")
+      .map((index) => units[index]?.label ?? "")
       .filter((label) => {
         if (!label || seen.has(label)) return false;
         seen.add(label);
@@ -138,249 +253,430 @@ export default async function RoadmapModulePage({
       })
       .slice(0, 4);
   });
-  const topicSections: ReadingRailSection[] = topics.map((topic, index) => ({
-    id: headingSlug(topic.label),
-    label: topic.label,
-    chip: String(index + 1).padStart(2, "0"),
-    meta: `${topic.units.length} ${topic.units.length === 1 ? "section" : "sections"}`,
-    keywords: topicKeywords[headingSlug(topic.label)],
-  }));
-  const rail: ReadingRailSection[] = units.length
-    ? [
-        {
-          id: "concept-map",
-          label: "Concept map",
-          chip: "00",
-          meta: `${conceptCount} concepts · ${groups.length} categories`,
-        },
-        ...topicSections,
-      ]
-    : [];
-  const content = topics
-    .map((topic) =>
-      [
-        `## ${topic.label}`,
-        "",
-        topic.units
-          .map((unit) => units[unit]?.body ?? "")
-          .filter(Boolean)
-          .join("\n\n"),
-      ].join("\n"),
-    )
-    .join("\n\n");
+
+  const category = (unit: TopicUnit, index: number): "cheat" | "notes" | "case" | "quiz" => {
+    if (isQuizUnit(unit) || isAnswerUnit(unit)) return "quiz";
+    if (isCodeUnit(unit) || caseUnits.has(index)) return "case";
+    if (goldenUnits.has(index)) return "cheat";
+    return "notes";
+  };
+
+  const indexes = (list: "all" | "cheat" | "notes" | "case" | "quiz") =>
+    units
+      .map((unit, index) => ({ unit, index }))
+      .filter(({ unit, index }) => list === "all" || category(unit, index) === list)
+      .map(({ index }) => index);
+
+  const takeawayIndexes = indexes("all").filter((index) => isTakeaway(units[index]));
+  const decisionCandidates = indexes("cheat").filter((index) => isDecisionTable(units[index]));
+  const decisionByFamily = new Map<string, number>();
+  decisionCandidates.forEach((index) => {
+    const label = units[index].label;
+    const family = decisionFamily(label);
+    const current = decisionByFamily.get(family);
+    if (current === undefined || decisionRank(label) < decisionRank(units[current].label)) {
+      decisionByFamily.set(family, index);
+    }
+  });
+  const decisionIndexes = [...decisionByFamily.values()].sort((a, b) => a - b);
+  const recallIndexes = indexes("cheat").filter(
+    (index) => !takeawayIndexes.includes(index) && !decisionIndexes.includes(index),
+  );
+  const codeIndexes = indexes("case").filter((index) => isCodeUnit(units[index]));
+  const caseTopicIndexes = indexes("all").filter((index) => caseUnits.has(index));
+  const quizQuestions = parseQuizQuestions(units, mod.title);
+  const quizIndexes = indexes("quiz");
+
+  const conceptIndex = (
+    <details id="concept-index" className="scroll-mt-28 rounded-lg border border-slate-800/70 bg-slate-950/40 p-4">
+      <summary className="cursor-pointer text-sm font-semibold text-slate-200">
+        Concept index ({groups.reduce((total, group) => total + group.items.length, 0)})
+      </summary>
+      <div className="mt-4">
+        <PageMetrics mod={mod} />
+        {layers.length > 0 ? (
+          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+            {layers.map((layer, index) => (
+              <div key={layer.label} className="flex items-center gap-2">
+                <span className="font-mono text-[10px]" style={{ color: LAYER_COLORS[index % LAYER_COLORS.length] }}>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="text-xs text-slate-300">{layer.label}</span>
+                <span className="text-[10px] text-slate-500">
+                  {layer.end - layer.start + 1} {hasChapters ? "subtopics" : "sections"}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : null}
+        {mod.image ? (
+          <div className="my-6">
+            <RoadmapFigure image={mod.image} />
+          </div>
+        ) : null}
+        {groups.map((group) => (
+          <div key={group.group} className="mt-6 first:mt-0">
+            <h3 className="text-sm font-semibold text-slate-100">{group.group}</h3>
+            <ul className="mt-2 list-disc list-inside space-y-1.5 text-sm text-slate-400 marker:text-[#5f93a8]">
+              {group.items.map((item) => (
+                <li key={item.name}>
+                  <strong className="font-semibold text-slate-200">{item.name}</strong>: {item.role}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+
+  const topicSection = (topicLabel: string, topicIndexes: number[], expandCount = 2) => {
+    const topicId = headingSlug(topicLabel);
+    const layer = topicLayers[topicId];
+    return (
+      <section id={topicId} key={topicId} className="scroll-mt-28 mt-12 first:mt-0">
+        <div className="border-t border-slate-800/80 pt-5">
+          {layer ? (
+            <p className="mb-1.5 font-mono text-[10px] uppercase tracking-widest" style={{ color: layer.color }}>
+              {layer.label}
+            </p>
+          ) : null}
+          <h2 className="text-lg md:text-xl font-semibold text-slate-100 tracking-tight">{topicLabel}</h2>
+          {topicKeywords[topicId]?.length ? (
+            <p className="mt-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-500">
+              Keywords: {topicKeywords[topicId].join(" · ")}
+            </p>
+          ) : null}
+          <div className="mt-5 space-y-3">
+            {topicIndexes.map((index, position) =>
+              position < expandCount ? (
+                <NoteBlock key={units[index].id} unit={units[index]} />
+              ) : (
+                <CollapsedNote key={units[index].id} unit={units[index]} />
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  };
+
+  const deepContent = (
+    <div>
+      {conceptIndex}
+      <div className="mt-10">
+        {topics
+          .filter(
+            (topic) =>
+              !goldenUnits.has(topic.units[0] ?? -1) && !caseUnits.has(topic.units[0] ?? -1),
+          )
+          .map((topic) => {
+            const selected = topic.units.filter(
+              (index) => category(units[index], index) === "notes",
+            );
+            return selected.length ? topicSection(topic.label, selected) : null;
+          })}
+      </div>
+    </div>
+  );
+
+  const cheatContent = (
+    <div className="space-y-10">
+      {takeawayIndexes.length ? (
+        <section id="cheat-takeaway" className="scroll-mt-28">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+            {"//"} 3-bullet executive takeaway
+          </h2>
+          <div className="mt-4 space-y-3">
+            {takeawayIndexes.map((index) => (
+              <TakeawayBlock key={units[index].id} unit={units[index]} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {mustMasterSkills.length ? (
+        <section id="cheat-skills" className="scroll-mt-28">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+            {"//"} Must master skills
+          </h2>
+          <ol className="mt-4 space-y-3">
+            {mustMasterSkills.map((item, index) => (
+              <li key={item.skill} id={`skill-${index}`} className="scroll-mt-28 grid grid-cols-[2rem_1fr] gap-3">
+                <span className="font-mono text-[11px] text-[#7fb0c2]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-slate-100">{item.skill}</p>
+                  <p className="text-sm text-slate-400 leading-relaxed">{item.outcome}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+
+      {mentalLocks.length ? (
+        <section id="cheat-locks" className="scroll-mt-28">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+            {"//"} Mental locks
+          </h2>
+          <ol className="mt-4 space-y-3">
+            {mentalLocks.map((lock, index) => (
+              <li key={lock.title} id={`lock-${index}`} className="scroll-mt-28 grid grid-cols-[2rem_1fr] gap-3">
+                <span className="font-mono text-[11px] text-[#7fb0c2]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-slate-100">{lock.title}</p>
+                  <ul className="mt-1 space-y-1">
+                    {lock.lines.map((line) => (
+                      <li key={line} className="flex gap-2 text-sm text-slate-400">
+                        <span className="text-[#7fb0c2]">/</span>
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+
+      {decisionIndexes.length ? (
+        <section id="cheat-decisions" className="scroll-mt-28">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+            {"//"} Decision and trade-off tables
+          </h2>
+          <div className="mt-4 space-y-3">
+            {decisionIndexes.map((index, position) =>
+              position < 3 ? (
+                <NoteBlock key={units[index].id} unit={units[index]} />
+              ) : (
+                <CollapsedNote key={units[index].id} unit={units[index]} />
+              ),
+            )}
+          </div>
+        </section>
+      ) : null}
+
+      {recallIndexes.length ? (
+        <section id="cheat-recall" className="scroll-mt-28">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+            {"//"} Reference notes ({recallIndexes.length})
+          </h2>
+          <div className="mt-4 space-y-3">
+            {recallIndexes.map((index) => (
+              <CollapsedNote key={units[index].id} unit={units[index]} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </div>
+  );
+
+  const exhibitIndexes = indexes("all").filter((index) =>
+    /exhibit|metric|diagnostics/i.test(units[index].label),
+  );
+  const caseContent = (
+    <div>
+      <aside className="sticky top-24 z-10 mb-8 rounded-lg border border-[#3e6274]/40 bg-[#0e0d16]/95 p-4 backdrop-blur-md">
+        <p className="text-[10px] font-mono uppercase tracking-widest text-[#7fb0c2]">
+          {"//"} Pinned exhibits
+        </p>
+        <ul className="mt-2 space-y-1.5">
+          {exhibitIndexes.length ? (
+            exhibitIndexes.map((index) => (
+              <li key={units[index].id}>
+                <a href={`#${units[index].id}`} className="text-xs text-slate-300 hover:text-white">
+                  {splitNote(units[index]).label}
+                </a>
+              </li>
+            ))
+          ) : (
+            <li className="text-xs text-slate-500">No exhibit notes in this module</li>
+          )}
+        </ul>
+      </aside>
+
+      <section id="case-topics" className="scroll-mt-28">
+        <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+          {"//"} Case study
+        </h2>
+        <div className="mt-4 space-y-3">
+          {caseTopicIndexes.map((index) => (
+            <NoteBlock key={units[index].id} unit={units[index]} />
+          ))}
+        </div>
+      </section>
+
+      <section id="case-code" className="scroll-mt-28 mt-12">
+        <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+          {"//"} Lab code cookbook
+        </h2>
+        <div className="mt-4 space-y-3">
+          {codeIndexes.map((index) => (
+            <NoteBlock key={units[index].id} unit={units[index]} />
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+
+  const quizContent = (
+    <div className="space-y-8">
+      <section className="rounded-lg border border-slate-800/70 bg-slate-950/30 p-4">
+        <p className="text-xs text-slate-400">
+          {quizQuestions.length} questions loaded. Answers stay hidden until you reveal them.
+        </p>
+      </section>
+      {Array.from(new Set(quizQuestions.map((question) => question.source))).map((source) => (
+        <section key={source} id={headingSlug(source)} className="scroll-mt-28">
+          <h2 className="text-sm font-semibold text-slate-100">{source}</h2>
+          <div className="mt-3 space-y-3">
+            {quizQuestions
+              .filter((question) => question.source === source)
+              .map((question) => (
+                <QuizQuestion key={question.id} question={question} />
+              ))}
+          </div>
+        </section>
+      ))}
+      {quizIndexes.length ? (
+        <details className="rounded-lg border border-slate-800/70 bg-slate-950/30 p-4">
+          <summary className="cursor-pointer text-sm font-semibold text-slate-300">
+            Source quiz text
+          </summary>
+          <div className="mt-4 space-y-3">
+            {quizIndexes.map((index) => (
+              <CollapsedNote key={units[index].id} unit={units[index]} />
+            ))}
+          </div>
+        </details>
+      ) : null}
+    </div>
+  );
+
+  const footer = (
+    <div className="mt-12">
+      <ModuleStepper modules={moduleSteps} currentIndex={currentIndex} basePath={coursePath} variant="bottom" />
+      <TrackClose
+        note="Use the four views deliberately: scan the cheat sheet, read the deep notes, open the code and exhibits when implementing, then test yourself with hidden answers."
+        links={[
+          { label: "The course", href: coursePath },
+          { label: "Exam kit", href: `${coursePath}/cheat-sheet` },
+          { label: "The certificate", href: `/plan/${step.id}` },
+          { label: "Get in touch", href: "/#contact" },
+        ]}
+      />
+    </div>
+  );
+
+  const withFooter = (content: ReactNode) => (
+    <>
+      {content}
+      {footer}
+    </>
+  );
+
+  const tabs: ModuleTab[] = [
+    { id: "cheat", label: "Cheat Sheet", content: withFooter(cheatContent) },
+    { id: "notes", label: "Deep Notes", content: withFooter(deepContent) },
+    { id: "case", label: "Case & Code", content: withFooter(caseContent) },
+    { id: "quiz", label: "Active Recall", content: withFooter(quizContent) },
+  ];
+
+  const tocByTab: Record<string, ReadingRailSection[]> = {
+    cheat: [
+      ...(takeawayIndexes.length
+        ? [toc("cheat-takeaway", "Executive takeaway", "01", takeawayIndexes.map((index) => ({ id: units[index].id, label: takeawaySource(units[index]) })))]
+        : []),
+      ...(mustMasterSkills.length
+        ? [toc("cheat-skills", "Must master skills", "02", mustMasterSkills.map((item, index) => ({ id: `skill-${index}`, label: item.skill })))]
+        : []),
+      ...(mentalLocks.length
+        ? [toc("cheat-locks", "Mental locks", "03", mentalLocks.map((lock, index) => ({ id: `lock-${index}`, label: lock.title })))]
+        : []),
+      ...(decisionIndexes.length
+        ? [toc("cheat-decisions", "Decision tables", "04", decisionIndexes.map((index) => ({ id: units[index].id, label: splitNote(units[index]).label })))]
+        : []),
+      ...(recallIndexes.length
+        ? [toc("cheat-recall", "Reference notes", "05", recallIndexes.map((index) => ({ id: units[index].id, label: splitNote(units[index]).label })))]
+        : []),
+    ],
+    notes: [
+      {
+        id: "concept-index",
+        label: "Concept index",
+        chip: "00",
+        meta: `${groups.length} categories`,
+      },
+      ...topics
+        .filter((topic) => {
+          const first = topic.units[0] ?? -1;
+          return !goldenUnits.has(first) && !caseUnits.has(first);
+        })
+        .map((topic, index) =>
+          toc(
+            headingSlug(topic.label),
+            topic.label,
+            String(index + 1).padStart(2, "0"),
+            topic.units
+              .filter((unitIndex) => category(units[unitIndex], unitIndex) === "notes")
+              .map((unitIndex) => ({ id: units[unitIndex].id, label: splitNote(units[unitIndex]).label })),
+            topicKeywords[headingSlug(topic.label)],
+          ),
+        ),
+    ],
+    case: [
+      toc("case-topics", "Case study", "01", caseTopicIndexes.map((index) => ({ id: units[index].id, label: splitNote(units[index]).label }))),
+      toc("case-code", "Lab code cookbook", "02", codeIndexes.map((index) => ({ id: units[index].id, label: splitNote(units[index]).label }))),
+    ],
+    quiz: Array.from(new Set(quizQuestions.map((question) => question.source))).map((source, index) =>
+      toc(
+        headingSlug(source),
+        source,
+        String(index + 1).padStart(2, "0"),
+        quizQuestions
+          .filter((question) => question.source === source)
+          .map((question) => ({ id: question.id, label: `Question ${question.number}` })),
+      ),
+    ),
+  };
+
+  const header = (
+    <>
+      <Link
+        href={coursePath}
+        className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
+      >
+        ← Back to {course.title}
+      </Link>
+
+      <header className="mt-6 mb-6 space-y-3">
+        <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
+          {"//"} The Plan · {step.order} · {course.title}
+        </p>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
+          {mod.title}
+        </h1>
+        {mod.completed ? (
+          <p className="text-[11px] text-slate-400 font-mono">
+            Completed {mod.completed}
+            {mod.hours ? ` · ${mod.hours} ${mod.hours === 1 ? "hr" : "hrs"}` : ""}
+          </p>
+        ) : null}
+        <p className="text-sm md:text-base text-slate-400 leading-relaxed">{mod.summary}</p>
+      </header>
+
+      <ModuleStepper modules={moduleSteps} currentIndex={currentIndex} basePath={coursePath} variant="top" />
+    </>
+  );
 
   return (
     <main className="relative px-4 sm:px-6 pt-28 pb-24 min-h-screen">
-      <article className="mx-auto max-w-6xl">
-          <Link
-            href={`/plan/${step.id}/${course.slug}`}
-            className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
-          >
-            ← Back to {course.title}
-          </Link>
-
-          <header className="mt-6 mb-6 space-y-3">
-            <p className="text-xs font-mono uppercase tracking-widest text-slate-400">
-              {"//"} The Plan · {step.order} · {course.title}
-            </p>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
-              {mod.title}
-            </h1>
-            {mod.completed ? (
-              <p className="text-[11px] text-slate-400 font-mono">
-                Completed {mod.completed}
-                {mod.hours
-                  ? ` · ${mod.hours} ${mod.hours === 1 ? "hr" : "hrs"}`
-                  : ""}
-              </p>
-            ) : null}
-            <p className="text-sm md:text-base text-slate-400 leading-relaxed">
-              {mod.summary}
-            </p>
-          </header>
-
-          {mustMasterSkills.length > 0 ? (
-            <section className="mt-8 mb-10 border-y border-slate-800/70 py-5">
-              <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
-                {"//"} Must master skills
-              </h2>
-              <p className="text-[11px] text-slate-500 mt-1 mb-4">
-                What you should be able to do, not just remember.
-              </p>
-              <ol className="space-y-3">
-                {mustMasterSkills.map((item, index) => (
-                  <li key={item.skill} className="grid grid-cols-[2rem_1fr] gap-3">
-                    <span className="font-mono text-[11px] text-[#7fb0c2] pt-0.5">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-100">
-                        {item.skill}
-                      </p>
-                      <p className="text-sm text-slate-400 leading-relaxed">
-                        {item.outcome}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-
-              {mentalLocks.length > 0 ? (
-                <div className="mt-6 border-t border-slate-800/70 pt-5">
-                  <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
-                    {"//"} Mental locks
-                  </h2>
-                  <p className="text-[11px] text-slate-500 mt-1 mb-4">
-                    Rules to keep in working memory while you apply this module.
-                  </p>
-                  <ol className="space-y-4">
-                    {mentalLocks.map((lock, index) => (
-                      <li key={lock.title} className="grid grid-cols-[2rem_1fr] gap-3">
-                        <span className="font-mono text-[11px] text-[#7fb0c2] pt-0.5">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <div>
-                          <p className="text-sm font-semibold text-slate-100">
-                            {lock.title}
-                          </p>
-                          <ul className="mt-2 space-y-1.5">
-                            {lock.lines.map((line) => (
-                              <li
-                                key={line}
-                                className="flex gap-2 text-sm text-slate-400 leading-relaxed"
-                              >
-                                <span className="text-[#7fb0c2]">/</span>
-                                <span>{line}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              ) : null}
-
-              {layers.length > 0 ? (
-                <div className="mt-6 border-t border-slate-800/70 pt-5">
-                  <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
-                    {"//"} Layer map
-                  </h2>
-                  <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
-                    {layers.map((layer, index) => (
-                      <div key={layer.label} className="flex items-center gap-2">
-                        <span
-                          className="font-mono text-[10px]"
-                          style={{
-                            color: LAYER_COLORS[index % LAYER_COLORS.length],
-                          }}
-                        >
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <span className="text-xs text-slate-300">
-                          {layer.label}
-                        </span>
-                        <span className="text-[10px] text-slate-500">
-                          {layer.end - layer.start + 1}{" "}
-                          {hasChapters ? "subtopics" : "sections"}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-            </section>
-          ) : null}
-
-          <div id="concept-map" className="scroll-mt-28">
-            <PageMetrics mod={mod} />
-
-            {/* The picture the breakdown refers to, so the page stands alone. */}
-            {mod.image ? (
-              <div className="my-6">
-                <RoadmapFigure image={mod.image} />
-              </div>
-            ) : null}
-
-            {/* The breakdown, set like an article's lists: a heading per group
-                from the diagram, then its components and what each is for. */}
-            {groups.length > 0 ? (
-              <section className="mt-8 mb-12">
-                {groups.map((group) => (
-                  <div key={group.group} className="mt-6 first:mt-0">
-                    <h2 className="text-xl font-semibold text-slate-100 mb-2">
-                      {group.group}
-                    </h2>
-                    <ul className="list-disc list-inside space-y-2 my-3 text-sm text-slate-300 leading-relaxed marker:text-[#5f93a8]">
-                      {group.items.map((item) => (
-                        <li key={item.name}>
-                          <strong className="text-slate-100 font-semibold">
-                            {item.name}
-                          </strong>
-                          : {item.role}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </section>
-            ) : null}
-          </div>
-
-          {/* Below the wide breakpoint the rail is hidden, so the same chapter
-              list stays available as a compact row under the concept map. */}
-          {rail.length > 0 ? (
-            <nav
-              aria-label="Page chapters"
-              className="md:hidden mb-8 flex gap-2 overflow-x-auto pb-1"
-            >
-              {rail.map((section) => (
-                <a
-                  key={section.id}
-                  href={`#${section.id}`}
-                  className="shrink-0 rounded-md border border-slate-800/70 px-2 py-1 text-[11px] text-slate-400 hover:border-[#3e6274]/60 hover:text-slate-200 transition-colors"
-                >
-                  <span className="mr-1 font-mono text-[10px] text-[#7fb0c2]">
-                    {section.chip}
-                  </span>
-                  {section.label}
-                </a>
-              ))}
-            </nav>
-          ) : null}
-
-          {/* The module's own material below the breakdown. Level-2 headings
-              are chapter dividers; the rail above indexes exactly those. */}
-          {mod.notes && mod.notes.length > 0 ? (
-            <section className="mt-10 mb-12">
-              <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400 mb-3">
-                {"//"} Module notes
-              </h2>
-              <Markdown
-                content={content}
-                headingAnchors
-                chapterDividers
-                chapterLayers={topicLayers}
-                topicKeywords={topicKeywords}
-              />
-            </section>
-          ) : null}
-
-          <TrackClose
-            note={
-              mod.image
-                ? "This is the breakdown of the diagram above: what each component is, and why it sits where it does in the pipeline. The course page carries the picture; the certificate page carries the plan it belongs to."
-                : "The concepts above are the ones this module turns on, and the notes below explain each in turn. The course page carries the whole track, and the certificate page carries the plan it belongs to."
-            }
-            links={[
-              { label: "The course", href: `/plan/${step.id}/${course.slug}` },
-              { label: "The certificate", href: `/plan/${step.id}` },
-              { label: "The full plan", href: "/plan" },
-              { label: "Get in touch", href: "/#contact" },
-            ]}
-          />
-        </article>
-        {rail.length > 0 ? <ModuleRail sections={rail} /> : null}
+      <ModuleWorkspace header={header} tabs={tabs} tocByTab={tocByTab} />
     </main>
   );
 }
