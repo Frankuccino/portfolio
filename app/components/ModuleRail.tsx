@@ -134,16 +134,18 @@ export default function ModuleRail({
   );
   const active = sections[activeIndex];
 
-  const railList = (compact: boolean) => (
+  const railList = (compact: boolean, showHeading = true) => (
     <div>
-      <div className="flex items-baseline justify-between">
-        <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
-          {"//"} On this page
-        </p>
-        <span className="text-[10px] font-mono tabular-nums text-slate-400">
-          {activeIndex + 1} / {sections.length}
-        </span>
-      </div>
+      {showHeading ? (
+        <div className="flex items-baseline justify-between">
+          <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
+            {"//"} On this page
+          </p>
+          <span className="text-[10px] font-mono tabular-nums text-slate-400">
+            {activeIndex + 1} / {sections.length}
+          </span>
+        </div>
+      ) : null}
 
       <div className="mt-2 h-0.5 w-full overflow-hidden rounded-full bg-slate-800">
         <div
@@ -252,7 +254,7 @@ export default function ModuleRail({
           }
           className="pointer-events-none max-h-[70vh] w-56 translate-x-2 overflow-y-auto rounded-l-lg border border-r-0 border-slate-800/80 bg-[#0e0d16]/95 p-2.5 opacity-0 shadow-xl backdrop-blur-md transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-x-0 group-focus-within:opacity-100"
         >
-          {railList(true)}
+          {railList(true, false)}
         </div>
 
         <button

@@ -66,19 +66,23 @@ export function splitNote(unit: TopicUnit): { label: string; body: string } {
 }
 
 function isQuizUnit(unit: TopicUnit): boolean {
-  return /quiz/i.test(unit.label) || /^Question\s+\d+:/m.test(unit.body);
+  return (
+    /quiz/i.test(unit.label) ||
+    /^(?:Question\s+|Q)\s*\d+:/m.test(unit.body) ||
+    /^#{0,4}\s*(?:Assessment answers|Answer key(?: & Explanations)?)\b/im.test(unit.body)
+  );
 }
 
 function isAnswerUnit(unit: TopicUnit): boolean {
-  return /answer key|answer & explanation|answer and explanation/i.test(unit.label);
+  return /answer key|answer & explanation|answer and explanation|assessment answers/i.test(unit.label);
 }
 
 function parseAnswerMap(answerText: string): Map<number, string> {
   const answers = new Map<number, string>();
-  const detailed = /Question\s+(\d+):\s*([\s\S]*?)(?=\nQuestion\s+\d+:|$)/g;
+  const detailed = /^(?:Question\s+|Q)\s*(\d+):\s*([\s\S]*?)(?=\n(?:Question\s+|Q)\s*\d+:|$)/gm;
   let match: RegExpExecArray | null;
   while ((match = detailed.exec(answerText)) !== null) {
-    answers.set(Number(match[1]), match[2].trim().replace(/^B\s*[—.-]\s*/i, ""));
+    answers.set(Number(match[1]), match[2].trim().replace(/^([A-D])\s*[—.-]\s*/i, "Option $1. "));
   }
   if (answers.size === 0) {
     const compact = answerText.match(/Answer key:\s*([0-9,\sA-D]+)/i);
@@ -97,7 +101,9 @@ export function parseQuizQuestions(
   const questions: QuizQuestion[] = [];
   units.forEach((unit, index) => {
     if (!isQuizUnit(unit)) return;
-    const marker = unit.body.search(/^(?:###\s*)?Answer key(?: & Explanations)?:/im);
+    const marker = unit.body.search(
+      /^(?:#{2,4}\s*)?(?:Answer key(?: & Explanations)?|Assessment answers)\b/im,
+    );
     const ownAnswer = marker >= 0 ? unit.body.slice(marker) : "";
     const answerText = [
       ownAnswer,
@@ -111,15 +117,15 @@ export function parseQuizQuestions(
     const answers = parseAnswerMap(answerText);
     const questionBody = marker >= 0 ? unit.body.slice(0, marker) : unit.body;
     const blocks = questionBody
-      .split(/(?=^Question\s+\d+:)/m)
-      .filter((block) => /^Question\s+\d+:/.test(block));
+      .split(/(?=^(?:Question\s+|Q)\s*\d+:)/m)
+      .filter((block) => /^(?:Question\s+|Q)\s*\d+:/.test(block));
 
     blocks.forEach((block, blockIndex) => {
-      const numberMatch = block.match(/^Question\s+(\d+):/);
+      const numberMatch = block.match(/^(?:Question\s+|Q)\s*(\d+):/);
       if (!numberMatch) return;
       const number = Number(numberMatch[1]);
       const question = block
-        .replace(/^Question\s+\d+:\s*/, "")
+        .replace(/^(?:Question\s+|Q)\s*\d+:\s*/, "")
         .split("\n")
         .filter((line) => line.trim())
         .join("\n")
@@ -133,6 +139,19 @@ export function parseQuizQuestions(
         answer: answers.get(number) ?? "Answer not supplied in notes.",
       });
     });
+
+    if (blocks.length === 0) {
+      answers.forEach((answer, number) => {
+        questions.push({
+          id: `${unit.id}-review-${number}`,
+          module: moduleTitle,
+          source: `${unit.label} review`,
+          number,
+          question: `Recall checkpoint ${number}`,
+          answer,
+        });
+      });
+    }
   });
   return questions;
 }

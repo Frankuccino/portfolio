@@ -26,7 +26,7 @@ export default function CollapsibleTableRows({
             onClick={() => setOpen((value) => !value)}
             className="text-[11px] text-[#7fb0c2] transition-colors hover:text-white"
           >
-            {open ? `Hide ${rows.length} rows ↑` : `Show ${rows.length} more rows ↓`}
+            {open ? `Hide ${rows.length} ${rows.length === 1 ? "row" : "rows"} ↑` : `Show ${rows.length} more ${rows.length === 1 ? "row" : "rows"} ↓`}
           </button>
         </td>
       </tr>

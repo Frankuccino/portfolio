@@ -74,7 +74,7 @@ function isAnswerUnit(unit: TopicUnit): boolean {
 }
 
 function isCodeUnit(unit: TopicUnit): boolean {
-  return unit.body.includes("```") && /lab|code cookbook/i.test(unit.label);
+  return unit.body.includes("```") && !/quiz|answer key/i.test(unit.label);
 }
 
 function isTakeaway(unit: TopicUnit): boolean {
@@ -84,33 +84,86 @@ function isTakeaway(unit: TopicUnit): boolean {
   );
 }
 
-function takeawaySource(unit: TopicUnit): string {
+function takeawaySource(unit: TopicUnit, topicLabel = ""): string {
+  if (/^three-bullet takeaway$/i.test(unit.label.trim())) {
+    return topicLabel.replace(/^Sub-module\s+\d+:\s*/i, "").trim() || "module review";
+  }
   return unit.label
     .replace(/^Derived notes:\s*/i, "")
     .replace(/^Three-bullet takeaway:\s*/i, "")
     .trim() || "module review";
 }
 
+const ACRONYMS = new Set([
+  "AI", "RAG", "LLM", "SQL", "PII", "PHI", "SLA", "JSON", "OCR", "ACL", "BI", "ETL", "ELT", "JSONL", "ID", "API", "KPI",
+]);
+
+function displaySource(source: string, unit: TopicUnit, modSlug: string, topicLabel = ""): string {
+  if (
+    /^three-bullet takeaway$/i.test(unit.label.trim()) &&
+    /golden recall/i.test(topicLabel) &&
+    modSlug.startsWith("llms-for-data-engineers")
+  ) {
+    return "Prompting & Context";
+  }
+  return source
+    .split(/\s+/)
+    .map((word) => {
+      const parts = word.match(/^([^\p{L}\p{N}]*)([\p{L}\p{N}&/+\-]+)([^\p{L}\p{N}]*)$/u);
+      if (!parts) return word;
+      const [, prefix, core, suffix] = parts;
+      if (ACRONYMS.has(core.toUpperCase())) return `${prefix}${core.toUpperCase()}${suffix}`;
+      return `${prefix}${core.charAt(0).toUpperCase()}${core.slice(1).toLowerCase()}${suffix}`;
+    })
+    .filter(Boolean)
+    .join(" ");
+}
+
+function takeawayBody(unit: TopicUnit, compact: boolean): string {
+  const { body } = splitNote(unit);
+  const section = body.match(
+    /(?:^|\n)#{3,4}\s+Three-bullet takeaway[^\n]*\n([\s\S]*?)(?=\n#{3,4}\s|\n##\s|$)/i,
+  );
+  const text = (section ? section[1] : body)
+    .replace(/^####\s+Three-bullet takeaway\s*/i, "")
+    .trim();
+  if (!compact) return text;
+  return text.split(/\n\s*\n/)[0].trim();
+}
+
 function isDecisionTable(unit: TopicUnit): boolean {
+  if (/glossary|quiz|assessment|exhibit|checklist|terms|derived notes/i.test(unit.label)) {
+    return false;
+  }
   return (
     unit.body.includes("|") &&
-    /decision options|versus|trade-off|comparison|matrix|scoreboard|scorecard/i.test(unit.label)
+    /decision|versus|trade-off|comparison|matrix|scoreboard|scorecard|readiness|dashboard|assistant|retrieval strategy|indexing side|features and embeddings|skew|ownership|monitoring signals|sensitive data|leakage|architecture/i.test(
+      unit.label,
+    )
   );
 }
 
 function decisionFamily(label: string): string {
+  if (/value against readiness/i.test(label)) return "decision";
+  if (/dashboard|assistant/i.test(label)) return "workload";
+  if (/analytics-ready/i.test(label)) return "readiness";
   if (/chunk/i.test(label)) return "chunking";
   if (/failure|diagnos/i.test(label)) return "failure";
-  if (/evaluation|scoreboard|scorecard/i.test(label)) return "evaluation";
-  if (/fine-tun|adaptation|rag versus/i.test(label)) return "adaptation";
-  if (/decision option/i.test(label)) return "decision";
+  if (/evaluation|scoreboard|scorecard|monitoring signals/i.test(label)) return "evaluation";
+  if (/fine-tun|adaptation|rag (versus|versus)|rag versus/i.test(label)) return "adaptation";
+  if (/retrieval|indexing side|keyword search|similarity/i.test(label)) return "retrieval";
+  if (/feature|embedding|skew/i.test(label)) return "features";
+  if (/ownership|governance|sensitive data|leakage|explain/i.test(label)) return "governance";
+  if (/decision option|architecture/i.test(label)) return "decision";
   return label;
 }
 
 function decisionRank(label: string): number {
-  if (/matrix|decision options|scorecard/i.test(label)) return 0;
-  if (/versus|comparison|trade-off/i.test(label)) return 1;
-  return 2;
+  if (/decision options/i.test(label)) return 0;
+  if (/matrix|scorecard/i.test(label)) return 1;
+  if (/versus|comparison|trade-off/i.test(label)) return 2;
+  if (/readiness|dashboard|assistant/i.test(label)) return 3;
+  return 4;
 }
 
 function NoteBlock({ unit }: { unit: TopicUnit }) {
@@ -133,19 +186,18 @@ function NoteBlock({ unit }: { unit: TopicUnit }) {
   );
 }
 
-function TakeawayBlock({ unit }: { unit: TopicUnit }) {
-  const { body } = splitNote(unit);
-  const cleanBody = body.replace(/^####\s+Three-bullet takeaway\s*/i, "").trim();
+function TakeawayBlock({ unit, source, compact = false }: { unit: TopicUnit; source: string; compact?: boolean }) {
+  const text = takeawayBody(unit, compact);
   return (
     <div
       id={unit.id}
       className="scroll-mt-28 rounded-lg border border-slate-800/60 bg-slate-950/30 p-4"
     >
       <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500">
-        From: {takeawaySource(unit)}
+        From: {source}
       </p>
       <div className="mt-3">
-        <Markdown content={cleanBody} collapsibleTables />
+        <Markdown content={text} collapsibleTables />
       </div>
     </div>
   );
@@ -214,6 +266,10 @@ export default async function RoadmapModulePage({
   const topics = mod.topics?.length
     ? mod.topics
     : units.map((unit, index) => ({ label: unit.label, units: [index] }));
+  const topicByIndex = new Map<number, string>();
+  topics.forEach((topic) => {
+    topic.units.forEach((index) => topicByIndex.set(index, topic.label));
+  });
 
   const goldenTopic = topics.find((topic) => /golden recall/i.test(topic.label));
   const goldenUnits = new Set(goldenTopic?.units ?? []);
@@ -256,7 +312,8 @@ export default async function RoadmapModulePage({
 
   const category = (unit: TopicUnit, index: number): "cheat" | "notes" | "case" | "quiz" => {
     if (isQuizUnit(unit) || isAnswerUnit(unit)) return "quiz";
-    if (isCodeUnit(unit) || caseUnits.has(index)) return "case";
+    if (isCodeUnit(unit) && !goldenUnits.has(index)) return "case";
+    if (caseUnits.has(index)) return "case";
     if (goldenUnits.has(index)) return "cheat";
     return "notes";
   };
@@ -267,8 +324,15 @@ export default async function RoadmapModulePage({
       .filter(({ unit, index }) => list === "all" || category(unit, index) === list)
       .map(({ index }) => index);
 
-  const takeawayIndexes = indexes("all").filter((index) => isTakeaway(units[index]));
-  const decisionCandidates = indexes("cheat").filter((index) => isDecisionTable(units[index]));
+  const explicitTakeawayIndexes = indexes("all").filter((index) => isTakeaway(units[index]));
+  const hasExplicitTakeaways = explicitTakeawayIndexes.length > 0;
+  const takeawayIndexes = hasExplicitTakeaways
+    ? explicitTakeawayIndexes
+    : indexes("all").slice(0, 3);
+  const cheatDecisionCandidates = indexes("cheat").filter((index) => isDecisionTable(units[index]));
+  const decisionCandidates = cheatDecisionCandidates.length
+    ? cheatDecisionCandidates
+    : indexes("all").filter((index) => !caseUnits.has(index) && isDecisionTable(units[index]));
   const decisionByFamily = new Map<string, number>();
   decisionCandidates.forEach((index) => {
     const label = units[index].label;
@@ -278,7 +342,7 @@ export default async function RoadmapModulePage({
       decisionByFamily.set(family, index);
     }
   });
-  const decisionIndexes = [...decisionByFamily.values()].sort((a, b) => a - b);
+  const decisionIndexes = [...decisionByFamily.values()].sort((a, b) => a - b).slice(0, 5);
   const recallIndexes = indexes("cheat").filter(
     (index) => !takeawayIndexes.includes(index) && !decisionIndexes.includes(index),
   );
@@ -389,7 +453,7 @@ export default async function RoadmapModulePage({
           </h2>
           <div className="mt-4 space-y-3">
             {takeawayIndexes.map((index) => (
-              <TakeawayBlock key={units[index].id} unit={units[index]} />
+              <TakeawayBlock key={units[index].id} unit={units[index]} source={displaySource(takeawaySource(units[index], topicByIndex.get(index)), units[index], mod.slug, topicByIndex.get(index))} compact={!hasExplicitTakeaways} />
             ))}
           </div>
         </section>
@@ -430,8 +494,8 @@ export default async function RoadmapModulePage({
                 <div>
                   <p className="text-sm font-semibold text-slate-100">{lock.title}</p>
                   <ul className="mt-1 space-y-1">
-                    {lock.lines.map((line) => (
-                      <li key={line} className="flex gap-2 text-sm text-slate-400">
+                    {lock.lines.map((line, lineIndex) => (
+                      <li key={`${line}-${lineIndex}`} className="flex gap-2 text-sm text-slate-400">
                         <span className="text-[#7fb0c2]">/</span>
                         <span>{line}</span>
                       </li>
@@ -587,24 +651,26 @@ export default async function RoadmapModulePage({
     { id: "quiz", label: "Active Recall", content: withFooter(quizContent) },
   ];
 
+  const cheatToc: ReadingRailSection[] = [
+    ...(takeawayIndexes.length
+      ? [toc("cheat-takeaway", "Executive takeaway", "01", takeawayIndexes.map((index) => ({ id: units[index].id, label: displaySource(takeawaySource(units[index], topicByIndex.get(index)), units[index], mod.slug, topicByIndex.get(index)) })))]
+      : []),
+    ...(mustMasterSkills.length
+      ? [toc("cheat-skills", "Must master skills", "02", mustMasterSkills.map((item, index) => ({ id: `skill-${index}`, label: item.skill })))]
+      : []),
+    ...(mentalLocks.length
+      ? [toc("cheat-locks", "Mental locks", "03", mentalLocks.map((lock, index) => ({ id: `lock-${index}`, label: lock.title })))]
+      : []),
+    ...(decisionIndexes.length
+      ? [toc("cheat-decisions", "Decision tables", "04", decisionIndexes.map((index) => ({ id: units[index].id, label: splitNote(units[index]).label })))]
+      : []),
+    ...(recallIndexes.length
+      ? [toc("cheat-recall", "Reference notes", "05", recallIndexes.map((index) => ({ id: units[index].id, label: splitNote(units[index]).label })))]
+      : []),
+  ].map((section, index) => ({ ...section, chip: String(index + 1).padStart(2, "0") }));
+
   const tocByTab: Record<string, ReadingRailSection[]> = {
-    cheat: [
-      ...(takeawayIndexes.length
-        ? [toc("cheat-takeaway", "Executive takeaway", "01", takeawayIndexes.map((index) => ({ id: units[index].id, label: takeawaySource(units[index]) })))]
-        : []),
-      ...(mustMasterSkills.length
-        ? [toc("cheat-skills", "Must master skills", "02", mustMasterSkills.map((item, index) => ({ id: `skill-${index}`, label: item.skill })))]
-        : []),
-      ...(mentalLocks.length
-        ? [toc("cheat-locks", "Mental locks", "03", mentalLocks.map((lock, index) => ({ id: `lock-${index}`, label: lock.title })))]
-        : []),
-      ...(decisionIndexes.length
-        ? [toc("cheat-decisions", "Decision tables", "04", decisionIndexes.map((index) => ({ id: units[index].id, label: splitNote(units[index]).label })))]
-        : []),
-      ...(recallIndexes.length
-        ? [toc("cheat-recall", "Reference notes", "05", recallIndexes.map((index) => ({ id: units[index].id, label: splitNote(units[index]).label })))]
-        : []),
-    ],
+    cheat: cheatToc,
     notes: [
       {
         id: "concept-index",
@@ -661,9 +727,14 @@ export default async function RoadmapModulePage({
         <h1 className="text-3xl md:text-4xl font-black tracking-tight font-display text-slate-100 leading-tight">
           {mod.title}
         </h1>
-        {mod.completed ? (
+        {mod.studyStatus === "in-progress" ? (
           <p className="text-[11px] text-slate-400 font-mono">
-            Completed {mod.completed}
+            Notes in progress · Module {String(currentIndex + 1).padStart(2, "0")} of {String(moduleSteps.length).padStart(2, "0")}
+            {mod.hours ? ` · ${mod.hours} ${mod.hours === 1 ? "hr" : "hrs"}` : ""}
+          </p>
+        ) : mod.completed || mod.studyStatus === "done" || ((mod.notes?.length ?? 0) > 0 && (mod.breakdown?.length ?? 0) > 0) ? (
+          <p className="text-[11px] text-slate-400 font-mono">
+            Completed Module {String(currentIndex + 1).padStart(2, "0")} of {String(moduleSteps.length).padStart(2, "0")}
             {mod.hours ? ` · ${mod.hours} ${mod.hours === 1 ? "hr" : "hrs"}` : ""}
           </p>
         ) : null}

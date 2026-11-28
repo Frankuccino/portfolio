@@ -11,7 +11,7 @@ import CollapsibleTableRows from "../components/CollapsibleTableRows";
  */
 
 const INLINE_PATTERN =
-  /(`[^`]+`)|(\[[^\]]+\]\([^)]+\))|(\*\*[^*]+\*\*)|(\*[^*\n]+\*)/g;
+  /(`[^`]+`)|(\[[^\]]+\]\([^)]+\))|(\*\*[^*]+\*\*)|(\*[^*\n]+\*)|(\b(?:[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9_]+(?:=[^\s|,;)]+)?|[A-Za-z][A-Za-z0-9-]*=[^\s|,;)]+|p\d{2}|exec_ok)\b)/g;
 
 function parseInline(text: string): React.ReactNode[] {
   const nodes: React.ReactNode[] = [];
@@ -56,8 +56,17 @@ function parseInline(text: string): React.ReactNode[] {
           {token.slice(2, -2)}
         </strong>,
       );
-    } else {
+    } else if (token.startsWith("*")) {
       nodes.push(<em key={key++}>{token.slice(1, -1)}</em>);
+    } else {
+      nodes.push(
+        <code
+          key={key++}
+          className="px-1 py-0.5 rounded bg-slate-950 border border-slate-800 text-[0.85em] font-mono text-[#9fd0e0]"
+        >
+          {token}
+        </code>,
+      );
     }
     cursor = match.index + token.length;
   }
@@ -254,22 +263,27 @@ export function noteChapters(notes: string[] | undefined): {
 }
 
 function semanticBadge(cell: string): { label: string; className: string } | null {
-  if (/failure|trap|watch for|risk/i.test(cell)) {
+  const explicit = cell.match(/^\[(TRAP|BOUNDARY|METRIC)\]\s*/i);
+  if (explicit) {
+    const label = explicit[1].toUpperCase();
+    const className =
+      label === "TRAP"
+        ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
+        : label === "BOUNDARY"
+          ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+          : "border-purple-500/30 bg-purple-500/10 text-purple-300";
+    return { label, className };
+  }
+  if (/^(failure when crossed|watch for|trap|risk)$/i.test(cell.trim())) {
     return {
       label: "TRAP",
       className: "border-amber-500/30 bg-amber-500/10 text-amber-300",
     };
   }
-  if (/boundary|rule|enforced|guardrail/i.test(cell)) {
+  if (/^(boundary it enforces|boundary|rule|guardrail)$/i.test(cell.trim())) {
     return {
       label: "BOUNDARY",
       className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-    };
-  }
-  if (/metric|sla|latency|precision|score|rate/i.test(cell)) {
-    return {
-      label: "METRIC",
-      className: "border-purple-500/30 bg-purple-500/10 text-purple-300",
     };
   }
   return null;
@@ -502,7 +516,7 @@ export function Markdown({
                           {badge.label}
                         </span>
                       ) : null}
-                      {parseInline(cell)}
+                      {parseInline(cell.replace(/^\[(TRAP|BOUNDARY|METRIC)\]\s*/i, ""))}
                     </th>
                   );
                 })}
